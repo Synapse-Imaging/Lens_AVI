@@ -1,0 +1,857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{F96D6F2B-87E6-CD55-C59D-5ACA9DF5FC1B}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <CudaToolkitCustomDir>
+    </CudaToolkitCustomDir>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.1.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Run</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>uScan_DEBUG</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>.\Run\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>_UAVI_VS_debug</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>.\Run\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>_UAVI_VS_release</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>Include;Include/PClass;Include/Axt;Include/UGrid;C:\Program Files\MVTec\HALCON-9.0\include;C:\Program Files\MVTec\HALCON\include;C:\Program Files\MVTec\HALCON-9.0\include\cpp;C:\Program Files\MVTec\HALCON\include\cpp;C:\Program Files\Matrox Imaging\Mil\Include\MilDyn;C:\Program Files\Matrox Imaging\Mil\Include;C:\Program Files\Point Grey Research\FlyCapture2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\uScan.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\uScan.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\uScan.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreSpecificDefaultLibraries>libcmt;libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>Run\uScan_Debug.exe</OutputFile>
+      <AdditionalLibraryDirectories>Library;Library/Mil;Library/OpenCV;Library/PClass;Library/GL;Library/Axt;C:\Program Files\MVTec\HALCON\lib\x64-win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>halconcppxl.lib;pbc.lib;version.lib;TsaiLIb2.lib;IniFile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)Include\cppzmq;$(ProjectDir)Include\PClass;$(ProjectDir)Include\Axt;$(ProjectDir)Include\UGrid;$(ProjectDir)FAI;$(ProjectDir)FAI\ModelData;$(ProjectDir)FAI\ModelTypes;$(ProjectDIr)Utils;$(ProjectDir);$(HALCONROOT)\include;$(HALCONROOT)\include\halconcpp;$(CUDA_PATH_V12_1)\include;C:\Program Files\Matrox Imaging\Mil\Include;C:\Program Files\Matrox Imaging\Mil\Include\MilDyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\uScan.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <AdditionalOptions>/Zo %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\uScan.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\uScan.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreSpecificDefaultLibraries>libcmt;libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>$(outdir)$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)Library;$(ProjectDir)Library\PClass;$(ProjectDir)Library\Axt;$(HALCONROOT)\lib\x64-win64;$(CUDA_PATH_V12_1)\lib\x64;C:\Program Files\Matrox Imaging\MIL\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>pbc.lib;shlwapi.lib;AD_Make_Dll.lib;version.lib;TsaiLIb2.lib;libssl.lib;libcrypto.lib;libzmq-mt-4_3_5.lib;Synapse.Network.CPP.ZeroMQ.Common.lib;Synapse.Network.CPP.ZeroMQ.Client.lib;syai_runtime_common_d.lib;syai_runtime_inspection_d.lib;spdlogd.lib;opencv_world4120d.lib;IniFile.lib;mil.lib;milim.lib;MIInterface.lib;S_Universal_AVI_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateMapFile>false</GenerateMapFile>
+      <StackReserveSize>10485760</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>Include;Include/Mil;Include/OpenCV;Include/PClass;Include/GL;Include/Axt;Include/UGrid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release\uScan.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\uScan.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\uScan.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreSpecificDefaultLibraries>libcmtd;libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>Run/uScan.exe</OutputFile>
+      <AdditionalLibraryDirectories>Library;Library/Mil;Library/OpenCV;Library/PClass;Library/GL;Library/Axt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>halconcppxl.lib;pbc.lib;TransClientCoff.lib;version.lib;TsaiLIb2.lib;clserHor.lib;DllChartCoff.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)Include\cppzmq;$(ProjectDir)Include\PClass;$(ProjectDir)Include\Axt;$(ProjectDir)Include\UGrid;$(ProjectDir)FAI;$(ProjectDir)FAI\ModelData;$(ProjectDir)FAI\ModelTypes;$(ProjectDIr)Utils;$(ProjectDir);$(HALCONROOT)\include;$(HALCONROOT)\include\halconcpp;$(CUDA_PATH_V12_1)\include;C:\Program Files\Matrox Imaging\Mil\Include;C:\Program Files\Matrox Imaging\Mil\Include\MilDyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;USE_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release\uScan.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\uScan.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\uScan.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreSpecificDefaultLibraries>libcmtd;libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>Run/_UAVI_VS_release.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)Library;$(ProjectDir)Library\PClass;$(ProjectDir)Library\Axt;$(HALCONROOT)\lib\x64-win64;$(CUDA_PATH_V12_1)\lib\x64;C:\Program Files\Matrox Imaging\MIL\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>pbc.lib;shlwapi.lib;AD_Make_Dll.lib;version.lib;TsaiLIb2.lib;libssl.lib;libcrypto.lib;libzmq-mt-4_3_5.lib;Synapse.Network.CPP.ZeroMQ.Common.lib;Synapse.Network.CPP.ZeroMQ.Client.lib;syai_runtime_common.lib;syai_runtime_inspection.lib;spdlog.lib;opencv_world4120.lib;MIInterface.lib;TransClientCoff.lib;DllChartCoff.lib;clserHor.lib;S_Universal_AVI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <StackReserveSize>10485760</StackReserveSize>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ADJClientService.cpp" />
+    <ClCompile Include="AdminPasswordDlg.cpp" />
+    <ClCompile Include="AIService\ImageUtile.cpp" />
+    <ClCompile Include="AJinAXL.cpp" />
+    <ClCompile Include="Algorithm.cpp" />
+    <ClCompile Include="AlgorithmAngleMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmBarcodeDlg.cpp" />
+    <ClCompile Include="AlgorithmBoundaryDlg.cpp" />
+    <ClCompile Include="AlgorithmComponentDlg.cpp" />
+    <ClCompile Include="AlgorithmConcenterMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmConnectorPinDlg.cpp" />
+    <ClCompile Include="AlgorithmCornerMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmDefectConditionDlg.cpp" />
+    <ClCompile Include="AlgorithmDentDlg.cpp" />
+    <ClCompile Include="AlgorithmDistanceMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmDontcareDlg.cpp" />
+    <ClCompile Include="AlgorithmEdgeMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmEpoxyVoidHoleDlg.cpp" />
+    <ClCompile Include="AlgorithmFittingDlg.cpp" />
+    <ClCompile Include="AlgorithmGapMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmHeightMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmService\AlgorithmPipeline.cpp" />
+    <ClCompile Include="AlgorithmService\AlgorithmHelper.cpp" />
+    <ClCompile Include="AlgorithmTiltDlg.cpp" />
+    <ClCompile Include="AlgorithmImageCompareDlg.cpp" />
+    <ClCompile Include="AlgorithmImageProcessDlg.cpp" />
+    <ClCompile Include="AlgorithmNeckEpoxyCrackDlg.cpp" />
+    <ClCompile Include="AlgorithmNeckEpoxyMeasureDlg.cpp" />
+    <ClCompile Include="AlgorithmOCRDlg.cpp" />
+    <ClCompile Include="AlgorithmParam.cpp" />
+    <ClCompile Include="AlgorithmPartCheckDlg.cpp" />
+    <ClCompile Include="AlgorithmPrintQualityDlg.cpp" />
+    <ClCompile Include="AlgorithmROIAlignDlg.cpp" />
+    <ClCompile Include="AlgorithmROIAnisoAlignDlg.cpp" />
+    <ClCompile Include="AlgorithmShapeDlg.cpp" />
+    <ClCompile Include="AlgorithmStiffenerEpoxyDlg.cpp" />
+    <ClCompile Include="AlgorithmSurfaceDlg.cpp" />
+    <ClCompile Include="AlgorithmSurfaceDualDlg.cpp" />
+    <ClCompile Include="AutoCalService.cpp" />
+    <ClCompile Include="AutoFocusDlg.cpp" />
+    <ClCompile Include="AutoTrainGridCtrl.cpp" />
+    <ClCompile Include="AutoTrainStatusDlg.cpp" />
+    <ClCompile Include="CalDataService.cpp" />
+    <ClCompile Include="CameraLightManagerDlg.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="ClientSocket.cpp" />
+    <ClCompile Include="ComThread.cpp" />
+    <ClCompile Include="ConditionDlg.cpp" />
+    <ClCompile Include="ConditionGridCtrl.cpp" />
+    <ClCompile Include="CreateFontDlg.cpp" />
+    <ClCompile Include="DefectAssignADJ.cpp" />
+    <ClCompile Include="DefectListDlg.cpp" />
+    <ClCompile Include="DefectPriorityDlg.cpp" />
+    <ClCompile Include="Delegate.cpp" />
+    <ClCompile Include="EventStub.cpp" />
+    <ClCompile Include="ExtraDlg.cpp" />
+    <ClCompile Include="FAI\Dynamic\FAIDynamicRuleManager.cpp" />
+    <ClCompile Include="FAI\ModelData\FAIDataManager.cpp" />
+    <ClCompile Include="FAI\FAIInspectorFactory.cpp" />
+    <ClCompile Include="FAI\ModelData\FAIModelConfig.cpp" />
+    <ClCompile Include="FAI\ModelTypes\ACTFAIInspector.cpp" />
+    <ClCompile Include="FAI\ModelTypes\AKCFAIInspector.cpp" />
+    <ClCompile Include="FAI\ModelTypes\ATWFAIInspector.cpp" />
+    <ClCompile Include="FAI\ModelTypes\BOSFAIInspector.cpp" />
+    <ClCompile Include="FAI\ModelTypes\BOIFAIInspector.cpp" />
+    <ClCompile Include="FAI\ModelTypes\KRIOSFAIInspector.cpp" />
+    <ClCompile Include="FAI\ModelTypes\RENOFAIInspector.cpp" />
+    <ClCompile Include="FileBase.cpp" />
+    <ClCompile Include="FocusAutoCalResultDlg.cpp" />
+    <ClCompile Include="GFunction.cpp" />
+    <ClCompile Include="GrabSequenceDlg.cpp" />
+    <ClCompile Include="GrabSequenceViewDlg.cpp" />
+    <ClCompile Include="GTRegion.cpp" />
+    <ClCompile Include="GViewportManager.cpp" />
+    <ClCompile Include="HandlerService.cpp" />
+    <ClCompile Include="HWinPanel.cpp" />
+    <ClCompile Include="Variation\VariationNormalizer.cpp" />
+    <ClCompile Include="IniFileCS.cpp" />
+    <ClCompile Include="InspectAdminViewDlg.cpp" />
+    <ClCompile Include="InspectAdminViewHideDlg1.cpp" />
+    <ClCompile Include="InspectAdminViewHideDlg2.cpp" />
+    <ClCompile Include="InspectAdminViewHideDlg3.cpp" />
+    <ClCompile Include="InspectAdminViewHideDlg4.cpp" />
+    <ClCompile Include="InspectAdminViewToolbarDlg.cpp" />
+    <ClCompile Include="BatchService\BatchGrabHelper.cpp" />
+    <ClCompile Include="BatchService\BatchManager.cpp" />
+    <ClCompile Include="InspectionConditionTabDlg.cpp" />
+    <ClCompile Include="InspectionPriorityDlg.cpp" />
+    <ClCompile Include="InspectionTypeChsDlg.cpp" />
+    <ClCompile Include="InspectionTypeChsWZDlg.cpp" />
+    <ClCompile Include="InspectionTypeDlg.cpp" />
+    <ClCompile Include="InspectionTypeExDlg.cpp" />
+    <ClCompile Include="InspectLibrary.cpp" />
+    <ClCompile Include="InspectLibraryData.cpp" />
+    <ClCompile Include="InspectLibraryDataManager.cpp" />
+    <ClCompile Include="InspectLibraryDlg.cpp" />
+    <ClCompile Include="InspectResultDlg.cpp" />
+    <ClCompile Include="InspectService.cpp" />
+    <ClCompile Include="InspectSummary.cpp" />
+    <ClCompile Include="InspectViewOverayImageDlg1.cpp" />
+    <ClCompile Include="InspectViewOverayImageDlg2.cpp" />
+    <ClCompile Include="InspectViewOverayImageDlg3.cpp" />
+    <ClCompile Include="InspectViewOverayImageDlg4.cpp" />
+    <ClCompile Include="InspectViewOverayImageToolbarDlg1.cpp" />
+    <ClCompile Include="InspectViewOverayImageToolbarDlg2.cpp" />
+    <ClCompile Include="InspectViewOverayImageToolbarDlg3.cpp" />
+    <ClCompile Include="InspectViewOverayImageToolbarDlg4.cpp" />
+    <ClCompile Include="JogSetDlg.cpp" />
+    <ClCompile Include="LGIT\InspectorManager.cpp" />
+    <ClCompile Include="LGIT\LAIInspector.cpp" />
+    <ClCompile Include="LGIT\LAIInspector2.cpp" />
+    <ClCompile Include="LGIT\LAIInspectorSEG.cpp" />
+    <ClCompile Include="LGIT\LAIInspectorSVM.cpp" />
+    <ClCompile Include="LGIT\LAIInspectorVAL.cpp" />
+    <ClCompile Include="LGIT\ModelInference.cpp" />
+    <ClCompile Include="LGIT\ModelInference2.cpp" />
+    <ClCompile Include="LGIT\ModelInferenceSEG.cpp" />
+    <ClCompile Include="LGIT\ModelInferenceSVM.cpp" />
+    <ClCompile Include="LGIT\ModelInferenceVAL.cpp" />
+    <ClCompile Include="LGIT\Model\ImageROIManager.cpp" />
+    <ClCompile Include="LibraryGridCtrl.cpp" />
+    <ClCompile Include="LightAutoCalResultDlg.cpp" />
+    <ClCompile Include="LightAverageValueDlg.cpp" />
+    <ClCompile Include="LightControl.cpp" />
+    <ClCompile Include="LightControlDlg.cpp" />
+    <ClCompile Include="LightLibrary.cpp" />
+    <ClCompile Include="LightLibraryData.cpp" />
+    <ClCompile Include="LightLibraryDataManager.cpp" />
+    <ClCompile Include="LightLibraryDlg.cpp" />
+    <ClCompile Include="LightPageControlDlg.cpp" />
+    <ClCompile Include="LightPwmControlDlg.cpp" />
+    <ClCompile Include="LightPwmManager.cpp" />
+    <ClCompile Include="LoadModelDlg.cpp" />
+    <ClCompile Include="MacroPathList.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="GlobalMatchingDlg.cpp" />
+    <ClCompile Include="MeasureData.cpp" />
+    <ClCompile Include="MinidumpHelp.cpp" />
+    <ClCompile Include="ModelDataManager.cpp" />
+    <ClCompile Include="MotionControlDlg.cpp" />
+    <ClCompile Include="MultiModuleMoveOffsetDlg.cpp" />
+    <ClCompile Include="MvCamera.cpp" />
+    <ClCompile Include="NewModelDlg.cpp" />
+    <ClCompile Include="Operator_RegisterDlg.cpp" />
+    <ClCompile Include="PGMLanguageSelectDlg.cpp" />
+    <ClCompile Include="PreferenceDlg.cpp" />
+    <ClCompile Include="SetFlipDlg.cpp" />
+    <ClCompile Include="SetResultImageDlg.cpp" />
+    <ClCompile Include="RoiAutoCreateDlg.cpp" />
+    <ClCompile Include="RoiCopyOptionDlg.cpp" />
+    <ClCompile Include="RoiIdChangeDlg.cpp" />
+    <ClCompile Include="RoiMoveDlg.cpp" />
+    <ClCompile Include="RoiScaleDlg.cpp" />
+    <ClCompile Include="RoiSizeDlg.cpp" />
+    <ClCompile Include="SelectEquipModelTypeDlg.cpp" />
+    <ClCompile Include="SelectPartRegion.cpp" />
+    <ClCompile Include="SerialPortCS.cpp" />
+    <ClCompile Include="SetAngleDlg.cpp" />
+    <ClCompile Include="SetLibraryNameDlg.cpp" />
+    <ClCompile Include="SPVImageParamDlg.cpp" />
+    <ClCompile Include="StageSelectDlg.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="StrobeData.cpp" />
+    <ClCompile Include="syai_service\ServiceDirector.cpp" />
+    <ClCompile Include="syai_service\ServiceOperator.cpp" />
+    <ClCompile Include="TabControlDlg.cpp" />
+    <ClCompile Include="TCPClient.cpp" />
+    <ClCompile Include="TeachFaiActDlg.cpp" />
+    <ClCompile Include="TeachFaiAkcDlg.cpp" />
+    <ClCompile Include="TeachFaiAtwDlg.cpp" />
+    <ClCompile Include="TeachFaiBoiDlg.cpp" />
+    <ClCompile Include="TeachFaiBosDlg.cpp" />
+    <ClCompile Include="TeachFaiChsWZDlg.cpp" />
+    <ClCompile Include="TeachFaiKriosDlg.cpp" />
+    <ClCompile Include="TeachFaiRenoDlg.cpp" />
+    <ClCompile Include="TeachParamDlg.cpp" />
+    <ClCompile Include="TeachParamGridCtrl.cpp" />
+    <ClCompile Include="TeachFaiChsKSDlg.cpp" />
+    <ClCompile Include="TeachingAlgorithmTabDlg.cpp" />
+    <ClCompile Include="ThresholdHistogramDlg.cpp" />
+    <ClCompile Include="ToolBarCombo.cpp" />
+    <ClCompile Include="TrayAdminViewDlg1.cpp" />
+    <ClCompile Include="TrayAdminViewDlg2.cpp" />
+    <ClCompile Include="TrayAdminViewDlg3.cpp" />
+    <ClCompile Include="TrayAdminViewDlg4.cpp" />
+    <ClCompile Include="TrayImagePB.cpp" />
+    <ClCompile Include="TriggerManager.cpp" />
+    <ClCompile Include="UnitConvertDlg.cpp" />
+    <ClCompile Include="uScan.cpp" />
+    <ClCompile Include="uScanDoc.cpp" />
+    <ClCompile Include="uScanView.cpp" />
+    <ClCompile Include="Include\UGrid\UGCBType.cpp" />
+    <ClCompile Include="Include\UGrid\UGCell.cpp" />
+    <ClCompile Include="Include\UGrid\UGCelTyp.cpp" />
+    <ClCompile Include="Include\UGrid\UGCnrBtn.cpp" />
+    <ClCompile Include="Include\UGrid\UGCTarrw.cpp" />
+    <ClCompile Include="Include\UGrid\UGCtrl.cpp" />
+    <ClCompile Include="Include\UGrid\UGDLType.cpp" />
+    <ClCompile Include="Include\UGrid\UGDrgDrp.cpp" />
+    <ClCompile Include="Include\UGrid\UGDrwHnt.cpp" />
+    <ClCompile Include="Include\UGrid\UGDtaSrc.cpp" />
+    <ClCompile Include="Include\UGrid\UGEdit.cpp" />
+    <ClCompile Include="Include\UGrid\UGEditBase.cpp" />
+    <ClCompile Include="Include\UGrid\ugformat.cpp" />
+    <ClCompile Include="Include\UGrid\uggdinfo.cpp" />
+    <ClCompile Include="Include\UGrid\UGGrid.cpp" />
+    <ClCompile Include="Include\UGrid\UGHint.cpp" />
+    <ClCompile Include="Include\UGrid\ughscrol.cpp" />
+    <ClCompile Include="Include\UGrid\ugLstBox.cpp" />
+    <ClCompile Include="Include\UGrid\UGMEdit.cpp" />
+    <ClCompile Include="Include\UGrid\UGMemMan.cpp" />
+    <ClCompile Include="Include\UGrid\UGMultiS.cpp" />
+    <ClCompile Include="Include\UGrid\ugprint.cpp" />
+    <ClCompile Include="Include\UGrid\ugptrlst.cpp" />
+    <ClCompile Include="Include\UGrid\ugsidehd.cpp" />
+    <ClCompile Include="Include\UGrid\UGStrOp.cpp" />
+    <ClCompile Include="Include\UGrid\ugtab.cpp" />
+    <ClCompile Include="Include\UGrid\UGTopHdg.cpp" />
+    <ClCompile Include="Include\UGrid\ugvscrol.cpp" />
+    <ClCompile Include="Include\UGrid\UGXPThemes.cpp" />
+    <ClCompile Include="VmParamSetDlg.cpp" />
+    <ClCompile Include="wcSliderButton.cpp" />
+    <ClCompile Include="wcSliderPopup.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="uScan.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ADJClientService.h" />
+    <ClInclude Include="AdminPasswordDlg.h" />
+    <ClInclude Include="AIService\ImageUtile.h" />
+    <ClInclude Include="AIService\ThreadPool.h" />
+    <ClInclude Include="AIService\UniversalAIData.h" />
+    <ClInclude Include="AIService\WatchdogTimer.h" />
+    <ClInclude Include="AJinAXL.h" />
+    <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="AlgorithmAngleMeasureDlg.h" />
+    <ClInclude Include="AlgorithmBarcodeDlg.h" />
+    <ClInclude Include="AlgorithmBoundaryDlg.h" />
+    <ClInclude Include="AlgorithmComponentDlg.h" />
+    <ClInclude Include="AlgorithmConcenterMeasureDlg.h" />
+    <ClInclude Include="AlgorithmConnectorPinDlg.h" />
+    <ClInclude Include="AlgorithmCornerMeasureDlg.h" />
+    <ClInclude Include="AlgorithmDefectConditionDlg.h" />
+    <ClInclude Include="AlgorithmDentDlg.h" />
+    <ClInclude Include="AlgorithmDistanceMeasureDlg.h" />
+    <ClInclude Include="AlgorithmDontcareDlg.h" />
+    <ClInclude Include="AlgorithmEdgeMeasureDlg.h" />
+    <ClInclude Include="AlgorithmEpoxyVoidHoleDlg.h" />
+    <ClInclude Include="AlgorithmFittingDlg.h" />
+    <ClInclude Include="AlgorithmGapMeasureDlg.h" />
+    <ClInclude Include="AlgorithmHeightMeasureDlg.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmContext.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmPipeline.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmSubThread.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmHelper.h" />
+    <ClInclude Include="Variation\VariationNormalizer.h" />
+    <ClInclude Include="TrayAdminViewDlg.h" />
+    <ClInclude Include="InspectAdminViewHideDlg.h" />
+    <ClInclude Include="AlgorithmService\ResultSaveThread.h" />
+    <ClInclude Include="AlgorithmTiltDlg.h" />
+    <ClInclude Include="AlgorithmImageCompareDlg.h" />
+    <ClInclude Include="AlgorithmImageProcessDlg.h" />
+    <ClInclude Include="AlgorithmNeckEpoxyCrackDlg.h" />
+    <ClInclude Include="AlgorithmNeckEpoxyMeasureDlg.h" />
+    <ClInclude Include="AlgorithmOCRDlg.h" />
+    <ClInclude Include="AlgorithmParam.h" />
+    <ClInclude Include="AlgorithmPartCheckDlg.h" />
+    <ClInclude Include="AlgorithmPrintQualityDlg.h" />
+    <ClInclude Include="AlgorithmROIAlignDlg.h" />
+    <ClInclude Include="AlgorithmROIAnisoAlignDlg.h" />
+    <ClInclude Include="AlgorithmShapeDlg.h" />
+    <ClInclude Include="AlgorithmStiffenerEpoxyDlg.h" />
+    <ClInclude Include="AlgorithmSurfaceDlg.h" />
+    <ClInclude Include="AlgorithmSurfaceDualDlg.h" />
+    <ClInclude Include="AutoCalService.h" />
+    <ClInclude Include="AutoFocusDlg.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmThread.h" />
+    <ClInclude Include="AutoTrainGridCtrl.h" />
+    <ClInclude Include="AutoTrainStatusDlg.h" />
+    <ClInclude Include="CalDataService.h" />
+    <ClInclude Include="CameraLightManagerDlg.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="ClientSocket.h" />
+    <ClInclude Include="ComThread.h" />
+    <ClInclude Include="ConditionDlg.h" />
+    <ClInclude Include="ConditionGridCtrl.h" />
+    <ClInclude Include="CreateFontDlg.h" />
+    <ClInclude Include="DefectAssignADJ.h" />
+    <ClInclude Include="DefectListDlg.h" />
+    <ClInclude Include="DefectPriorityDlg.h" />
+    <ClInclude Include="Define.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="Enscrypt.h" />
+    <ClInclude Include="EventStub.h" />
+    <ClInclude Include="ExtraDlg.h" />
+    <ClInclude Include="FAI\Dynamic\FAIDynamicRule.h" />
+    <ClInclude Include="FAI\Dynamic\FAIDynamicRuleManager.h" />
+    <ClInclude Include="FAI\ModelData\FAIDataManager.h" />
+    <ClInclude Include="FAI\FAIDefine.h" />
+    <ClInclude Include="FAI\ModelData\FAIMeasureData.h" />
+    <ClInclude Include="FAI\ModelData\FAIModelConfig.h" />
+    <ClInclude Include="FAI\FAIMeasureSpec.h" />
+    <ClInclude Include="FAI\FAIMeasureRegistry.h" />
+    <ClInclude Include="FAI\IFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\ACTFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\AKCFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\ATWFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\BOSFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\BOIFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\KRIOSFAIInspector.h" />
+    <ClInclude Include="FAI\ModelTypes\RENOFAIInspector.h" />
+    <ClInclude Include="FileBase.h" />
+    <ClInclude Include="FocusAutoCalResultDlg.h" />
+    <ClInclude Include="GFunction.h" />
+    <ClInclude Include="GrabSequenceDlg.h" />
+    <ClInclude Include="GrabSequenceViewDlg.h" />
+    <ClInclude Include="GTRegion.h" />
+    <ClInclude Include="GViewportManager.h" />
+    <ClInclude Include="HandlerService.h" />
+    <ClInclude Include="HWinPanel.h" />
+    <ClInclude Include="IniFileCS.h" />
+    <ClInclude Include="InspectAdminViewDlg.h" />
+    <ClInclude Include="InspectAdminViewHideDlg1.h" />
+    <ClInclude Include="InspectAdminViewHideDlg2.h" />
+    <ClInclude Include="InspectAdminViewHideDlg3.h" />
+    <ClInclude Include="InspectAdminViewHideDlg4.h" />
+    <ClInclude Include="InspectAdminViewToolbarDlg.h" />
+    <ClInclude Include="BatchService\BatchDefine.h" />
+    <ClInclude Include="BatchService\BatchGrabHelper.h" />
+    <ClInclude Include="BatchService\BatchGrabThread.h" />
+    <ClInclude Include="BatchService\BatchManager.h" />
+    <ClInclude Include="InspectionConditionTabDlg.h" />
+    <ClInclude Include="InspectionPriorityDlg.h" />
+    <ClInclude Include="InspectionTypeChsDlg.h" />
+    <ClInclude Include="InspectionTypeChsWZDlg.h" />
+    <ClInclude Include="InspectionTypeDlg.h" />
+    <ClInclude Include="InspectionTypeExDlg.h" />
+    <ClInclude Include="InspectLibrary.h" />
+    <ClInclude Include="InspectLibraryData.h" />
+    <ClInclude Include="InspectLibraryDataManager.h" />
+    <ClInclude Include="InspectLibraryDlg.h" />
+    <ClInclude Include="InspectResultDlg.h" />
+    <ClInclude Include="InspectService.h" />
+    <ClInclude Include="InspectSummary.h" />
+    <ClInclude Include="InspectViewOverayImageDlg1.h" />
+    <ClInclude Include="InspectViewOverayImageDlg2.h" />
+    <ClInclude Include="InspectViewOverayImageDlg3.h" />
+    <ClInclude Include="InspectViewOverayImageDlg4.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg1.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg2.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg3.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg4.h" />
+    <ClInclude Include="JogSetDlg.h" />
+    <ClInclude Include="KEY_CODE.h" />
+    <ClInclude Include="LGIT\InspectorManager.h" />
+    <ClInclude Include="LGIT\LAIInspector.h" />
+    <ClInclude Include="LGIT\LAIInspector2.h" />
+    <ClInclude Include="LGIT\LAIInspectorSEG.h" />
+    <ClInclude Include="LGIT\LAIInspectorSVM.h" />
+    <ClInclude Include="LGIT\LAIInspectorVAL.h" />
+    <ClInclude Include="LGIT\ModelInference.h" />
+    <ClInclude Include="LGIT\ModelInference2.h" />
+    <ClInclude Include="LGIT\ModelInferenceSEG.h" />
+    <ClInclude Include="LGIT\ModelInferenceSVM.h" />
+    <ClInclude Include="LGIT\ModelInferenceVAL.h" />
+    <ClInclude Include="LGIT\Model\BoundingBox.h" />
+    <ClInclude Include="LGIT\Model\ImageROIManager.h" />
+    <ClInclude Include="LGIT\Model\InspectorManagerSetup.h" />
+    <ClInclude Include="LGIT\Model\LAIInspector2Result.h" />
+    <ClInclude Include="LGIT\Model\LAIInspector2Setup.h" />
+    <ClInclude Include="LGIT\Model\LAIInspector3Result.h" />
+    <ClInclude Include="LGIT\Model\LAIInspectorResult.h" />
+    <ClInclude Include="LGIT\Model\LAIInspectorSetup.h" />
+    <ClInclude Include="LGIT\Model\LAIInspectorSVMResult.h" />
+    <ClInclude Include="LGIT\Model\LRequestedInspectionData1.h" />
+    <ClInclude Include="LGIT\Model\UpdateModelInfo.h" />
+    <ClInclude Include="LGIT\types.h" />
+    <ClInclude Include="LibraryGridCtrl.h" />
+    <ClInclude Include="LightAutoCalResultDlg.h" />
+    <ClInclude Include="LightAverageValueDlg.h" />
+    <ClInclude Include="LightControl.h" />
+    <ClInclude Include="LightControlDlg.h" />
+    <ClInclude Include="LightLibrary.h" />
+    <ClInclude Include="LightLibraryData.h" />
+    <ClInclude Include="LightLibraryDataManager.h" />
+    <ClInclude Include="LightLibraryDlg.h" />
+    <ClInclude Include="LightPageControlDlg.h" />
+    <ClInclude Include="LightPwmControlDlg.h" />
+    <ClInclude Include="LightPwmManager.h" />
+    <ClInclude Include="LoadModelDlg.h" />
+    <ClInclude Include="MacroPathList.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="GlobalMatchingDlg.h" />
+    <ClInclude Include="MeasureData.h" />
+    <ClInclude Include="MIInterface.h" />
+    <ClInclude Include="MinidumpHelp.h" />
+    <ClInclude Include="ModelDataManager.h" />
+    <ClInclude Include="MotionControlDlg.h" />
+    <ClInclude Include="MultiModuleMoveOffsetDlg.h" />
+    <ClInclude Include="MvCamera.h" />
+    <ClInclude Include="NewModelDlg.h" />
+    <ClInclude Include="Operator_RegisterDlg.h" />
+    <ClInclude Include="PGMLanguageSelectDlg.h" />
+    <ClInclude Include="PhStereo.h" />
+    <ClInclude Include="PreferenceDlg.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SetFlipDlg.h" />
+    <ClInclude Include="SetResultImageDlg.h" />
+    <ClInclude Include="RoiAutoCreateDlg.h" />
+    <ClInclude Include="RoiCopyOptionDlg.h" />
+    <ClInclude Include="RoiIdChangeDlg.h" />
+    <ClInclude Include="RoiMoveDlg.h" />
+    <ClInclude Include="RoiScaleDlg.h" />
+    <ClInclude Include="RoiSizeDlg.h" />
+    <ClInclude Include="SafeQueue.h" />
+    <ClInclude Include="SelectEquipModelTypeDlg.h" />
+    <ClInclude Include="SelectPartRegion.h" />
+    <ClInclude Include="SerialPortCS.h" />
+    <ClInclude Include="SetAngleDlg.h" />
+    <ClInclude Include="SetLibraryNameDlg.h" />
+    <ClInclude Include="SPVImageParamDlg.h" />
+    <ClInclude Include="StageSelectDlg.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StrobeData.h" />
+    <ClInclude Include="syai_service\ServiceDirector.h" />
+    <ClInclude Include="syai_service\ServiceOperator.h" />
+    <ClInclude Include="S_Universal_AVI.h" />
+    <ClInclude Include="TabControlDlg.h" />
+    <ClInclude Include="TCPClient.h" />
+    <ClInclude Include="TCPDefine.h" />
+    <ClInclude Include="TeachFaiActDlg.h" />
+    <ClInclude Include="TeachFaiAkcDlg.h" />
+    <ClInclude Include="TeachFaiAtwDlg.h" />
+    <ClInclude Include="TeachFaiBoiDlg.h" />
+    <ClInclude Include="TeachFaiBosDlg.h" />
+    <ClInclude Include="TeachFaiChsWZDlg.h" />
+    <ClInclude Include="TeachFaiKriosDlg.h" />
+    <ClInclude Include="TeachFaiRenoDlg.h" />
+    <ClInclude Include="TeachParamDlg.h" />
+    <ClInclude Include="TeachParamGridCtrl.h" />
+    <ClInclude Include="TeachFaiChsKSDlg.h" />
+    <ClInclude Include="TeachingAlgorithmTabDlg.h" />
+    <ClInclude Include="ThresholdHistogramDlg.h" />
+    <ClInclude Include="ToolBarCombo.h" />
+    <ClInclude Include="Utils\DebugImageUtils.h" />
+    <ClInclude Include="Utils\TraceUtils.h" />
+    <ClInclude Include="TrayAdminViewDlg1.h" />
+    <ClInclude Include="TrayAdminViewDlg2.h" />
+    <ClInclude Include="TrayAdminViewDlg3.h" />
+    <ClInclude Include="TrayAdminViewDlg4.h" />
+    <ClInclude Include="TrayImagePB.h" />
+    <ClInclude Include="TriggerManager.h" />
+    <ClInclude Include="UnitConvertDlg.h" />
+    <ClInclude Include="uScan.h" />
+    <ClInclude Include="uScanDoc.h" />
+    <ClInclude Include="uScanView.h" />
+    <ClInclude Include="VmParamSetDlg.h" />
+    <ClInclude Include="wcSliderButton.h" />
+    <ClInclude Include="wcSliderPopup.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\Arrow.ico" />
+    <CustomBuild Include="res\board.ico" />
+    <CustomBuild Include="res\Create.cur" />
+    <CustomBuild Include="res\gerber_v.bmp" />
+    <CustomBuild Include="res\gerber_view_tb.bmp" />
+    <CustomBuild Include="res\Hand.CUR" />
+    <CustomBuild Include="res\HandGrab.CUR" />
+    <CustomBuild Include="res\icon_tre.ico" />
+    <CustomBuild Include="res\ImageDisplayToolbar.bmp" />
+    <CustomBuild Include="res\inspect_.bmp" />
+    <CustomBuild Include="res\InspectViewToolbar.bmp" />
+    <CustomBuild Include="res\Package.ico" />
+    <CustomBuild Include="res\review_tb.bmp" />
+    <CustomBuild Include="res\Root.ico" />
+    <CustomBuild Include="res\SelectPart.CUR" />
+    <CustomBuild Include="res\Splash.bmp" />
+    <CustomBuild Include="res\Splash3 copy.bmp" />
+    <CustomBuild Include="res\Splash3.bmp" />
+    <CustomBuild Include="res\Splash4000.bmp" />
+    <CustomBuild Include="res\Splash4000_Mold.bmp" />
+    <CustomBuild Include="res\Toolbar.bmp" />
+    <CustomBuild Include="res\TreeDefault.ico" />
+    <CustomBuild Include="res\uScan.ico" />
+    <CustomBuild Include="res\uScan.rc2">
+      <FileType>RC</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\uScanDoc.ico" />
+    <CustomBuild Include="res\ViewToolbar.bmp" />
+    <CustomBuild Include="res\XPIIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Release.txt" />
+    <None Include="res\AddRegion.bmp" />
+    <None Include="res\AdjustPad32.bmp" />
+    <None Include="res\AdminViewToolbar.bmp" />
+    <None Include="res\admin_vi.bmp" />
+    <None Include="res\barcode.bmp" />
+    <None Include="res\bitmap1.bmp" />
+    <None Include="res\bitmap2.bmp" />
+    <None Include="res\bitmap3.bmp" />
+    <None Include="res\bitmap4.bmp" />
+    <None Include="res\bitmap_t.bmp" />
+    <None Include="res\bmp00001.bmp" />
+    <None Include="res\bmp00002.bmp" />
+    <None Include="res\Bypass32.bmp" />
+    <None Include="res\ExitRed32.bmp" />
+    <None Include="res\icon1.ico" />
+    <None Include="res\L10_Header.bmp" />
+    <None Include="res\LoadGreen32.bmp" />
+    <None Include="res\Monitor.bmp" />
+    <None Include="res\MonitorCyan32.bmp" />
+    <None Include="res\NewGreen32.bmp" />
+    <None Include="res\Option32.bmp" />
+    <None Include="res\overlay_1st.bmp" />
+    <None Include="res\PAUSE.bmp" />
+    <None Include="res\Pause32.bmp" />
+    <None Include="res\Polygon_ROI.bmp" />
+    <None Include="res\PreferenceBrown32.bmp" />
+    <None Include="res\RDebugYellow32.bmp" />
+    <None Include="res\ReviewCyan32.bmp" />
+    <None Include="res\RFirstBlue32.bmp" />
+    <None Include="res\RLastBlue32.bmp" />
+    <None Include="res\RPS.ico" />
+    <None Include="res\SaveGreen32.bmp" />
+    <None Include="res\SelectedPadArrow.ico" />
+    <None Include="res\Start32.bmp" />
+    <None Include="res\Stop32.bmp" />
+    <None Include="res\Synapse Header_Mold.bmp" />
+    <None Include="res\TeachCyan32.bmp" />
+    <None Include="res\TeachTop1.bmp" />
+    <None Include="res\TeachTop2.bmp" />
+    <None Include="res\TOF_Header.bmp" />
+    <None Include="res\toolbar1.bmp" />
+    <None Include="res\User32.bmp" />
+    <None Include="res\AISetup.bmp" />
+    <None Include="res\Admin.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\AssyLens_Header.bmp" />
+    <Image Include="res\bitmap_h.bmp" />
+    <Image Include="res\EOL_Header.bmp" />
+    <Image Include="res\SingleLens_Header.bmp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.1.targets" />
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="uScan.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

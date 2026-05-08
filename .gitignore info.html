@@ -1,0 +1,300 @@
+<h1>📌 <code>.gitignore</code> 파일 설명</h1>
+<p>이 문서는 <code>.gitignore</code> 파일의 각 항목을 설명하여, 특정 파일/폴더가 제외되는 이유를 명확히 합니다.</p>
+<hr>
+<h2><strong>1. 사용자 설정 파일 (User Settings)</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*.suo</code></td>
+<td>솔루션 사용자 설정 파일</td>
+</tr>
+<tr>
+<td><code>*.user</code></td>
+<td>사용자별 프로젝트 설정 파일</td>
+</tr>
+<tr>
+<td><code>*.userosscache</code></td>
+<td>사용자 설정 캐시 파일</td>
+</tr>
+<tr>
+<td><code>*.sln.docstates</code></td>
+<td>솔루션 문서 상태 저장 파일</td>
+</tr>
+<tr>
+<td><code>*.userprefs</code></td>
+<td>MonoDevelop/Xamarin Studio 사용자 설정 파일</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>2. 빌드 결과물 (Build Outputs)</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[Dd]ebug/</code></td>
+<td>Debug 빌드 폴더</td>
+</tr>
+<tr>
+<td><code>[Rr]elease/</code></td>
+<td>Release 빌드 폴더</td>
+</tr>
+<tr>
+<td><code>[Bb]in/</code></td>
+<td>실행 파일 및 라이브러리 저장 폴더</td>
+</tr>
+<tr>
+<td><code>[Oo]bj/</code></td>
+<td>객체 파일(obj) 저장 폴더</td>
+</tr>
+<tr>
+<td><code>x64/</code>, <code>x86/</code></td>
+<td>64비트 및 32비트 빌드 폴더</td>
+</tr>
+<tr>
+<td><code>[Ll]og/</code></td>
+<td>로그 파일 폴더</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>3. 개발 도구 관련 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.vs/</code></td>
+<td>Visual Studio 캐시 및 설정 파일</td>
+</tr>
+<tr>
+<td><code>*.VC.db</code>, <code>*.VC.VC.opendb</code></td>
+<td>Visual C++ 빌드 캐시</td>
+</tr>
+<tr>
+<td><code>*.sdf</code>, <code>*.ncb</code></td>
+<td>Visual Studio 데이터베이스 파일</td>
+</tr>
+<tr>
+<td><code>*.aps</code>, <code>*.cachefile</code></td>
+<td>Visual C++ 캐시 파일</td>
+</tr>
+<tr>
+<td><code>*.pidb</code></td>
+<td>MonoDevelop 프로젝트 인덱스 파일</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>4. 패키지 관리자 관련 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>packages/</code></td>
+<td>NuGet 패키지 폴더</td>
+</tr>
+<tr>
+<td><code>.nuget.props</code>, <code>.nuget.targets</code></td>
+<td>NuGet 빌드 설정 파일</td>
+</tr>
+<tr>
+<td><code>node_modules/</code></td>
+<td>Node.js 패키지 폴더</td>
+</tr>
+<tr>
+<td><code>.paket/</code>, <code>paket-files/</code></td>
+<td>Paket 패키지 관리 폴더</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>5. 로그 및 임시 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*.log</code></td>
+<td>로그 파일</td>
+</tr>
+<tr>
+<td><code>*.tmp</code></td>
+<td>임시 파일</td>
+</tr>
+<tr>
+<td><code>*.cache</code></td>
+<td>캐시 파일</td>
+</tr>
+<tr>
+<td><code>*.pidb</code></td>
+<td>프로젝트 인덱스 파일</td>
+</tr>
+<tr>
+<td><code>*.svclog</code></td>
+<td>서비스 로그 파일</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>6. 데이터베이스 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*.mdf</code>, <code>*.ldf</code></td>
+<td>SQL Server 데이터베이스 파일</td>
+</tr>
+<tr>
+<td><code>*.dbproj.schemaview</code></td>
+<td>데이터베이스 프로젝트 파일</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>7. 테스트 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[Tt]est[Rr]esult*/</code></td>
+<td>테스트 결과 파일</td>
+</tr>
+<tr>
+<td><code>TestResult.xml</code></td>
+<td>NUnit 테스트 결과 파일</td>
+</tr>
+<tr>
+<td><code>*.VisualState.xml</code></td>
+<td>Visual Studio 테스트 상태 파일</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>8. 배포 및 Azure 관련 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>publish/</code>, <code>*.publishproj</code></td>
+<td>Click-Once 배포 폴더</td>
+</tr>
+<tr>
+<td><code>*.publishsettings</code>, <code>*.pubxml</code></td>
+<td>웹 배포 설정 파일</td>
+</tr>
+<tr>
+<td><code>csx/</code>, <code>*.build.csdef</code></td>
+<td>Azure 빌드 출력 폴더</td>
+</tr>
+<tr>
+<td><code>AppPackages/</code>, <code>BundleArtifacts/</code></td>
+<td>Windows Store 앱 패키지 폴더</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>9. 프로젝트 업그레이드 및 백업 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_UpgradeReport_Files/</code></td>
+<td>프로젝트 업그레이드 보고서</td>
+</tr>
+<tr>
+<td><code>Backup*/</code></td>
+<td>프로젝트 백업 파일</td>
+</tr>
+<tr>
+<td><code>UpgradeLog*.XML</code>, <code>UpgradeLog*.htm</code></td>
+<td>업그레이드 로그 파일</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><strong>10. DLL 파일 및 기타 제외할 파일</strong></h2>
+<table>
+<thead>
+<tr>
+<th>제외 파일/폴더</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*.dll</code></td>
+<td>동적 링크 라이브러리 파일</td>
+</tr>
+<tr>
+<td><code>*.bmp</code></td>
+<td>이미지 파일</td>
+</tr>
+<tr>
+<td><code>.idea/</code></td>
+<td>JetBrains Rider 설정 파일</td>
+</tr>
+<tr>
+<td><code>.cr/</code></td>
+<td>CodeRush 설정 파일</td>
+</tr>
+<tr>
+<td><code>_CudaGPUInfo/</code></td>
+<td>Cuda GPU 정보 파일</td>
+</tr>
+<tr>
+<td><code>Generated_Code/</code></td>
+<td>자동 생성된 코드 폴더</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>🔍 <strong>설명 파일 사용 방법</strong></h2>
+<ol>
+<li><code>.gitignore</code> 파일은 프로젝트의 불필요한 파일을 버전 관리에서 제외하기 위해 사용됩니다.</li>
+<li>이 문서를 참조하여 <code>.gitignore</code> 항목이 제외된 이유를 확인할 수 있습니다.</li>
+</ol>

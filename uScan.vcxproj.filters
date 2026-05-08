@@ -1,0 +1,1964 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="_NOT_USED">
+      <UniqueIdentifier>{031736bd-2cf4-4ec3-8688-754b95a4c557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Main">
+      <UniqueIdentifier>{6d55e0a9-2e86-4329-b52c-02128b101c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7_Common">
+      <UniqueIdentifier>{dd081e8f-a5c0-434d-8676-dcec5ca12934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7_Common\Helper">
+      <UniqueIdentifier>{28cc66ff-0448-493a-9a8a-16d3adc57fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8_Third Party">
+      <UniqueIdentifier>{121bbda5-5f3f-4383-920f-571b71389794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8_Third Party\LG">
+      <UniqueIdentifier>{3daa97d0-1aaf-4313-a161-e01e4f7a3ae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8_Third Party\Specular">
+      <UniqueIdentifier>{b56d4d0f-7cab-42d2-b100-c587fce1f966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8_Third Party\SYAI">
+      <UniqueIdentifier>{8a3e8a0a-6b38-495f-82ed-069a49e330bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Main\Resource Files">
+      <UniqueIdentifier>{f26385ae-ed84-4f79-be81-43573d6868ac}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="1_Main\Resource Files\icon">
+      <UniqueIdentifier>{bbd6fb2d-e46c-44a3-b65d-c3f0e868ce9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7_Common\Helper\UGrid">
+      <UniqueIdentifier>{43346d52-4931-400e-b856-643a8abe5296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface">
+      <UniqueIdentifier>{c43c1416-68fc-4cd0-8eb5-9face6e64d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Common_Dialogs">
+      <UniqueIdentifier>{345249db-35be-4a56-af04-9becf789462b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\0_App_Core">
+      <UniqueIdentifier>{0ae86f0e-c2d1-4b0f-b8e1-c3d2e3f4a5b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\1_Main_View">
+      <UniqueIdentifier>{1bf97f1f-d3e2-4c1f-c9f2-d4e3f4a5b6c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\2_Inspection_View">
+      <UniqueIdentifier>{2c08g0g0-e4f3-5d2f-d0a3-e5f4a5b6c7d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\2_Inspection_View\Admin_View_Main">
+      <UniqueIdentifier>{3d19h1h1-f5a4-6e3f-e1b4-f6a5b6c7d8e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\2_Inspection_View\View_Toolbars">
+      <UniqueIdentifier>{4e20i2i2-g6b5-7f4f-f2c5-g7b6c7d8e9fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\2_Inspection_View\Hidden_Views">
+      <UniqueIdentifier>{5f31j3j3-h7c6-8g5f-g3d6-h8c7d8e9fafb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\2_Inspection_View\Overlay_Views">
+      <UniqueIdentifier>{6a42k4k4-i8d7-9h6f-h4e7-i9d8e9fafagc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\2_Inspection_View\Tray_Views">
+      <UniqueIdentifier>{7b53l5l5-j9e8-ai7f-i5f8-jae9fafabhd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\3_Teaching_Tab">
+      <UniqueIdentifier>{8c64m6m6-kafc-bjag-j6gag-kbfagbacaie}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\3_Teaching_Tab\Tab_Control">
+      <UniqueIdentifier>{9d75n7n7-lbgd-ckalh-k7hbh-lcgbhcbdbjf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\3_Teaching_Tab\Sub_Dialogs">
+      <UniqueIdentifier>{ae86o8o8-mcih-dlbmi-l8ici-mdhcicdcekg}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\4_Algorithm_Tab">
+      <UniqueIdentifier>{bfa7p9p9-ndji-emcnj-m9jdj-neijdjddfih}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\4_Algorithm_Tab\Tab_Control">
+      <UniqueIdentifier>{cgb8qaqao-oekj-fndjk-nakek-ofjkeek0gji}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs">
+      <UniqueIdentifier>{dhc9rbrbo-pflk-goekkl-oblfl-pgklffl1ahk}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\5_Model_Management">
+      <UniqueIdentifier>{bffc874c-4bad-439d-a5e1-216c63ae4310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\6_Settings">
+      <UniqueIdentifier>{eibdascso-qgml-hpfmm-pcmgm-qhmlgmg2bil}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Inspection_Setup_FromTBD">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Grabbing">
+      <UniqueIdentifier>{f6e5d4c3-b2a1-4f0e-9d8c-7b6a5e4d3c2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Setup_Program">
+      <UniqueIdentifier>{82544efc-2c80-4009-a3a4-1ea78ef8c3d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Setup_FAI">
+      <UniqueIdentifier>{4a481fe6-9c49-4e06-9131-d219b52dc655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Setup_Inspect">
+      <UniqueIdentifier>{d850e14f-e9bc-40d1-bedf-f97ef80c1cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\View_Result">
+      <UniqueIdentifier>{82327d34-188c-440c-92cc-0fdb91fc7885}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Setup_Algorithm">
+      <UniqueIdentifier>{ec160403-0dbb-4ea0-8a93-45d117847026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Setup_Hardware">
+      <UniqueIdentifier>{36231dd1-6461-48ca-85ad-decadac7e012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Setup_EquipModel">
+      <UniqueIdentifier>{1bc43d52-c683-48c1-b605-078e7ab39a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_User_Interface\Contol_UI">
+      <UniqueIdentifier>{816fa3bf-058d-4a47-90db-47a2203cfd51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic">
+      <UniqueIdentifier>{cf4c4577-7738-4070-83f5-c29d57071c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic\FAI">
+      <UniqueIdentifier>{58b1a12a-5b1f-4c56-8457-9e1b4ca6d655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic\FAI\EquipModels">
+      <UniqueIdentifier>{c7180866-3f86-4c95-b41b-c0656aeaa934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic\TBD">
+      <UniqueIdentifier>{971d9628-81f4-4a7f-aee7-a4b0fe046ee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic\Inspection">
+      <UniqueIdentifier>{189933aa-0d8b-4c32-954b-60e27c2b7923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic\BatchGrab">
+      <UniqueIdentifier>{7634ef89-5166-4236-b30a-1c79909f926a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Image_Process">
+      <UniqueIdentifier>{61f4358e-6d52-47a9-bce3-1b3c620a8e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5_Hardware_Interface">
+      <UniqueIdentifier>{0aefb89a-3e64-455e-9070-1de2f4157ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6_Data_Manager">
+      <UniqueIdentifier>{98dee690-d68f-4245-8144-65491de8666f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_Core_Logic\FAI\ModelData">
+      <UniqueIdentifier>{4b8289f0-898e-496a-9efa-dd7e4f304813}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ADJClientService.h" />
+    <ClInclude Include="AdminPasswordDlg.h" />
+    <ClInclude Include="AIService\ImageUtile.h" />
+    <ClInclude Include="AIService\ThreadPool.h" />
+    <ClInclude Include="AIService\WatchdogTimer.h" />
+    <ClInclude Include="AJinAXL.h" />
+    <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="AlgorithmAngleMeasureDlg.h" />
+    <ClInclude Include="AlgorithmBarcodeDlg.h" />
+    <ClInclude Include="AlgorithmBoundaryDlg.h" />
+    <ClInclude Include="AlgorithmComponentDlg.h" />
+    <ClInclude Include="AlgorithmConcenterMeasureDlg.h" />
+    <ClInclude Include="AlgorithmConnectorPinDlg.h" />
+    <ClInclude Include="AlgorithmCornerMeasureDlg.h" />
+    <ClInclude Include="AlgorithmDefectConditionDlg.h" />
+    <ClInclude Include="AlgorithmDentDlg.h" />
+    <ClInclude Include="AlgorithmDistanceMeasureDlg.h" />
+    <ClInclude Include="AlgorithmDontcareDlg.h" />
+    <ClInclude Include="AlgorithmEdgeMeasureDlg.h" />
+    <ClInclude Include="AlgorithmEpoxyVoidHoleDlg.h" />
+    <ClInclude Include="AlgorithmFittingDlg.h" />
+    <ClInclude Include="AlgorithmGapMeasureDlg.h" />
+    <ClInclude Include="AlgorithmHeightMeasureDlg.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmContext.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmPipeline.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmHelper.h" />
+    <ClInclude Include="AlgorithmTiltDlg.h" />
+    <ClInclude Include="AlgorithmImageCompareDlg.h" />
+    <ClInclude Include="AlgorithmImageProcessDlg.h" />
+    <ClInclude Include="AlgorithmNeckEpoxyCrackDlg.h" />
+    <ClInclude Include="AlgorithmNeckEpoxyMeasureDlg.h" />
+    <ClInclude Include="AlgorithmOCRDlg.h" />
+    <ClInclude Include="AlgorithmParam.h" />
+    <ClInclude Include="AlgorithmPartCheckDlg.h" />
+    <ClInclude Include="AlgorithmPrintQualityDlg.h" />
+    <ClInclude Include="AlgorithmROIAlignDlg.h" />
+    <ClInclude Include="AlgorithmROIAnisoAlignDlg.h" />
+    <ClInclude Include="AlgorithmShapeDlg.h" />
+    <ClInclude Include="AlgorithmStiffenerEpoxyDlg.h" />
+    <ClInclude Include="AlgorithmSurfaceDlg.h" />
+    <ClInclude Include="AlgorithmSurfaceDualDlg.h" />
+    <ClInclude Include="AutoCalService.h" />
+    <ClInclude Include="AutoFocusDlg.h" />
+    <ClInclude Include="CalDataService.h" />
+    <ClInclude Include="CameraLightManagerDlg.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="ClientSocket.h" />
+    <ClInclude Include="ComThread.h" />
+    <ClInclude Include="ConditionDlg.h" />
+    <ClInclude Include="ConditionGridCtrl.h" />
+    <ClInclude Include="CreateFontDlg.h" />
+    <ClInclude Include="DefectAssignADJ.h" />
+    <ClInclude Include="DefectListDlg.h" />
+    <ClInclude Include="DefectPriorityDlg.h" />
+    <ClInclude Include="Define.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="Enscrypt.h" />
+    <ClInclude Include="EventStub.h" />
+    <ClInclude Include="ExtraDlg.h" />
+    <ClInclude Include="FAI\IFAIInspector.h" />
+    <ClInclude Include="FileBase.h" />
+    <ClInclude Include="FocusAutoCalResultDlg.h" />
+    <ClInclude Include="GFunction.h" />
+    <ClInclude Include="GrabSequenceDlg.h" />
+    <ClInclude Include="GrabSequenceViewDlg.h" />
+    <ClInclude Include="GTRegion.h" />
+    <ClInclude Include="GViewportManager.h" />
+    <ClInclude Include="HandlerService.h" />
+    <ClInclude Include="HWinPanel.h" />
+    <ClInclude Include="IniFileCS.h" />
+    <ClInclude Include="InspectAdminViewDlg.h" />
+    <ClInclude Include="InspectAdminViewHideDlg1.h" />
+    <ClInclude Include="InspectAdminViewHideDlg2.h" />
+    <ClInclude Include="InspectAdminViewHideDlg3.h" />
+    <ClInclude Include="InspectAdminViewHideDlg4.h" />
+    <ClInclude Include="InspectAdminViewToolbarDlg.h" />
+    <ClInclude Include="BatchService\BatchDefine.h" />
+    <ClInclude Include="BatchService\BatchGrabHelper.h" />
+    <ClInclude Include="BatchService\BatchGrabThread.h" />
+    <ClInclude Include="BatchService\BatchManager.h" />
+    <ClInclude Include="InspectionConditionTabDlg.h" />
+    <ClInclude Include="InspectionPriorityDlg.h" />
+    <ClInclude Include="InspectionTypeChsDlg.h" />
+    <ClInclude Include="InspectionTypeChsWZDlg.h" />
+    <ClInclude Include="InspectionTypeDlg.h" />
+    <ClInclude Include="InspectionTypeExDlg.h" />
+    <ClInclude Include="InspectLibrary.h" />
+    <ClInclude Include="InspectLibraryData.h" />
+    <ClInclude Include="InspectLibraryDataManager.h" />
+    <ClInclude Include="InspectLibraryDlg.h" />
+    <ClInclude Include="InspectResultDlg.h" />
+    <ClInclude Include="InspectService.h" />
+    <ClInclude Include="InspectSummary.h" />
+    <ClInclude Include="InspectViewOverayImageDlg1.h" />
+    <ClInclude Include="InspectViewOverayImageDlg2.h" />
+    <ClInclude Include="InspectViewOverayImageDlg3.h" />
+    <ClInclude Include="InspectViewOverayImageDlg4.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg1.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg2.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg3.h" />
+    <ClInclude Include="InspectViewOverayImageToolbarDlg4.h" />
+    <ClInclude Include="JogSetDlg.h" />
+    <ClInclude Include="KEY_CODE.h" />
+    <ClInclude Include="LGIT\InspectorManager.h" />
+    <ClInclude Include="LGIT\LAIInspector.h" />
+    <ClInclude Include="LGIT\LAIInspector2.h" />
+    <ClInclude Include="LGIT\LAIInspectorSEG.h" />
+    <ClInclude Include="LGIT\LAIInspectorSVM.h" />
+    <ClInclude Include="LGIT\LAIInspectorVAL.h" />
+    <ClInclude Include="LGIT\ModelInference.h" />
+    <ClInclude Include="LGIT\ModelInference2.h" />
+    <ClInclude Include="LGIT\ModelInferenceSEG.h" />
+    <ClInclude Include="LGIT\ModelInferenceSVM.h" />
+    <ClInclude Include="LGIT\ModelInferenceVAL.h" />
+    <ClInclude Include="LGIT\Model\BoundingBox.h" />
+    <ClInclude Include="LGIT\Model\ImageROIManager.h" />
+    <ClInclude Include="LGIT\Model\InspectorManagerSetup.h" />
+    <ClInclude Include="LGIT\Model\LAIInspector2Result.h" />
+    <ClInclude Include="LGIT\Model\LAIInspector2Setup.h" />
+    <ClInclude Include="LGIT\Model\LAIInspector3Result.h" />
+    <ClInclude Include="LGIT\Model\LAIInspectorResult.h" />
+    <ClInclude Include="LGIT\Model\LAIInspectorSetup.h" />
+    <ClInclude Include="LGIT\Model\LAIInspectorSVMResult.h" />
+    <ClInclude Include="LGIT\Model\LRequestedInspectionData1.h" />
+    <ClInclude Include="LGIT\Model\UpdateModelInfo.h" />
+    <ClInclude Include="LGIT\types.h" />
+    <ClInclude Include="LibraryGridCtrl.h" />
+    <ClInclude Include="LightAutoCalResultDlg.h" />
+    <ClInclude Include="LightAverageValueDlg.h" />
+    <ClInclude Include="LightControl.h" />
+    <ClInclude Include="LightControlDlg.h" />
+    <ClInclude Include="LightLibrary.h" />
+    <ClInclude Include="LightLibraryData.h" />
+    <ClInclude Include="LightLibraryDataManager.h" />
+    <ClInclude Include="LightLibraryDlg.h" />
+    <ClInclude Include="LightPageControlDlg.h" />
+    <ClInclude Include="LightPwmControlDlg.h" />
+    <ClInclude Include="LightPwmManager.h" />
+    <ClInclude Include="LoadModelDlg.h" />
+    <ClInclude Include="MacroPathList.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="GlobalMatchingDlg.h" />
+    <ClInclude Include="MeasureData.h" />
+    <ClInclude Include="MIInterface.h" />
+    <ClInclude Include="MinidumpHelp.h" />
+    <ClInclude Include="ModelDataManager.h" />
+    <ClInclude Include="MotionControlDlg.h" />
+    <ClInclude Include="MultiModuleMoveOffsetDlg.h" />
+    <ClInclude Include="MvCamera.h" />
+    <ClInclude Include="NewModelDlg.h" />
+    <ClInclude Include="Operator_RegisterDlg.h" />
+    <ClInclude Include="PGMLanguageSelectDlg.h" />
+    <ClInclude Include="PhStereo.h" />
+    <ClInclude Include="PreferenceDlg.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SetFlipDlg.h" />
+    <ClInclude Include="SetResultImageDlg.h" />
+    <ClInclude Include="RoiAutoCreateDlg.h" />
+    <ClInclude Include="RoiCopyOptionDlg.h" />
+    <ClInclude Include="RoiIdChangeDlg.h" />
+    <ClInclude Include="RoiMoveDlg.h" />
+    <ClInclude Include="RoiScaleDlg.h" />
+    <ClInclude Include="RoiSizeDlg.h" />
+    <ClInclude Include="SafeQueue.h" />
+    <ClInclude Include="SelectEquipModelTypeDlg.h" />
+    <ClInclude Include="SelectPartRegion.h" />
+    <ClInclude Include="SerialPortCS.h" />
+    <ClInclude Include="SetAngleDlg.h" />
+    <ClInclude Include="SetLibraryNameDlg.h" />
+    <ClInclude Include="SPVImageParamDlg.h" />
+    <ClInclude Include="StageSelectDlg.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StrobeData.h" />
+    <ClInclude Include="syai_service\ServiceDirector.h" />
+    <ClInclude Include="syai_service\ServiceOperator.h" />
+    <ClInclude Include="S_Universal_AVI.h" />
+    <ClInclude Include="TabControlDlg.h" />
+    <ClInclude Include="TCPClient.h" />
+    <ClInclude Include="TCPDefine.h" />
+    <ClInclude Include="TeachFaiActDlg.h" />
+    <ClInclude Include="TeachFaiAkcDlg.h" />
+    <ClInclude Include="TeachFaiBoiDlg.h" />
+    <ClInclude Include="TeachFaiChsWZDlg.h" />
+    <ClInclude Include="TeachParamDlg.h" />
+    <ClInclude Include="TeachParamGridCtrl.h" />
+    <ClInclude Include="TeachFaiChsKSDlg.h" />
+    <ClInclude Include="TeachingAlgorithmTabDlg.h" />
+    <ClInclude Include="ThresholdHistogramDlg.h" />
+    <ClInclude Include="ToolBarCombo.h" />
+    <ClInclude Include="TrayAdminViewDlg1.h" />
+    <ClInclude Include="TrayAdminViewDlg2.h" />
+    <ClInclude Include="TrayAdminViewDlg3.h" />
+    <ClInclude Include="TrayAdminViewDlg4.h" />
+    <ClInclude Include="TrayImagePB.h" />
+    <ClInclude Include="TriggerManager.h" />
+    <ClInclude Include="UnitConvertDlg.h" />
+    <ClInclude Include="uScan.h" />
+    <ClInclude Include="uScanDoc.h" />
+    <ClInclude Include="uScanView.h" />
+    <ClInclude Include="wcSliderButton.h" />
+    <ClInclude Include="wcSliderPopup.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmSubThread.h" />
+    <ClInclude Include="AlgorithmService\AlgorithmThread.h" />
+    <ClCompile Include="Include\UGrid\UGCBType.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGCell.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGCelTyp.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGCnrBtn.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGCTarrw.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGCtrl.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGDLType.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGDrgDrp.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGDrwHnt.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGDtaSrc.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGEdit.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGEditBase.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugformat.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\uggdinfo.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGGrid.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGHint.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ughscrol.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugLstBox.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGMEdit.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGMemMan.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGMultiS.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugprint.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugptrlst.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugsidehd.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGStrOp.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugtab.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGTopHdg.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\ugvscrol.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\UGrid\UGXPThemes.cpp">
+      <Filter>7_Common\Helper\UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="AJinAXL.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoCalService.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="CalDataService.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ComThread.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="HandlerService.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="MvCamera.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerManager.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ConditionDlg.cpp">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateFontDlg.cpp">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="DefectPriorityDlg.cpp">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalMatchingDlg.cpp">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClCompile>
+    <ClCompile Include="GrabSequenceViewDlg.cpp">
+      <Filter>2_User_Interface\Grabbing</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectLibraryDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="JogSetDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiModuleMoveOffsetDlg.cpp">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="PGMLanguageSelectDlg.cpp">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="SetLibraryNameDlg.cpp">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClCompile>
+    <ClCompile Include="SPVImageParamDlg.cpp">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="TabControlDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Tab_Control</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitConvertDlg.cpp">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectAdminViewHideDlg1.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectAdminViewHideDlg2.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectAdminViewHideDlg3.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectAdminViewHideDlg4.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiActDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiAkcDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiBoiDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiChsKSDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiChsWZDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionTypeChsDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionTypeChsWZDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionTypeDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionTypeExDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelDataManager.cpp">
+      <Filter>6_Data_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSocket.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="ConditionGridCtrl.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="Delegate.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="EventStub.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="LibraryGridCtrl.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectPartRegion.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPortCS.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="StrobeData.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPClient.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachParamGridCtrl.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="GFunction.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="GTRegion.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="GViewportManager.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\Model\ImageROIManager.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectSummary.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="MacroPathList.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="syai_service\ServiceDirector.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="TrayImagePB.cpp">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmParam.cpp">
+      <Filter>6_Data_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeasureData.cpp">
+      <Filter>6_Data_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="FAI\ModelTypes\ACTFAIInspector.cpp">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ADJClientService.cpp">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClCompile>
+    <ClCompile Include="FAI\ModelTypes\BOIFAIInspector.cpp">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClCompile>
+    <ClCompile Include="Algorithm.cpp">
+      <Filter>3_Core_Logic\Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectService.cpp">
+      <Filter>3_Core_Logic\Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="wcSliderPopup.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="wcSliderButton.cpp">
+      <Filter>_NOT_USED</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\LAIInspector.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\LAIInspector2.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\LAIInspectorSEG.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\LAIInspectorSVM.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\LAIInspectorVAL.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\ModelInference.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\ModelInference2.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\ModelInferenceSEG.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\ModelInferenceSVM.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\ModelInferenceVAL.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="FileBase.cpp">
+      <Filter>7_Common\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="IniFileCS.cpp">
+      <Filter>7_Common\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="MinidumpHelp.cpp">
+      <Filter>7_Common\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LightLibraryDataManager.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="LightLibraryData.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="LightLibrary.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="LightControl.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="LightPwmManager.cpp">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBarCombo.cpp">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="BatchService\BatchGrabHelper.cpp">
+      <Filter>3_Core_Logic\BatchGrab</Filter>
+    </ClCompile>
+    <ClCompile Include="BatchService\BatchManager.cpp">
+      <Filter>3_Core_Logic\BatchGrab</Filter>
+    </ClCompile>
+    <ClCompile Include="HWinPanel.cpp">
+      <Filter>7_Common\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LGIT\InspectorManager.cpp">
+      <Filter>8_Third Party\LG</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectLibrary.cpp">
+      <Filter>8_Third Party</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectLibraryData.cpp">
+      <Filter>8_Third Party</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectLibraryDataManager.cpp">
+      <Filter>8_Third Party</Filter>
+    </ClCompile>
+    <ClCompile Include="syai_service\ServiceOperator.cpp">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClCompile>
+    <ClCompile Include="DefectAssignADJ.cpp">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIService\ImageUtile.cpp">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClCompile>
+    <ClCompile Include="uScanDoc.cpp">
+      <Filter>2_User_Interface\0_App_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="uScanView.cpp">
+      <Filter>2_User_Interface\0_App_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>2_User_Interface\0_App_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectAdminViewDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmAngleMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmBarcodeDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmBoundaryDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmComponentDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmConcenterMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmConnectorPinDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmCornerMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmDefectConditionDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmDentDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmDistanceMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmDontcareDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmEdgeMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmEpoxyVoidHoleDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmFittingDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmGapMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmHeightMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmTiltDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmImageCompareDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmImageProcessDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmNeckEpoxyCrackDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmNeckEpoxyMeasureDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmOCRDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmPartCheckDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmPrintQualityDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmROIAlignDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmROIAnisoAlignDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmShapeDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmStiffenerEpoxyDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmSurfaceDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmSurfaceDualDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachingAlgorithmTabDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Tab_Control</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageDlg1.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageDlg2.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageDlg3.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageDlg4.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageToolbarDlg1.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageToolbarDlg2.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageToolbarDlg3.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectViewOverayImageToolbarDlg4.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="TrayAdminViewDlg4.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="TrayAdminViewDlg3.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="TrayAdminViewDlg2.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="TrayAdminViewDlg1.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectAdminViewToolbarDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\View_Toolbars</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectResultDlg.cpp">
+      <Filter>2_User_Interface\View_Result</Filter>
+    </ClCompile>
+    <ClCompile Include="LightControlDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoFocusDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraLightManagerDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="DefectListDlg.cpp">
+      <Filter>2_User_Interface\View_Result</Filter>
+    </ClCompile>
+    <ClCompile Include="FocusAutoCalResultDlg.cpp">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="LightAutoCalResultDlg.cpp">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="LightAverageValueDlg.cpp">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="LightLibraryDlg.cpp">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="LightPageControlDlg.cpp">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="LightPwmControlDlg.cpp">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="MotionControlDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="RoiSizeDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="RoiScaleDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="RoiMoveDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="RoiIdChangeDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="RoiCopyOptionDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="RoiAutoCreateDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="SetAngleDlg.cpp">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachParamDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachingAlgorithmTabDlg.cpp">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Tab_Control</Filter>
+    </ClCompile>
+    <ClCompile Include="ThresholdHistogramDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="PreferenceDlg.cpp">
+      <Filter>2_User_Interface\6_Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="AdminPasswordDlg.cpp">
+      <Filter>2_User_Interface\6_Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Operator_RegisterDlg.cpp">
+      <Filter>2_User_Interface\6_Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectEquipModelTypeDlg.cpp">
+      <Filter>2_User_Interface\5_Model_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadModelDlg.cpp">
+      <Filter>2_User_Interface\5_Model_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="NewModelDlg.cpp">
+      <Filter>2_User_Interface\5_Model_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionPriorityDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionConditionTabDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtraDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="GrabSequenceDlg.cpp">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="SetResultImageDlg.cpp">
+      <Filter>2_User_Interface\View_Result</Filter>
+    </ClCompile>
+    <ClCompile Include="FAI\ModelTypes\AKCFAIInspector.cpp">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClCompile>
+    <ClCompile Include="SetFlipDlg.cpp" />
+    <ClCompile Include="FAI\ModelData\FAIDataManager.cpp">
+      <Filter>3_Core_Logic\FAI\ModelData</Filter>
+    </ClCompile>
+    <ClCompile Include="FAI\ModelData\FAIModelConfig.cpp">
+      <Filter>3_Core_Logic\FAI\ModelData</Filter>
+    </ClCompile>
+    <ClCompile Include="FAI\FAIInspectorFactory.cpp">
+      <Filter>3_Core_Logic\FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelectDlg.cpp" />
+    <ClCompile Include="FAI\ModelTypes\ATWFAIInspector.cpp">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClCompile>
+    <ClCompile Include="FAI\ModelTypes\BOSFAIInspector.cpp">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiAtwDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="TeachFaiBosDlg.cpp">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>1_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="uScan.cpp">
+      <Filter>1_Main</Filter>
+    </ClCompile>
+    <ClInclude Include="FAI\Dynamic\FAIDynamicRule.h" />
+    <ClInclude Include="FAI\Dynamic\FAIDynamicRuleManager.h" />
+    <ClInclude Include="FAI\ModelTypes\RENOFAIInspector.h" />
+    <ClInclude Include="TeachFaiRenoDlg.h" />
+    <ClInclude Include="FAI\ModelTypes\KRIOSFAIInspector.h" />
+    <ClInclude Include="TeachFaiKriosDlg.h" />
+    <ClInclude Include="AlgorithmService\ResultSaveThread.h" />
+    <ClInclude Include="InspectAdminViewHideDlg.h" />
+    <ClInclude Include="TrayAdminViewDlg.h" />
+    <ClInclude Include="AutoTrainGridCtrl.h" />
+    <ClInclude Include="AutoTrainStatusDlg.h" />
+    <ClInclude Include="VmParamSetDlg.h" />
+    <ClInclude Include="Variation\VariationNormalizer.h" />
+    <ClInclude Include="AIService\UniversalAIData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\Arrow.ico" />
+    <CustomBuild Include="res\board.ico" />
+    <CustomBuild Include="res\Create.cur" />
+    <CustomBuild Include="res\gerber_v.bmp" />
+    <CustomBuild Include="res\gerber_view_tb.bmp" />
+    <CustomBuild Include="res\Hand.CUR" />
+    <CustomBuild Include="res\HandGrab.CUR" />
+    <CustomBuild Include="res\icon_tre.ico" />
+    <CustomBuild Include="res\ImageDisplayToolbar.bmp" />
+    <CustomBuild Include="res\inspect_.bmp" />
+    <CustomBuild Include="res\InspectViewToolbar.bmp" />
+    <CustomBuild Include="res\Package.ico" />
+    <CustomBuild Include="res\review_tb.bmp" />
+    <CustomBuild Include="res\Root.ico" />
+    <CustomBuild Include="res\SelectPart.CUR" />
+    <CustomBuild Include="res\Splash.bmp" />
+    <CustomBuild Include="res\Splash3 copy.bmp" />
+    <CustomBuild Include="res\Splash3.bmp" />
+    <CustomBuild Include="res\Splash4000.bmp" />
+    <CustomBuild Include="res\Splash4000_Mold.bmp" />
+    <CustomBuild Include="res\Toolbar.bmp" />
+    <CustomBuild Include="res\TreeDefault.ico" />
+    <CustomBuild Include="res\uScan.ico" />
+    <CustomBuild Include="res\uScan.rc2" />
+    <CustomBuild Include="res\uScanDoc.ico" />
+    <CustomBuild Include="res\ViewToolbar.bmp" />
+    <CustomBuild Include="res\XPIIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="uScan.rc" />
+    <ClInclude Include="AJinAXL.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="HandlerService.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="MvCamera.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerManager.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionDlg.h">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateFontDlg.h">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DefectPriorityDlg.h">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalMatchingDlg.h">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClInclude>
+    <ClInclude Include="GrabSequenceViewDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectLibraryDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="JogSetDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiModuleMoveOffsetDlg.h">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="PGMLanguageSelectDlg.h">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="SetLibraryNameDlg.h">
+      <Filter>2_User_Interface\Inspection_Setup_FromTBD</Filter>
+    </ClInclude>
+    <ClInclude Include="SPVImageParamDlg.h">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="TabControlDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Tab_Control</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitConvertDlg.h">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\FAIDefine.h">
+      <Filter>3_Core_Logic\FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\FAIMeasureSpec.h">
+      <Filter>3_Core_Logic\FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\FAIMeasureRegistry.h">
+      <Filter>3_Core_Logic\FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\IFAIInspector.h">
+      <Filter>3_Core_Logic\FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>1_Main\Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiActDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiAkcDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiBoiDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiChsKSDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiChsWZDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectionTypeChsDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectionTypeChsWZDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectionTypeDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectionTypeExDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelDataManager.h">
+      <Filter>6_Data_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSocket.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionGridCtrl.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="EventStub.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryGridCtrl.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectPartRegion.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPortCS.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="StrobeData.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPClient.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPDefine.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="AIService\ThreadPool.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="GFunction.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="GTRegion.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="GViewportManager.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\ImageROIManager.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectSummary.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="MacroPathList.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="syai_service\ServiceDirector.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="TrayImagePB.h">
+      <Filter>3_Core_Logic\TBD</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmParam.h">
+      <Filter>6_Data_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeasureData.h">
+      <Filter>6_Data_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoCalService.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\ModelTypes\ACTFAIInspector.h">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ADJClientService.h">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\ModelTypes\AKCFAIInspector.h">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\ModelTypes\BOIFAIInspector.h">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithm.h">
+      <Filter>3_Core_Logic\Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectService.h">
+      <Filter>3_Core_Logic\Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="wcSliderPopup.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="ComThread.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="MIInterface.h">
+      <Filter>4_Image_Process</Filter>
+    </ClInclude>
+    <ClInclude Include="CalDataService.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>7_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachParamGridCtrl.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="wcSliderButton.h">
+      <Filter>_NOT_USED</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\LAIInspector.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\LAIInspector2.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LAIInspector2Result.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LAIInspector2Setup.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LAIInspector3Result.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LAIInspectorResult.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\LAIInspectorSEG.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LAIInspectorSetup.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\LAIInspectorSVM.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LAIInspectorSVMResult.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\LAIInspectorVAL.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\LRequestedInspectionData1.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\ModelInference.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\ModelInference2.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\ModelInferenceSEG.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\ModelInferenceSVM.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\ModelInferenceVAL.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\types.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\UpdateModelInfo.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="FileBase.h">
+      <Filter>7_Common\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="IniFileCS.h">
+      <Filter>7_Common\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="MinidumpHelp.h">
+      <Filter>7_Common\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeQueue.h">
+      <Filter>7_Common\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="LightLibraryDataManager.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LightLibraryData.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LightLibrary.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LightControl.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPwmManager.h">
+      <Filter>5_Hardware_Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolBarCombo.h">
+      <Filter>2_User_Interface\Common_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchService\BatchDefine.h">
+      <Filter>3_Core_Logic\BatchGrab</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchService\BatchGrabHelper.h">
+      <Filter>3_Core_Logic\BatchGrab</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchService\BatchGrabThread.h">
+      <Filter>3_Core_Logic\BatchGrab</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchService\BatchManager.h">
+      <Filter>3_Core_Logic\BatchGrab</Filter>
+    </ClInclude>
+    <ClInclude Include="HWinPanel.h">
+      <Filter>7_Common\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\InspectorManagerSetup.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\InspectorManager.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectLibraryDataManager.h">
+      <Filter>8_Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectLibrary.h">
+      <Filter>8_Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectLibraryData.h">
+      <Filter>8_Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Enscrypt.h">
+      <Filter>8_Third Party\Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="PhStereo.h">
+      <Filter>8_Third Party\Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="S_Universal_AVI.h">
+      <Filter>8_Third Party\Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="KEY_CODE.h">
+      <Filter>8_Third Party\Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="syai_service\ServiceOperator.h">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClInclude>
+    <ClInclude Include="DefectAssignADJ.h">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClInclude>
+    <ClInclude Include="LGIT\Model\BoundingBox.h">
+      <Filter>8_Third Party\LG</Filter>
+    </ClInclude>
+    <ClInclude Include="AIService\ImageUtile.h">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIService\WatchdogTimer.h">
+      <Filter>8_Third Party\SYAI</Filter>
+    </ClInclude>
+    <ClInclude Include="uScanDoc.h">
+      <Filter>2_User_Interface\0_App_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="uScanView.h">
+      <Filter>2_User_Interface\0_App_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>2_User_Interface\0_App_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectAdminViewDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmAngleMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmBarcodeDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmBoundaryDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmComponentDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmConcenterMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmConnectorPinDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmCornerMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmDefectConditionDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmDentDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmDistanceMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmDontcareDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmEdgeMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmEpoxyVoidHoleDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmFittingDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmGapMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmHeightMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmImageCompareDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmImageProcessDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmNeckEpoxyCrackDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmNeckEpoxyMeasureDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmOCRDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmPartCheckDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmPrintQualityDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmROIAlignDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmROIAnisoAlignDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmShapeDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmStiffenerEpoxyDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmSurfaceDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmSurfaceDualDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmTiltDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Algorithm_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageDlg1.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageDlg2.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageDlg3.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageDlg4.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageToolbarDlg1.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageToolbarDlg2.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageToolbarDlg3.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectViewOverayImageToolbarDlg4.h">
+      <Filter>2_User_Interface\2_Inspection_View\Overlay_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="TrayAdminViewDlg4.h">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="TrayAdminViewDlg3.h">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="TrayAdminViewDlg2.h">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="TrayAdminViewDlg1.h">
+      <Filter>2_User_Interface\2_Inspection_View\Tray_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectAdminViewToolbarDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\View_Toolbars</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectResultDlg.h">
+      <Filter>2_User_Interface\View_Result</Filter>
+    </ClInclude>
+    <ClInclude Include="LightControlDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoFocusDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraLightManagerDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DefectListDlg.h">
+      <Filter>2_User_Interface\View_Result</Filter>
+    </ClInclude>
+    <ClInclude Include="FocusAutoCalResultDlg.h">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="LightAutoCalResultDlg.h">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="LightAverageValueDlg.h">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="LightLibraryDlg.h">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPageControlDlg.h">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPwmControlDlg.h">
+      <Filter>2_User_Interface\Setup_Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="MotionControlDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="RoiSizeDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="RoiScaleDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="RoiMoveDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="RoiIdChangeDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="RoiCopyOptionDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="RoiAutoCreateDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SetAngleDlg.h">
+      <Filter>2_User_Interface\2_Inspection_View\Admin_View_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachParamDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachingAlgorithmTabDlg.h">
+      <Filter>2_User_Interface\4_Algorithm_Tab\Tab_Control</Filter>
+    </ClInclude>
+    <ClInclude Include="ThresholdHistogramDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="PreferenceDlg.h">
+      <Filter>2_User_Interface\6_Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="AdminPasswordDlg.h">
+      <Filter>2_User_Interface\6_Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Operator_RegisterDlg.h">
+      <Filter>2_User_Interface\6_Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectEquipModelTypeDlg.h">
+      <Filter>2_User_Interface\5_Model_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadModelDlg.h">
+      <Filter>2_User_Interface\5_Model_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="NewModelDlg.h">
+      <Filter>2_User_Interface\5_Model_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectionPriorityDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectionConditionTabDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtraDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="GrabSequenceDlg.h">
+      <Filter>2_User_Interface\3_Teaching_Tab\Sub_Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="SetResultImageDlg.h">
+      <Filter>2_User_Interface\View_Result</Filter>
+    </ClInclude>
+    <ClInclude Include="SetFlipDlg.h" />
+    <ClInclude Include="FAI\ModelData\FAIDataManager.h">
+      <Filter>3_Core_Logic\FAI\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\ModelData\FAIModelConfig.h">
+      <Filter>3_Core_Logic\FAI\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\ModelData\FAIMeasureData.h" />
+    <ClInclude Include="StageSelectDlg.h" />
+    <ClInclude Include="InspectAdminViewHideDlg1.h">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectAdminViewHideDlg2.h">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectAdminViewHideDlg3.h">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectAdminViewHideDlg4.h">
+      <Filter>2_User_Interface\2_Inspection_View\Hidden_Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\TraceUtils.h" />
+    <ClInclude Include="FAI\ModelTypes\ATWFAIInspector.h">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClInclude>
+    <ClInclude Include="FAI\ModelTypes\BOSFAIInspector.h">
+      <Filter>3_Core_Logic\FAI\EquipModels</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiAtwDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="TeachFaiBosDlg.h">
+      <Filter>2_User_Interface\Setup_FAI</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\DebugImageUtils.h" />
+    <ClInclude Include="uScan.h">
+      <Filter>1_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>1_Main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\EOL_Header.bmp" />
+    <CustomBuild Include="res\Arrow.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\board.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Create.cur">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\gerber_v.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\gerber_view_tb.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Hand.CUR">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\HandGrab.CUR">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\icon_tre.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\ImageDisplayToolbar.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\inspect_.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\InspectViewToolbar.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Package.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\review_tb.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Root.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\SelectPart.CUR">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Splash.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Splash3 copy.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Splash3.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Splash4000.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Splash4000_Mold.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Toolbar.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\TreeDefault.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\uScan.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\uScan.rc2">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\uScanDoc.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\ViewToolbar.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\XPIIcon.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </CustomBuild>
+    <Image Include="res\bitmap_h.bmp">
+      <Filter>1_Main\Resource Files</Filter>
+    </Image>
+    <Image Include="res\SingleLens_Header.bmp">
+      <Filter>1_Main\Resource Files</Filter>
+    </Image>
+    <Image Include="res\AssyLens_Header.bmp">
+      <Filter>1_Main\Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Release.txt" />
+    <None Include="res\AddRegion.bmp" />
+    <None Include="res\AdjustPad32.bmp" />
+    <None Include="res\AdminViewToolbar.bmp" />
+    <None Include="res\admin_vi.bmp" />
+    <None Include="res\barcode.bmp" />
+    <None Include="res\bitmap1.bmp" />
+    <None Include="res\bitmap2.bmp" />
+    <None Include="res\bitmap3.bmp" />
+    <None Include="res\bitmap4.bmp" />
+    <None Include="res\bitmap_t.bmp" />
+    <None Include="res\bmp00001.bmp" />
+    <None Include="res\bmp00002.bmp" />
+    <None Include="res\Bypass32.bmp" />
+    <None Include="res\ExitRed32.bmp" />
+    <None Include="res\icon1.ico" />
+    <None Include="res\L10_Header.bmp" />
+    <None Include="res\LoadGreen32.bmp" />
+    <None Include="res\Monitor.bmp" />
+    <None Include="res\MonitorCyan32.bmp" />
+    <None Include="res\NewGreen32.bmp" />
+    <None Include="res\Option32.bmp" />
+    <None Include="res\overlay_1st.bmp" />
+    <None Include="res\PAUSE.bmp" />
+    <None Include="res\Pause32.bmp" />
+    <None Include="res\Polygon_ROI.bmp" />
+    <None Include="res\PreferenceBrown32.bmp" />
+    <None Include="res\RDebugYellow32.bmp" />
+    <None Include="res\ReviewCyan32.bmp" />
+    <None Include="res\RFirstBlue32.bmp" />
+    <None Include="res\RLastBlue32.bmp" />
+    <None Include="res\RPS.ico" />
+    <None Include="res\SaveGreen32.bmp" />
+    <None Include="res\SelectedPadArrow.ico" />
+    <None Include="res\Start32.bmp" />
+    <None Include="res\Stop32.bmp" />
+    <None Include="res\Synapse Header_Mold.bmp" />
+    <None Include="res\TeachCyan32.bmp" />
+    <None Include="res\TeachTop1.bmp" />
+    <None Include="res\TeachTop2.bmp" />
+    <None Include="res\TOF_Header.bmp" />
+    <None Include="res\toolbar1.bmp" />
+    <None Include="res\User32.bmp" />
+    <None Include="res\AddRegion.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\AdjustPad32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\admin_vi.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\AdminViewToolbar.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\barcode.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bitmap_t.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bitmap1.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bitmap2.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bitmap3.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bitmap4.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bmp00001.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\bmp00002.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Bypass32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\ExitRed32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\icon1.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\L10_Header.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\LoadGreen32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Monitor.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\MonitorCyan32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\NewGreen32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Option32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\overlay_1st.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\PAUSE.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Pause32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Polygon_ROI.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\PreferenceBrown32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\RDebugYellow32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\ReviewCyan32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\RFirstBlue32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\RLastBlue32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\RPS.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\SaveGreen32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\SelectedPadArrow.ico">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Start32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Stop32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\Synapse Header_Mold.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\TeachCyan32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\TeachTop1.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\TeachTop2.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\TOF_Header.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\toolbar1.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="res\User32.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </None>
+    <None Include="Release.txt">
+      <Filter>1_Main</Filter>
+    </None>
+    <None Include="res\AISetup.bmp">
+      <Filter>1_Main\Resource Files</Filter>
+    </None>
+    <None Include="res\Admin.bmp">
+      <Filter>1_Main\Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\EOL_Header.bmp">
+      <Filter>1_Main\Resource Files\icon</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="uScan.rc">
+      <Filter>1_Main\Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AlgorithmService\AlgorithmPipeline.cpp" />
+    <ClCompile Include="AlgorithmService\AlgorithmHelper.cpp" />
+    <ClCompile Include="FAI\Dynamic\FAIDynamicRuleManager.cpp" />
+    <ClCompile Include="FAI\ModelTypes\RENOFAIInspector.cpp" />
+    <ClCompile Include="TeachFaiRenoDlg.cpp" />
+    <ClCompile Include="FAI\ModelTypes\KRIOSFAIInspector.cpp" />
+    <ClCompile Include="TeachFaiKriosDlg.cpp" />
+    <ClCompile Include="AutoTrainGridCtrl.cpp" />
+    <ClCompile Include="AutoTrainStatusDlg.cpp" />
+    <ClCompile Include="VmParamSetDlg.cpp" />
+    <ClCompile Include="Variation\VariationNormalizer.cpp" />
+  </ItemGroup>
+</Project>

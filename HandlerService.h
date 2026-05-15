@@ -175,10 +175,8 @@ public:
 
 	void Set_ScanComplete(CString sLotID, int iMzNo, int iJigNo, int iTrayNo, int iModuleNo, CString sVisionType);			 //검사영역을 모두 Scan 후 Complete 신호를 보낸다. (NewType)
 
-	void Set_ScanComplete(CString sLotID, int iMzNo, CString sTrayID, int iTrayNo, int iModuleNo, CString sVisionType);
-
 	void Set_InspectComplete(CString sLotID, int iMzNo, int iTrayNo, int iModuleNo, CString sVisionType, CString sModuleResult, CString sDefectCode);		//Inspection 완료 후 제어에 보낸다.
-	
+
 	void Set_AlignReply(CString sLotID);
 	void Set_LoadingAlignComplete(CString sLotID, int iMzNo, int iTrayNo, CString sTrayStatusResult, CString sModuleAlignResult, double dAvgDeltaXmm, double dAvgDeltaYmm);
 	void Set_ShipTrayAlignComplete(CString sLotID, int iShipTrayType, int iTrayNo, int iSeqNo, double dDeltaXmm, double dDeltaYmm);

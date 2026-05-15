@@ -42,6 +42,7 @@ int AlgorithmPipeline::PrepareAlgorithmBuffer(const AlgorithmCopyParam& param)
 			m_pAlgorithm->m_nMzNo[iScanBufferIdx] = param.iMzNo;
 			m_pAlgorithm->m_nStageNo[iScanBufferIdx] = param.iStageNo;
 			m_pAlgorithm->m_nJigNo[iScanBufferIdx] = param.iJigNo;
+			m_pAlgorithm->m_sTrayID[iScanBufferIdx] = param.sTrayID;
 			m_pAlgorithm->m_nTrayNo[iScanBufferIdx] = param.iTrayNo;
 			m_pAlgorithm->m_nModuleNo[iScanBufferIdx] = param.iModuleNo;
 			m_pAlgorithm->m_iNoGrabRetry[iScanBufferIdx] = param.iNoGrabRetry;

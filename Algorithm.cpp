@@ -69,6 +69,7 @@ Algorithm::Algorithm(void)
 		m_sLotID[i] = _T("");
 		m_nMzNo[i] = -1;
 		m_nJigNo[i] = -1;
+		m_sTrayID[i] = _T("");
 		m_nTrayNo[i] = -1;
 		m_nModuleNo[i] = -1;
 		m_bGrabFail[i] = FALSE;

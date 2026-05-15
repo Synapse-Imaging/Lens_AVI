@@ -85,7 +85,7 @@ void CuScanView::OnInitialUpdate()
 	m_hHeaderBitmap = NULL;
 #ifdef SINGLE_LENS
 	ChangeHeaderImage(IDB_BITMAP_HEADER_SLENS);
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 	ChangeHeaderImage(IDB_BITMAP_HEADER_ALENS);
 #else
 	ChangeHeaderImage(IDB_BITMAP_HEADER);

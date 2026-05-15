@@ -265,146 +265,6 @@ void  CHandlerService::Get_LotStart(CString sLotID, CString sMzNo, CString sTray
 #endif
 }
 
-void  CHandlerService::Get_LotEnd(CString sLotID, CString sMzNo)
-{
-	CString strLog;
-	CString strEquipModel = THEAPP.g_strModelTypeName[THEAPP.GetModelType()];
-
-	int iMzNo;
-	iMzNo = atoi((LPSTR)(LPCSTR)sMzNo);
-	THEAPP.g_iGrabFailCount[iMzNo - 1] = 0;
-
-	int iDualModelData = THEAPP.g_iDualModelData[iMzNo - 1];
-	THEAPP.g_iDualModelDataRunCheck[iDualModelData]--;
-	if (THEAPP.g_iDualModelDataRunCheck[iDualModelData] < 0)
-		THEAPP.g_iDualModelDataRunCheck[iDualModelData] = 0;
-
-	strLog.Format("Lot end, LotID: %s", sLotID);
-	THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
-
-	if (THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber > 0)
-	{
-		auto log_time_start = std::chrono::high_resolution_clock::now();
-
-		CString sLotIDCopy = sLotID;
-
-		EnqueueStatusWrite([=]()
-		{
-			for (int i = 0; i < VISION_NUMBER_MAX; i++)
-			{
-				m_csLotStatusWrite[i].Lock();
-
-				CString sVisionCamType_Short, sVision;
-				if (strEquipModel == "BOI" || strEquipModel == "BOS" || strEquipModel == "KRIOS")
-				{
-					int iJigNo = (i + 2) / 2;
-					sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[i];
-					sVision.Format("%s_Jig%d", sVisionCamType_Short, iJigNo);
-				}
-				else
-					sVision = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[i];
-
-				if (sVisionCamType_Short == "UD")
-					continue;
-
-				CString strStatusFileName = THEAPP.GetWorkingDirectory() + "\\Data\\" + "LastStatus_" + sVision + ".txt";
-				CIniFileCS INI(strStatusFileName);
-
-				CString sEndLotIDCheck;
-				sEndLotIDCheck = INI.Get_String("LAST SCAN COMPLETE", "LotID", "");
-				if (sEndLotIDCheck == sLotIDCopy)
-				{
-					INI.Set_String("LAST SCAN COMPLETE", "LotID", "");
-					INI.Set_String("LAST SCAN COMPLETE", "Stage", "");
-					INI.Set_Integer("LAST SCAN COMPLETE", "Magazine", -1);
-					INI.Set_Integer("LAST SCAN COMPLETE", "Tray", -1);
-					INI.Set_Integer("LAST SCAN COMPLETE", "Module", -1);
-				}
-
-				sEndLotIDCheck = INI.Get_String("LAST INSPECT COMPLETE", "LotID", "");
-				if (sEndLotIDCheck == sLotIDCopy)
-				{
-					INI.Set_String("LAST INSPECT COMPLETE", "LotID", "");
-					INI.Set_String("LAST INSPECT COMPLETE", "Stage", "");
-					INI.Set_Integer("LAST INSPECT COMPLETE", "Magazine", -1);
-					INI.Set_Integer("LAST INSPECT COMPLETE", "Tray", -1);
-					INI.Set_Integer("LAST INSPECT COMPLETE", "Module", -1);
-				}
-
-				for (int j = 0; j < THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber; j++)
-				{
-					CString sKey;
-					sKey.Format("LotID%d", j);
-					sEndLotIDCheck = INI.Get_String("RECENTLY SCAN COMPLETE", sKey, "");
-					if (sEndLotIDCheck == sLotIDCopy)
-					{
-						INI.Set_String("RECENTLY SCAN COMPLETE", sKey, "");
-						sKey.Format("Stage%d", j);
-						INI.Set_String("RECENTLY SCAN COMPLETE", sKey, "");
-						sKey.Format("Magazine%d", j);
-						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
-						sKey.Format("Tray%d", j);
-						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
-						sKey.Format("Module%d", j);
-						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
-					}
-				}
-
-				for (int j = 0; j < THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber; j++)
-				{
-					CString sKey;
-					sKey.Format("LotID%d", j);
-					sEndLotIDCheck = INI.Get_String("RECENTLY INSPECT COMPLETE", sKey, "");
-					if (sEndLotIDCheck == sLotIDCopy)
-					{
-						INI.Set_String("RECENTLY INSPECT COMPLETE", sKey, "");
-						sKey.Format("Stage%d", j);
-						INI.Set_String("RECENTLY INSPECT COMPLETE", sKey, "");
-						sKey.Format("Magazine%d", j);
-						INI.Set_Integer("RECENTLY INSPECT COMPLETE", sKey, -1);
-						sKey.Format("Tray%d", j);
-						INI.Set_Integer("RECENTLY INSPECT COMPLETE", sKey, -1);
-						sKey.Format("Module%d", j);
-						INI.Set_Integer("RECENTLY INSPECT COMPLETE", sKey, -1);
-					}
-				}
-
-				m_csLotStatusWrite[i].Unlock();
-			}
-		});
-
-		auto log_time_end = std::chrono::high_resolution_clock::now();
-		auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
-
-		strLog.Format("ALL/ Module recently status logging(Lot end), Time(ms): %d, LotID: %s", log_time_ms, sLotID);
-		THEAPP.m_log_inspection->debug("{}", LOG_CSTR(strLog));
-	}
-
-	try {
-		if (THEAPP.iAutoSettingCountCurrent == THEAPP.iAutoSettingCountEnd)
-		{
-			CString FolderName = "c:\\AutoSettings\\json\\";
-			CString jsonFileName;
-			if (THEAPP.strAutoSettingMode == "Light-S")
-				jsonFileName = FolderName + "LightSetting_S_CHS-K.json";
-			else if (THEAPP.strAutoSettingMode == "Light-M")
-				jsonFileName = FolderName + "LightSetting_M_CHS-K.json";
-			else if (THEAPP.strAutoSettingMode == "Focus")
-				jsonFileName = FolderName + "FocusSetting_CHS-K.json";
-			DeleteFileA((LPCSTR)jsonFileName);
-
-			THEAPP.strAutoSettingMode == "";
-			THEAPP.iAutoSettingCountCurrent = 0;
-			THEAPP.iAutoSettingCountEnd = 1;
-		}
-	}
-	catch (const std::exception& e)
-	{
-		THEAPP.strAutoSettingMode == "";
-		THEAPP.iAutoSettingCountCurrent = 0;
-		THEAPP.iAutoSettingCountEnd = 1;
-	}
-}
 
 void  CHandlerService::Get_LotReadyDone(CString sLotID, CString sMzNo)
 {
@@ -450,6 +310,8 @@ void  CHandlerService::Get_LotStart(CString sLotID, CString sMzNo, CString sTray
 #endif
 }
 
+#endif
+
 void  CHandlerService::Get_LotEnd(CString sLotID, CString sMzNo)
 {
 	CString strLog;
@@ -528,6 +390,8 @@ void  CHandlerService::Get_LotEnd(CString sLotID, CString sMzNo)
 						INI.Set_String("RECENTLY SCAN COMPLETE", sKey, "");
 						sKey.Format("Magazine%d", j);
 						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
+						sKey.Format("TrayID%d", j);
+						INI.Set_String("RECENTLY SCAN COMPLETE", sKey, "");
 						sKey.Format("Tray%d", j);
 						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
 						sKey.Format("Module%d", j);
@@ -590,7 +454,7 @@ void  CHandlerService::Get_LotEnd(CString sLotID, CString sMzNo)
 		THEAPP.iAutoSettingCountEnd = 1;
 	}
 }
-#endif
+
 
 void  CHandlerService::Get_CycleStop()
 {
@@ -1478,15 +1342,6 @@ void CHandlerService::Set_ScanComplete(CString sLotID, int iMzNo, int iJigNo, in
 	else
 		strSendMsg.Format("@SCAN,COMPLETE,%s,%s,%d,%d,%d\n", sVisionType, sLotID, iMzNo, iTrayNo, iModuleNo);
 #endif
-
-	Send_Command(strSendMsg);
-}
-
-void CHandlerService::Set_ScanComplete(CString sLotID, int iMzNo, CString sTrayID, int iTrayNo, int iModuleNo, CString sVisionType)
-{
-	CString	strSendMsg;
-
-	strSendMsg.Format("@SCAN,COMPLETE,%s,%s,%d,%s,%d,%d\n", sVisionType, sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo);
 
 	Send_Command(strSendMsg);
 }

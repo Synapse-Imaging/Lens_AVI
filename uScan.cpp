@@ -490,7 +490,7 @@ BOOL CuScanApp::InitInstance()
 #ifdef SINGLE_LENS
 	free((void*)m_pszAppName);
 	m_pszAppName = _tcsdup(_T("Single Lens AVI"));
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 	free((void*)m_pszAppName);
 	m_pszAppName = _tcsdup(_T("Ass'y Lens AVI"));
 #endif
@@ -1458,7 +1458,7 @@ BOOL CuScanApp::InitInstance()
 #ifdef SINGLE_LENS
 		m_pHandlerService->SetHandlerTCP_IP("192.168.0.11");
 		m_pHandlerService->SetHandlerTCP_PORT(12001);
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 		m_pHandlerService->SetHandlerTCP_IP("192.168.0.11");
 		m_pHandlerService->SetHandlerTCP_PORT(8001);
 #else

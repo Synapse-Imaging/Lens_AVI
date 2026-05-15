@@ -133,6 +133,7 @@ UINT BatchGrabThread(LPVOID lp)
 				param.iMzNo = iMzNo;
 				param.iStageNo = iStageNo;
 				param.iJigNo = iJigNo;
+				param.sTrayID = _T("NoUse");
 				param.iTrayNo = iTrayNo;
 				param.iModuleNo = iModuleNo;
 				param.iCurCircularGrabIdx = iCurCircularGrabIdx;
@@ -174,6 +175,7 @@ UINT BatchGrabThread(LPVOID lp)
 				param.iMzNo = iMzNo;
 				param.iStageNo = iStageNo;
 				param.iJigNo = iJigNo;
+				param.sTrayID = _T("NoUse");
 				param.iTrayNo = iTrayNo;
 				param.iModuleNo = iModuleNo;
 				param.iCurCircularGrabIdx = iCurCircularGrabIdx;

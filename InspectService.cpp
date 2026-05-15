@@ -1442,6 +1442,7 @@ UINT InspectionThread_Align(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = 1;
 		param.iJigNo = 0;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.copyMode = AlgorithmCopyParam::MONO_GRAB;
@@ -2053,6 +2054,7 @@ UINT InspectionThread_Inspect(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -2086,6 +2088,7 @@ UINT InspectionThread_Inspect(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -2719,6 +2722,7 @@ UINT InspectionThread_Inspect_OneGrabFunction(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -2752,6 +2756,7 @@ UINT InspectionThread_Inspect_OneGrabFunction(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -4503,6 +4508,7 @@ UINT InspectionThread_AutoFocus_Inspect(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -4536,6 +4542,7 @@ UINT InspectionThread_AutoFocus_Inspect(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -5339,6 +5346,7 @@ UINT InspectionThread_AutoFocus_Inspect_OneGrabFunction(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -5372,6 +5380,7 @@ UINT InspectionThread_AutoFocus_Inspect_OneGrabFunction(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = _T("NoUse");
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -5626,7 +5635,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 			THEAPP.m_log_scan->info("{}", LOG_CSTR(strLog));
 		}
 
-		THEAPP.m_pHandlerService->Set_ScanComplete(sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo, sVisionCamType_Comm);
+		THEAPP.m_pHandlerService->Set_ScanComplete(sLotID, iMzNo, iJigNo, iTrayNo, iModuleNo, sVisionCamType_Comm);
 		if (THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber > 0)
 			THEAPP.m_pHandlerService->Save_ScanComplete(sLotID, iMzNo, iJigNo, iTrayNo, iModuleNo, sVisionCamType_Comm);
 		THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = TRUE;
@@ -5742,7 +5751,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 								if (htImageWidth.L() != THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[iVisionCamType] || htImageHeight.L() != THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[iVisionCamType])
 									ZoomImageSize(HColorImage, &HColorImage, THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[iVisionCamType], THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[iVisionCamType], "bicubic");
 
-								Decompose3(HColorImage, &(HInspectImage[i][0]), &(HInspectImage[i][1]), &(HInspectImage[i][2]));
+								CopyImage(HColorImage, &(HInspectImage[i][0]));
 							}
 							else
 							{
@@ -5837,7 +5846,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 						LeaveCriticalSection(&THEAPP.m_csBarcodeRead);
 					}
 
-					Decompose3(HColorImage, &(HInspectImage[i][0]), &(HInspectImage[i][1]), &(HInspectImage[i][2]));
+					CopyImage(HColorImage, &(HInspectImage[i][0]));
 				}
 
 				if (bFileFindFail == FALSE)
@@ -5890,6 +5899,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = sTrayID;
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -5923,6 +5933,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 		param.iMzNo = iMzNo;
 		param.iStageNo = iStageNo;
 		param.iJigNo = iJigNo;
+		param.sTrayID = sTrayID;
 		param.iTrayNo = iTrayNo;
 		param.iModuleNo = iModuleNo;
 		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
@@ -5963,7 +5974,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 		THEAPP.m_log_halcon->warn("{}", LOG_CSTR(strLog));
 
 #ifdef INLINE_MODE
-		THEAPP.m_pHandlerService->Set_ScanComplete(sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo, sVisionCamType_Comm);
+		THEAPP.m_pHandlerService->Set_ScanComplete(sLotID, iMzNo, iJigNo, iTrayNo, iModuleNo, sVisionCamType_Comm);
 		if (THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber > 0)
 			THEAPP.m_pHandlerService->Save_ScanComplete(sLotID, iMzNo, iJigNo, iTrayNo, iModuleNo, sVisionCamType_Comm);
 #endif

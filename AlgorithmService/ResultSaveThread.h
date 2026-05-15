@@ -256,7 +256,7 @@ inline UINT ResultSaveThread(LPVOID lp)
 
 	try
 	{
-		CString sLotID;
+		CString sLotID, sTrayID;
 		int iMzNo, iStageNo, iJigNo;
 		int iTrayNo, iModuleNo, iNoInspectImage;
 		int iNoGrabRetry, iNoFocusMoveRetry;
@@ -306,6 +306,7 @@ inline UINT ResultSaveThread(LPVOID lp)
 			iMzNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nMzNo[iInspectionBufferIdx];
 			iStageNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nStageNo[iInspectionBufferIdx];
 			iJigNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nJigNo[iInspectionBufferIdx];
+			sTrayID = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_sTrayID[iInspectionBufferIdx];
 			iTrayNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nTrayNo[iInspectionBufferIdx];
 			iModuleNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nModuleNo[iInspectionBufferIdx];
 			iNoGrabRetry = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iNoGrabRetry[iInspectionBufferIdx];
@@ -1773,7 +1774,7 @@ inline UINT ResultSaveThread(LPVOID lp)
 
 		pAlgorithm->ChangeInspectDone(iInspectionBufferIdx, BUFFER_STATUS_AVAILABLE);
 
-		CString sLotID;
+		CString sLotID, sTrayID;
 		int iMzNo, iStageNo, iJigNo;
 		int iTrayNo, iModuleNo, iNoInspectImage;
 
@@ -1781,6 +1782,7 @@ inline UINT ResultSaveThread(LPVOID lp)
 		iMzNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nMzNo[iInspectionBufferIdx];
 		iStageNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nStageNo[iInspectionBufferIdx];
 		iJigNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nJigNo[iInspectionBufferIdx];
+		sTrayID = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_sTrayID[iInspectionBufferIdx];
 		iTrayNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nTrayNo[iInspectionBufferIdx];
 		iModuleNo = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_nModuleNo[iInspectionBufferIdx];
 		iNoInspectImage = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iNoInspectImage;

@@ -82,7 +82,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 #ifdef SINGLE_LENS
 	SetWindowText(_T("Single Lens AVI"));
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 	SetWindowText(_T("Ass'y Lens AVI"));
 #else
 	SetWindowText(_T("Universal Cosmetic AVI"));

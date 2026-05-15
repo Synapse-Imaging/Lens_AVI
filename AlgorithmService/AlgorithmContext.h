@@ -106,6 +106,7 @@ struct AlgorithmCopyParam {
 	
 	BOOL bGrabFail = FALSE;
 	CString sLotID;
+	CString sTrayID;
 	int iMzNo = 0, iStageNo = 0, iJigNo = 0, iTrayNo = 0, iModuleNo = 0;
 	int iCurCircularGrabIdx = 0;
 	int iNoGrabRetry = 0, iNoFocusMoveRetry = 0;

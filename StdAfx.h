@@ -34,7 +34,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 ////////////////////////////////////////// If Machine is Connected ->
-#define INLINE_MODE
+//#define INLINE_MODE
 ////////////////////////////////////////// <- If Machine is Connected
 
 // #define POC_TEST
@@ -51,7 +51,7 @@
 // #define UAVI_RENO
 // #define UAVI_KRIOS
 #define SINGLE_LENS
-// #define ASSY_LENS
+//#define ASSY_LENS
 
 // AI 라이브러리 선택
 #define SYAI

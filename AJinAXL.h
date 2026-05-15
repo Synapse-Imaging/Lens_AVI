@@ -7,7 +7,53 @@
 // Library Version : EzSoftwareUC V4.1.1.4033, 64Bit Version
 // *********************************************************
 
+void __stdcall OnDIOInterruptCallback(long lActiveNo, DWORD uFlag);
+
 const int DO_COUNT = 64;		// Output Count
+
+// Digital Input
+
+typedef union tag_DX_DATA {
+	DWORD nValue;
+	struct {
+		// Byte 0 (X000 ~ X007)
+		DWORD iInput00 : 1;     // X000 - Encoder Trigger TOP1 → Camera 1
+		DWORD iInput01 : 1;     // X001
+		DWORD iInput02 : 1;
+		DWORD iInput03 : 1;
+		DWORD iInput04 : 1;
+		DWORD iInput05 : 1;
+		DWORD iInput06 : 1;
+		DWORD iInput07 : 1;
+		// Byte 1 (X008 ~ X015) - 미사용
+		DWORD iInput08 : 1;
+		DWORD iInput09 : 1;
+		DWORD iInput10 : 1;
+		DWORD iInput11 : 1;
+		DWORD iInput12 : 1;
+		DWORD iInput13 : 1;
+		DWORD iInput14 : 1;
+		DWORD iInput15 : 1;
+		// Byte 2 (X016 ~ X023)
+		DWORD iInput16 : 1;     // X016 - Encoder Trigger BTM1 → Camera 2
+		DWORD iInput17 : 1;     // X017
+		DWORD iInput18 : 1;
+		DWORD iInput19 : 1;
+		DWORD iInput20 : 1;
+		DWORD iInput21 : 1;
+		DWORD iInput22 : 1;
+		DWORD iInput23 : 1;
+		// Byte 3 (X024 ~ X031) - 미사용
+		DWORD iInput24 : 1;
+		DWORD iInput25 : 1;
+		DWORD iInput26 : 1;
+		DWORD iInput27 : 1;
+		DWORD iInput28 : 1;
+		DWORD iInput29 : 1;
+		DWORD iInput30 : 1;
+		DWORD iInput31 : 1;
+	};
+} DX_DATA;
 
 typedef union tag_DY_0 {	// Vision1
 	DWORD nValue;
@@ -101,6 +147,8 @@ typedef union tag_DY_3 {	// Vision4
 	};
 } DY_3;
 
+#define MAX_INTERRUPT_NUMBER 2
+
 class CAJinAXL
 {
 public:
@@ -113,10 +161,11 @@ private:
 	DY_2	m_DY2;	// Output (Y200 - Y215)
 	DY_3	m_DY3;	// Output (Y300 - Y315)
 
-	void Read_Output();				// DO Read
-	void Write_Output(int nPort);	// DO Write
+	DX_DATA	m_DX;	// Input  (X00 - X07)
 
 	void Init_Trigger(BOOL bOn);
+
+	HANDLE m_hEventTrigger[MAX_INTERRUPT_NUMBER];
 
 public:
 	BOOL Initialize();
@@ -131,11 +180,20 @@ public:
 	BOOL Get_Output(int nPort, int nIdx);
 	void Set_Output(int nPort, int nIdx, BOOL bOut);
 
+	void Read_Input();		// DI Read
+	DX_DATA *Get_pDX() { return &m_DX; }
+
 	// uSleep
  	LONGLONG	m_nFreq;	// Frequence
  	void DoEvents();
  	void uSleep(int msec);
 	void Delay(int msec);
+
+	CCriticalSection m_csInput;
+
+	HANDLE GetTriggerEvent(int iVisionCamType);
+	void ResetTriggerEvent(int iVisionCamType);
+
 };
 
 extern CAJinAXL g_objAJinAXL;

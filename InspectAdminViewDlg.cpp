@@ -363,7 +363,11 @@ void CInspectAdminViewDlg::ClearAll()
 
 	GenEmptyObj(&m_HOCRDetectRgn);
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	m_iDisplayChannelType = CHANNEL_TYPE_I;
+#else
 	m_iDisplayChannelType = CHANNEL_TYPE_COLOR;
+#endif
 }
 
 BOOL CInspectAdminViewDlg::PreTranslateMessage(MSG* pMsg)
@@ -835,6 +839,7 @@ void CInspectAdminViewDlg::AnalyzeAndDisplayDefects(HObject defectRegions, HTupl
 		dBlobDiameterY = HdCircleRadius.D();
 		dBlobDiameterY = dBlobDiameterY * 2.0;
 
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 		// hsv Display
 		HObject HColorImageReduced, HColorImageR, HColorImageG, HColorImageB;
 		HTuple HdRedVal, HdGreeen, HdBlue, HdSd;
@@ -879,7 +884,9 @@ void CInspectAdminViewDlg::AnalyzeAndDisplayDefects(HObject defectRegions, HTupl
 		}
 
 		strArea.Format("%.03lf mm2(%d,%d,%d Pxl)/(H:%.01lf Deg),(S:%.01lf %%)", dCompArea, lArea, (int)(dBlobDiameterX + 0.5), (int)(dBlobDiameterY + 0.5), dHue, dSaturation);
-
+#else
+		strArea.Format("%.03lf mm2(%d,%d,%d Pxl)", dCompArea, lArea, (int)(dBlobDiameterX + 0.5), (int)(dBlobDiameterY + 0.5));
+#endif
 		SetTposition(windowID, CenterPoint.y, CenterPoint.x);
 		WriteString(windowID, (HTuple)strArea);
 	}
@@ -5005,16 +5012,6 @@ void CInspectAdminViewDlg::OnMenuLoadImage()
 
 			if (lNoChannel == 1)
 			{
-				CopyImage(HLoadImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][iNoLoadImageTab]));
-				CopyImage(HLoadImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][iNoLoadImageTab]));
-				CopyImage(HLoadImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][iNoLoadImageTab]));
-				Compose3(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][iNoLoadImageTab],
-						 THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][iNoLoadImageTab],
-						 THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][iNoLoadImageTab],
-						 &HTempColorImage);
-				CopyImage(HTempColorImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_COLOR][iNoLoadImageTab]));
-				CopyImage(HLoadImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_H][iNoLoadImageTab]));
-				CopyImage(HLoadImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_S][iNoLoadImageTab]));
 				CopyImage(HLoadImage, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_I][iNoLoadImageTab]));
 			}
 			else
@@ -6279,6 +6276,53 @@ UINT SEQLiveGrabThread(LPVOID lp)
 	return 1;
 }
 
+UINT SingleLiveGrabThread(LPVOID lp)
+{
+	CString strLog;
+
+	CInspectAdminViewDlg* pInspectAdminViewDlg = (CInspectAdminViewDlg*)lp;
+
+	int iImageIndex = THEAPP.m_pTabControlDlg->m_iCurrentTab - 1;
+	if (iImageIndex < 0)
+		iImageIndex = 0;
+	int iStartGrabBufferIndex = iImageIndex;
+
+	BOOL bGrabSuccess = FALSE;
+
+	auto log_time_start = std::chrono::high_resolution_clock::now();
+	
+	bGrabSuccess = THEAPP.m_pCameraManager->CameraStartGrab_NoSeq(iStartGrabBufferIndex, THEAPP.m_pModelDataManager->m_iLightPageIdx[iImageIndex]);
+
+	auto log_time_end = std::chrono::high_resolution_clock::now();
+	auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
+	strLog.Format("Live SEQ grab, Time(ms): %d", log_time_ms);
+	THEAPP.m_log_scan->debug("{}", LOG_CSTR(strLog));
+
+	if (bGrabSuccess)
+	{
+		int iGrabCircularIdx = THEAPP.m_pCameraManager->GetGrabCircularIndex();
+
+		if (THEAPP.m_iModeSwitch == MODE_ADMIN_TEACH_VIEW)								// 티칭화면이면 ....
+		{
+			if (THEAPP.m_pCameraManager->GetCropFovUse())
+			{
+				CropPart(THEAPP.m_pCameraManager->m_hoCallBackImage[iGrabCircularIdx][iImageIndex][0], &(THEAPP.m_pInspectAdminViewDlg->m_pHLiveImage[CHANNEL_TYPE_I]), THEAPP.m_pCameraManager->GetCropFovLTY(), THEAPP.m_pCameraManager->GetCropFovLTX(), THEAPP.m_pCameraManager->GetCropFovSizeX(), THEAPP.m_pCameraManager->GetCropFovSizeY());
+			}
+			else
+			{
+				CopyImage(THEAPP.m_pCameraManager->m_hoCallBackImage[iGrabCircularIdx][iImageIndex][0], &(THEAPP.m_pInspectAdminViewDlg->m_pHLiveImage[CHANNEL_TYPE_I]));
+			}
+
+			THEAPP.m_pInspectAdminViewDlg->UpdateView();
+		}
+	}
+
+	pInspectAdminViewDlg->m_bOnOff = TRUE;
+
+	return 1;
+}
+
 void CInspectAdminViewDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -6335,7 +6379,12 @@ void CInspectAdminViewDlg::OnTimer(UINT_PTR nIDEvent)
 					if (m_bOnOff == TRUE)
 					{
 						m_bOnOff = FALSE;
+
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+						AfxBeginThread(SingleLiveGrabThread, this);
+#else
 						AfxBeginThread(SEQLiveGrabThread, this);
+#endif
 					}
 				}
 			}
@@ -8421,7 +8470,7 @@ void CInspectAdminViewDlg::ResetManualBarcodeFlagForOCR()
 	THEAPP.m_pAlgorithm->m_bManualBarcodeForOcrInspect = FALSE;
 }
 
-void CInspectAdminViewDlg::TeachingImageGrabSave()
+void CInspectAdminViewDlg::TeachingImageGrabSave(BOOL bColor)
 {
 	if (THEAPP.m_iModeSwitch == MODE_ADMIN_TEACH_VIEW)
 	{
@@ -8439,12 +8488,25 @@ void CInspectAdminViewDlg::TeachingImageGrabSave()
 
 			strImageName.Format("%sImage_%d", strImageFolder, THEAPP.m_pTabControlDlg->m_pLightControlDlg->m_iTeachingGrab);
 
-			if (THEAPP.m_pGFunction->ValidHImage(m_pHLiveImage[CHANNEL_TYPE_COLOR]))
+			if (bColor)
 			{
-				if (!THEAPP.Struct_PreferenceStruct.m_bRawImageType)
-					WriteImage(m_pHLiveImage[CHANNEL_TYPE_COLOR], "bmp", 0, HTuple(strImageName));
-				else
-					WriteImage(m_pHLiveImage[CHANNEL_TYPE_COLOR], "jpeg 100", 0, HTuple(strImageName));
+				if (THEAPP.m_pGFunction->ValidHImage(m_pHLiveImage[CHANNEL_TYPE_COLOR]))
+				{
+					if (!THEAPP.Struct_PreferenceStruct.m_bRawImageType)
+						WriteImage(m_pHLiveImage[CHANNEL_TYPE_COLOR], "bmp", 0, HTuple(strImageName));
+					else
+						WriteImage(m_pHLiveImage[CHANNEL_TYPE_COLOR], "jpeg 100", 0, HTuple(strImageName));
+				}
+			}
+			else
+			{
+				if (THEAPP.m_pGFunction->ValidHImage(m_pHLiveImage[CHANNEL_TYPE_I]))
+				{
+					if (!THEAPP.Struct_PreferenceStruct.m_bRawImageType)
+						WriteImage(m_pHLiveImage[CHANNEL_TYPE_I], "bmp", 0, HTuple(strImageName));
+					else
+						WriteImage(m_pHLiveImage[CHANNEL_TYPE_I], "jpeg 100", 0, HTuple(strImageName));
+				}
 			}
 
 			THEAPP.m_pTabControlDlg->m_pLightControlDlg->m_iTeachingGrab = -1;

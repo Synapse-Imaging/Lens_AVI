@@ -222,6 +222,196 @@ void  CHandlerService::Get_ModelReply(int iFlag)
 	m_iModelCheck = iFlag;
 }
 
+#ifdef SINGLE_LENS
+void  CHandlerService::Get_LotStart(CString sLotID, CString sMzNo, CString sTrayAmt, CString sModuleAmt, CString sHandlerModelName)
+{
+	CString strLog;
+	int iMzNo;
+	iMzNo = atoi((LPSTR)(LPCSTR)sMzNo);
+
+	int iModelAutoLoad;
+	iModelAutoLoad = 1;
+
+	THEAPP.m_pInspectService->m_bSaveResultLogThreadDone[iMzNo - 1] = TRUE;
+	THEAPP.m_pInspectService->m_bContDefectLogThreadDone[iMzNo - 1] = TRUE;
+
+	int iLotTrayAmt, iLotModuleAmt;
+	iLotTrayAmt = atoi((LPSTR)(LPCSTR)sTrayAmt);
+	iLotModuleAmt = atoi((LPSTR)(LPCSTR)sModuleAmt);
+	THEAPP.m_pInspectService->m_iLotTrayAmt_H[iMzNo - 1] = iLotTrayAmt;
+	THEAPP.m_pInspectService->m_iLotModuleAmt_H[iMzNo - 1] = iLotModuleAmt;
+
+	THEAPP.m_pInspectService->SetCycleStopStatus(FALSE);
+	THEAPP.m_pInspectService->SetReloadStatus(FALSE);
+	THEAPP.m_pInspectService->ReadyLot(FALSE, iMzNo, FALSE, sHandlerModelName, sLotID, iModelAutoLoad);
+
+	strLog.Format("Lot start, LotID: %s", sLotID);
+	THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
+
+#ifdef HANDLER_USE
+
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
+	for (int i = 0; i < LIGHT_CONTROLLER_NUMBER_MAX; i++)
+	{
+		CString sVisionCamType;
+		sVisionCamType = THEAPP.m_ModelDefineInfo.m_strVisionName[i];
+		if (THEAPP.Struct_PreferenceStruct.m_bUseVision[i]
+			&& sVisionCamType != "Undefine" && sVisionCamType != "Align"
+			&& m_bTcpConnect[i] == FALSE)
+			THEAPP.m_pHandlerService->Set_ErrorRequest(HANDLER_ERROR_LIGHT_CONTROLLER_CONNECT_FAIL);
+	}
+#endif
+
+#endif
+}
+
+void  CHandlerService::Get_LotEnd(CString sLotID, CString sMzNo)
+{
+	CString strLog;
+	CString strEquipModel = THEAPP.g_strModelTypeName[THEAPP.GetModelType()];
+
+	int iMzNo;
+	iMzNo = atoi((LPSTR)(LPCSTR)sMzNo);
+	THEAPP.g_iGrabFailCount[iMzNo - 1] = 0;
+
+	int iDualModelData = THEAPP.g_iDualModelData[iMzNo - 1];
+	THEAPP.g_iDualModelDataRunCheck[iDualModelData]--;
+	if (THEAPP.g_iDualModelDataRunCheck[iDualModelData] < 0)
+		THEAPP.g_iDualModelDataRunCheck[iDualModelData] = 0;
+
+	strLog.Format("Lot end, LotID: %s", sLotID);
+	THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
+
+	if (THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber > 0)
+	{
+		auto log_time_start = std::chrono::high_resolution_clock::now();
+
+		CString sLotIDCopy = sLotID;
+
+		EnqueueStatusWrite([=]()
+		{
+			for (int i = 0; i < VISION_NUMBER_MAX; i++)
+			{
+				m_csLotStatusWrite[i].Lock();
+
+				CString sVisionCamType_Short, sVision;
+				if (strEquipModel == "BOI" || strEquipModel == "BOS" || strEquipModel == "KRIOS")
+				{
+					int iJigNo = (i + 2) / 2;
+					sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[i];
+					sVision.Format("%s_Jig%d", sVisionCamType_Short, iJigNo);
+				}
+				else
+					sVision = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[i];
+
+				if (sVisionCamType_Short == "UD")
+					continue;
+
+				CString strStatusFileName = THEAPP.GetWorkingDirectory() + "\\Data\\" + "LastStatus_" + sVision + ".txt";
+				CIniFileCS INI(strStatusFileName);
+
+				CString sEndLotIDCheck;
+				sEndLotIDCheck = INI.Get_String("LAST SCAN COMPLETE", "LotID", "");
+				if (sEndLotIDCheck == sLotIDCopy)
+				{
+					INI.Set_String("LAST SCAN COMPLETE", "LotID", "");
+					INI.Set_String("LAST SCAN COMPLETE", "Stage", "");
+					INI.Set_Integer("LAST SCAN COMPLETE", "Magazine", -1);
+					INI.Set_Integer("LAST SCAN COMPLETE", "Tray", -1);
+					INI.Set_Integer("LAST SCAN COMPLETE", "Module", -1);
+				}
+
+				sEndLotIDCheck = INI.Get_String("LAST INSPECT COMPLETE", "LotID", "");
+				if (sEndLotIDCheck == sLotIDCopy)
+				{
+					INI.Set_String("LAST INSPECT COMPLETE", "LotID", "");
+					INI.Set_String("LAST INSPECT COMPLETE", "Stage", "");
+					INI.Set_Integer("LAST INSPECT COMPLETE", "Magazine", -1);
+					INI.Set_Integer("LAST INSPECT COMPLETE", "Tray", -1);
+					INI.Set_Integer("LAST INSPECT COMPLETE", "Module", -1);
+				}
+
+				for (int j = 0; j < THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber; j++)
+				{
+					CString sKey;
+					sKey.Format("LotID%d", j);
+					sEndLotIDCheck = INI.Get_String("RECENTLY SCAN COMPLETE", sKey, "");
+					if (sEndLotIDCheck == sLotIDCopy)
+					{
+						INI.Set_String("RECENTLY SCAN COMPLETE", sKey, "");
+						sKey.Format("Stage%d", j);
+						INI.Set_String("RECENTLY SCAN COMPLETE", sKey, "");
+						sKey.Format("Magazine%d", j);
+						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
+						sKey.Format("Tray%d", j);
+						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
+						sKey.Format("Module%d", j);
+						INI.Set_Integer("RECENTLY SCAN COMPLETE", sKey, -1);
+					}
+				}
+
+				for (int j = 0; j < THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber; j++)
+				{
+					CString sKey;
+					sKey.Format("LotID%d", j);
+					sEndLotIDCheck = INI.Get_String("RECENTLY INSPECT COMPLETE", sKey, "");
+					if (sEndLotIDCheck == sLotIDCopy)
+					{
+						INI.Set_String("RECENTLY INSPECT COMPLETE", sKey, "");
+						sKey.Format("Stage%d", j);
+						INI.Set_String("RECENTLY INSPECT COMPLETE", sKey, "");
+						sKey.Format("Magazine%d", j);
+						INI.Set_Integer("RECENTLY INSPECT COMPLETE", sKey, -1);
+						sKey.Format("Tray%d", j);
+						INI.Set_Integer("RECENTLY INSPECT COMPLETE", sKey, -1);
+						sKey.Format("Module%d", j);
+						INI.Set_Integer("RECENTLY INSPECT COMPLETE", sKey, -1);
+					}
+				}
+
+				m_csLotStatusWrite[i].Unlock();
+			}
+		});
+
+		auto log_time_end = std::chrono::high_resolution_clock::now();
+		auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
+		strLog.Format("ALL/ Module recently status logging(Lot end), Time(ms): %d, LotID: %s", log_time_ms, sLotID);
+		THEAPP.m_log_inspection->debug("{}", LOG_CSTR(strLog));
+	}
+
+	try {
+		if (THEAPP.iAutoSettingCountCurrent == THEAPP.iAutoSettingCountEnd)
+		{
+			CString FolderName = "c:\\AutoSettings\\json\\";
+			CString jsonFileName;
+			if (THEAPP.strAutoSettingMode == "Light-S")
+				jsonFileName = FolderName + "LightSetting_S_CHS-K.json";
+			else if (THEAPP.strAutoSettingMode == "Light-M")
+				jsonFileName = FolderName + "LightSetting_M_CHS-K.json";
+			else if (THEAPP.strAutoSettingMode == "Focus")
+				jsonFileName = FolderName + "FocusSetting_CHS-K.json";
+			DeleteFileA((LPCSTR)jsonFileName);
+
+			THEAPP.strAutoSettingMode == "";
+			THEAPP.iAutoSettingCountCurrent = 0;
+			THEAPP.iAutoSettingCountEnd = 1;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		THEAPP.strAutoSettingMode == "";
+		THEAPP.iAutoSettingCountCurrent = 0;
+		THEAPP.iAutoSettingCountEnd = 1;
+	}
+}
+
+void  CHandlerService::Get_LotReadyDone(CString sLotID, CString sMzNo)
+{
+	
+}
+
+#else
 void  CHandlerService::Get_LotStart(CString sLotID, CString sMzNo, CString sTrayAmt, CString sModuleAmt, CString sHandlerModelName, CString sModelAutoLoad)
 {
 	CString strLog;
@@ -400,6 +590,7 @@ void  CHandlerService::Get_LotEnd(CString sLotID, CString sMzNo)
 		THEAPP.iAutoSettingCountEnd = 1;
 	}
 }
+#endif
 
 void  CHandlerService::Get_CycleStop()
 {
@@ -477,6 +668,58 @@ void  CHandlerService::Get_LoadComplete(CString sVisionType, CString sJigNo, CSt
 
 	// if (sBarcode != "")
 	//	THEAPP.m_strModuleBarcodeID[iMzNo - 1][iTrayNo - 1][iModuleNo - 1] = sBarcode;
+
+	THEAPP.m_pInspectService->InspectionMove(iPcVisionNo, iMzNo);				// 스캔과 검사 시작
+}
+
+void  CHandlerService::Get_LoadComplete(CString sVisionType, CString sLotID, CString sMzNo, CString sTrayID, CString sTrayNo, CString sModuleNo)
+{
+	int iPcVisionNo, iStageNo;
+	CString sVisionCamType_Comm;
+	BOOL bVisionFindCheck = FALSE;
+	for (iStageNo = 0; iStageNo < STAGE_NUMBER_MAX; iStageNo++)
+	{
+		for (iPcVisionNo = 0; iPcVisionNo <= VISION_NUMBER_MAX; iPcVisionNo++)
+		{
+			if (iStageNo == STAGE_NUMBER_MAX - 1 && iPcVisionNo == VISION_NUMBER_MAX)
+				return;
+
+			if (iPcVisionNo == VISION_NUMBER_MAX)
+				continue;
+
+			sVisionCamType_Comm = THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iPcVisionNo][iStageNo];
+			if (sVisionCamType_Comm == sVisionType)
+			{
+				bVisionFindCheck = TRUE;
+				break;
+			}
+		}
+
+		if (bVisionFindCheck)
+			break;
+	}
+
+	int iMzNo, iTrayNo, iModuleNo;
+	iMzNo = atoi((LPSTR)(LPCSTR)sMzNo);
+
+	THEAPP.m_pInspectService->m_sLotID_H[iPcVisionNo] = sLotID;
+	THEAPP.m_pInspectService->m_iMzNo_H[iPcVisionNo] = iMzNo;
+	THEAPP.m_pInspectService->m_iJigNo_H[iPcVisionNo] = 1;
+	THEAPP.m_pInspectService->m_iStageNo_H[iPcVisionNo] = iStageNo;
+	THEAPP.m_pInspectService->m_dHeight_H[iPcVisionNo] = 0;
+
+	THEAPP.m_pInspectService->m_iTrayNo_H[iPcVisionNo] = EMPTY_TRAY_MODULE;
+	THEAPP.m_pInspectService->m_iModuleNo_H[iPcVisionNo] = EMPTY_TRAY_MODULE;
+
+	iTrayNo = atoi((LPSTR)(LPCSTR)sTrayNo);
+	iModuleNo = atoi((LPSTR)(LPCSTR)sModuleNo);
+
+	THEAPP.m_pInspectService->m_sTrayID_H[iPcVisionNo] = sTrayID;
+	THEAPP.m_pInspectService->m_iTrayNo_H[iPcVisionNo] = iTrayNo;
+	THEAPP.m_pInspectService->m_iModuleNo_H[iPcVisionNo] = iModuleNo;
+
+	THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = FALSE;
+	THEAPP.m_bLoadCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = TRUE;
 
 	THEAPP.m_pInspectService->InspectionMove(iPcVisionNo, iMzNo);				// 스캔과 검사 시작
 }
@@ -834,6 +1077,19 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 			if (strOp == "REPLY") Get_ModelReply(iFlag);
 		}
 
+#ifdef SINGLE_LENS
+		else if (strCmd == "LOT") {
+			AfxExtractSubString(sTemp1, strRecv, 2, chSep);		// Lot ID
+			AfxExtractSubString(sTemp2, strRecv, 3, chSep);		// Lot No
+			AfxExtractSubString(sTemp3, strRecv, 4, chSep);		// Tray No
+			AfxExtractSubString(sTemp4, strRecv, 5, chSep);		// Module No
+			AfxExtractSubString(sTemp5, strRecv, 6, chSep);		// Handler Model Name
+
+			if (strOp == "START") Get_LotStart(sTemp1, sTemp2, sTemp3, sTemp4, sTemp5);
+			else if (strOp == "END") Get_LotEnd(sTemp1, sTemp2);
+			else if (strOp == "RDYDONE") Get_LotReadyDone(sTemp1, sTemp2);
+		}
+#else
 		else if (strCmd == "LOT") {
 #ifdef POC_TEST
 			AfxExtractSubString(sTemp1, strRecv, 2, chSep);		// Lot ID
@@ -854,6 +1110,20 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 			if (strOp == "START") Get_LotStart(sTemp1, sTemp2, sTemp3, sTemp4, sTemp5, sTemp6);
 			else if (strOp == "END") Get_LotEnd(sTemp1, sTemp2);
 		}
+#endif
+
+#ifdef SINGLE_LENS
+		else if (strCmd == "LOAD") {
+			AfxExtractSubString(sTemp1, strRecv, 2, chSep);		// VIsion: TC, BC
+			AfxExtractSubString(sTemp2, strRecv, 3, chSep);		// MZ ID
+			AfxExtractSubString(sTemp3, strRecv, 4, chSep);		// MZ No
+			AfxExtractSubString(sTemp4, strRecv, 5, chSep);		// Zig ID
+			AfxExtractSubString(sTemp5, strRecv, 6, chSep);		// Zig No
+			AfxExtractSubString(sTemp6, strRecv, 7, chSep);		// Lens No
+
+			if (strOp == "COMPLETE") Get_LoadComplete(sTemp1, sTemp2, sTemp3, sTemp4, sTemp5, sTemp6);
+		}
+#else
 
 		else if (strCmd == "LOAD") {
 #ifdef POC_TEST
@@ -892,6 +1162,7 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 
 			if (strOp == "COMPLETE") Get_LoadComplete(sTemp1, sTemp2, sTemp3, sTemp4, sTemp5, sTemp6, sTemp7, sTemp8);
 		}
+#endif
 
 		else if (strCmd == "BARCODE") {
 #ifdef POC_TEST
@@ -1211,6 +1482,15 @@ void CHandlerService::Set_ScanComplete(CString sLotID, int iMzNo, int iJigNo, in
 	Send_Command(strSendMsg);
 }
 
+void CHandlerService::Set_ScanComplete(CString sLotID, int iMzNo, CString sTrayID, int iTrayNo, int iModuleNo, CString sVisionType)
+{
+	CString	strSendMsg;
+
+	strSendMsg.Format("@SCAN,COMPLETE,%s,%s,%d,%s,%d,%d\n", sVisionType, sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo);
+
+	Send_Command(strSendMsg);
+}
+
 void CHandlerService::Set_InspectComplete(CString sLotID, int iMzNo, int iTrayNo, int iModuleNo, CString sVisionType, CString sModuleResult, CString sDefectCode)//Inspection 완료 후 제어에 보낸다.
 {
 	CString	strSendMsg;
@@ -1360,6 +1640,15 @@ void CHandlerService::Set_TrayComplete(CString sLotID, int iMzNo, int iTrayNo, C
 {
 	CString	strSendMsg;
 	strSendMsg.Format("@TRAY,COMPLETE,%s,%d,%d,%s\n", sLotID, iMzNo, iTrayNo, sTrayResult);
+
+	Send_Command(strSendMsg);
+}
+
+void CHandlerService::Set_TriggerRequest(CString sVision, CString sLotID, int iMzNo, CString sTrayID, int iZigNo, int iLensNo)
+{
+	CString	strSendMsg;
+
+	strSendMsg.Format("@TRIGGER,REQUEST,%s,%s,%d,%s,%d,%d\n", sVision, sLotID, iMzNo, sTrayID, iZigNo, iLensNo);
 
 	Send_Command(strSendMsg);
 }

@@ -301,6 +301,9 @@ void CModelDataManager::InitModelData()
 		m_dStageYPositionRef[i] = MOTION_NOUSE;
 	}
 
+	m_iTriggerImageNumber = 4;
+	m_iTriggerPeriod = 25;
+
 	m_iLightValueStart = 10;
 	m_iLightValueEnd = 10;
 	m_iLightValueInterval = 2;
@@ -1247,6 +1250,12 @@ int CModelDataManager::LoadMotionMovingPosition(CString sLinfoPath)
 		}
 	}
 
+	strSection.Format("Single Lens Trigger");
+	strKey.Format("Trigger-Image-Number");
+	m_iTriggerImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 4);
+	strKey.Format("Trigger-Period");
+	m_iTriggerPeriod = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 25);
+
 	if (iMotionMovingPositionVer == 1001)
 	{
 		std::remove(sLinfoPath);
@@ -1286,6 +1295,12 @@ void CModelDataManager::SaveMotionMovingPosition(CString sLinfoPath, int iCurSta
 			INI_MotionMovingPosition.Set_Double(strSection, strKey, m_dZFocusPosition[i][j]);
 		}
 	}
+
+	strSection.Format("Single Lens Trigger");
+	strKey.Format("Trigger-Image-Number");
+	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerImageNumber);
+	strKey.Format("Trigger-Period");
+	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerPeriod);
 }
 
 int CModelDataManager::LoadMotionMovingPosition_Offset(CString sLinfoPath)
@@ -1697,11 +1712,64 @@ BOOL CModelDataManager::LoadModelHWData()
 			LoadSequenceInfo(strSequenceInfo);
 
 #ifdef INLINE_MODE
+
+#ifdef SINGLE_LENS
+
+			int iPageIdx;
+
+			if (m_PageControlData.m_ComPort.OpenPort(m_PageControlData.m_iComPortNumber, 19200))
+			{
+				for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
+				{
+					m_PageControlData.SetIllumination_8CH(iPageIdx);
+				}
+
+				m_PageControlData.m_ComPort.ClosePort();
+			}
+			else
+			{
+				AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+			}
+
+#elif ASSY_LENS
+
+			int iPageIdx;
+
+			if (m_PageControlData.m_ComPort.OpenPort(m_PageControlData.m_iComPortNumber, 19200))
+			{
+				if (m_iModelIdx == PC_VISION_1 || m_iModelIdx == PC_VISION_2)
+				{
+					for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
+					{
+						m_PageControlData.SetIllumination_8CH(iPageIdx);
+					}
+				}
+				else if (m_iModelIdx == PC_VISION_3)
+				{
+					for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_4CH; iPageIdx++)
+					{
+						m_PageControlData.SetIllumination_4CH(iPageIdx);
+					}
+				}
+				else
+				{
+					// Vision Case별 코딩 추가
+				}
+
+				m_PageControlData.m_ComPort.ClosePort();
+			}
+			else
+			{
+				AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+			}
+
+#else
 			for (int i = 0; i < LIGHTCTRL_GRAB_ADDR_SEQ_COUNT; i++)
 				m_PageControlData.SetGrabSequence(m_iModelIdx, i, m_PageControlData.m_iAddrSeq[i], m_PageControlData.m_iAddrCount[i]);
 
 			for (int iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT; iPageIdx++)
 				m_PageControlData.SetOnTime_Page(m_iModelIdx, iPageIdx);
+#endif
 #endif
 		}
 		CString strSpecularParam;

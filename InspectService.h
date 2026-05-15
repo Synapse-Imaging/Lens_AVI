@@ -83,6 +83,7 @@ public:
 	int m_iJigNo_H[VISION_NUMBER_MAX];										// for Scan
 	int m_iStageNo_H[VISION_NUMBER_MAX];									// for Scan
 	double m_dHeight_H[VISION_NUMBER_MAX];									// for Scan
+	CString m_sTrayID_H[VISION_NUMBER_MAX];									// for Scan
 	int m_iTrayNo_H[VISION_NUMBER_MAX];										// for Scan
 	int m_iModuleNo_H[VISION_NUMBER_MAX];									// for Scan
 	int m_iAlignVisionSeqNo_H;												// for Scan

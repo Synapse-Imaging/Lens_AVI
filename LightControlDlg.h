@@ -117,5 +117,8 @@ public:
 	afx_msg void OnBnClickedCheckPage32();
 
 	void ChangeLanguage();
+
+	void SetDlgStatus();
+
 	CString strMessageBox;
 };

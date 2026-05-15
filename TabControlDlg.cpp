@@ -737,16 +737,13 @@ void CTabControlDlg::ShowFirstPage(BOOL bReadTeachingImage)
 							CopyImage(HTempImageR, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][i]));
 							CopyImage(HTempImageG, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][i]));
 							CopyImage(HTempImageB, &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][i]));
+
+							TransFromRgb(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][i], THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][i], THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_H][i]), &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_S][i]), &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_I][i]), "hsi");
 						}
 						else if (HNoChannel == 1)
 						{
-							CopyImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_COLOR][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][i]));
-							CopyImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_COLOR][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][i]));
-							CopyImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_COLOR][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][i]));
-							Compose3(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][i], THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][i], THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_COLOR][i]));
+							CopyImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_COLOR][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_I][i]));
 						}
-
-						TransFromRgb(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_R][i], THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_G][i], THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_B][i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_H][i]), &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_S][i]), &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_I][i]), "hsi");
 
 						FindClose(hFindFile);
 					}
@@ -772,8 +769,6 @@ void CTabControlDlg::ShowFirstPage(BOOL bReadTeachingImage)
 
 						FindClose(hFindFile);
 					}
-
-
 				}
 			}
 		}

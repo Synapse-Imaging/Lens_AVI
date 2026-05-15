@@ -104,4 +104,6 @@ public:
 	CComboBox m_cbImageProcessPostLocalAlignImageIndex;
 	int m_iEditImageProcessPostLocalAlignROINo;
 	int m_iRadioImageProcessPostLocalAlignFitPos;
+
+	void SetDlgStatus();
 };

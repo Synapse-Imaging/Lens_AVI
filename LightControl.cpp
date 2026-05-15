@@ -120,6 +120,52 @@ void CLightControl::SetOnTime_Channel(int iLightControllerIndex, int iPageIndex,
 	Sleep(30);
 }
 
+void CLightControl::SetIllumination_2CH(unsigned int uiPageIndex)
+{
+	//조명 밝기를 변경한다. iIllum은 0 ~ 255	
+
+	//////////////////////////////////////////////////////////////////////////
+	BYTE BufData[11];
+	//////////////////////////////////////////////////////////////////////////
+
+	SPage& Page = m_Page[uiPageIndex];
+
+	if (Page.uiChannel[0] < 0)
+		Page.uiChannel[0] = 0;
+	if (Page.uiChannel[1] < 0)
+		Page.uiChannel[1] = 0;
+
+	// Start
+	BufData[0] = 0x3A;
+	BufData[1] = 0x3A;
+
+	// Command
+	BufData[2] = 0x57;
+
+	// Page 
+	BufData[3] = uiPageIndex & 0xFF;
+
+	// Light Brightness Data
+	//Channel1 
+	BufData[4] = (BYTE)((Page.uiChannel[0] & 0xFF00) >> 8);
+	BufData[5] = (BYTE)Page.uiChannel[0] & 0xFF;
+
+	// Channel2 
+	BufData[6] = (BYTE)((Page.uiChannel[1] & 0xFF00) >> 8);
+	BufData[7] = (BYTE)Page.uiChannel[1] & 0xFF;
+
+	// Check Sum
+	BufData[8] = BufData[2] ^ BufData[3] ^ BufData[4] ^ BufData[5] ^ BufData[6] ^ BufData[7];
+
+	// End
+	BufData[9] = 0xEE;
+	BufData[10] = 0xEE;
+
+	m_ComPort.WriteComm(BufData, 11);
+	Sleep(300);
+
+}
+
 void CLightControl::SetIllumination_4CH(unsigned int uiPageIndex)
 {
 	//조명 밝기를 변경한다. iIllum은 0 ~ 255	
@@ -339,6 +385,137 @@ void CLightControl::SetTotalChannelllumination_4CH(unsigned int uiChannelValue1,
 	m_ComPort.WriteComm(BufData, 15);
 	Sleep(300);
 }
+
+void CLightControl::SetIllumination_6CH(unsigned int uiPageIndex)
+{
+	//조명 밝기를 변경한다. iIllum은 0 ~ 255	
+	BYTE BufData[19];
+	SPage& Page = m_Page[uiPageIndex];
+
+	for (int i = 0; i < 6; i++)
+	{
+		if (Page.uiChannel[i] < 0)
+			Page.uiChannel[i] = 0;
+	}
+
+	// Start
+	BufData[0] = 0x3A;
+	BufData[1] = 0x3A;
+
+	// Command
+	BufData[2] = 0x57;
+
+	// Page 
+	BufData[3] = uiPageIndex & 0xFF;
+
+	// Light Brightness Data
+	//Channel1 
+	BufData[4] = (BYTE)((Page.uiChannel[0] & 0xFF00) >> 8);
+	BufData[5] = (BYTE)Page.uiChannel[0] & 0xFF;
+
+	// Channel2 
+	BufData[6] = (BYTE)((Page.uiChannel[1] & 0xFF00) >> 8);
+	BufData[7] = (BYTE)Page.uiChannel[1] & 0xFF;
+
+	// Channel3
+	BufData[8] = (BYTE)((Page.uiChannel[2] & 0xFF00) >> 8);
+	BufData[9] = (BYTE)Page.uiChannel[2] & 0xFF;
+
+	// Channel4
+	BufData[10] = (BYTE)((Page.uiChannel[3] & 0xFF00) >> 8);
+	BufData[11] = (BYTE)Page.uiChannel[3] & 0xFF;
+
+	// Channel5
+	BufData[12] = (BYTE)((Page.uiChannel[4] & 0xFF00) >> 8);
+	BufData[13] = (BYTE)Page.uiChannel[4] & 0xFF;
+
+	// Channel6
+	BufData[14] = (BYTE)((Page.uiChannel[5] & 0xFF00) >> 8);
+	BufData[15] = (BYTE)Page.uiChannel[5] & 0xFF;
+
+	// Check Sum
+	BufData[16] = BufData[2] ^ BufData[3] ^ BufData[4] ^ BufData[5] ^ BufData[6] ^ BufData[7] ^ BufData[8] ^ BufData[9] ^ BufData[10] ^ BufData[11] ^ BufData[12] ^ BufData[13] ^ BufData[14] ^ BufData[15];
+
+	// End
+	BufData[17] = 0xEE;
+	BufData[18] = 0xEE;
+
+	m_ComPort.WriteComm(BufData, 19);
+	Sleep(300);
+
+}
+
+void CLightControl::SetIllumination_8CH(unsigned int uiPageIndex)
+{
+	//조명 밝기를 변경한다. iIllum은 0 ~ 255	
+
+	//////////////////////////////////////////////////////////////////////////
+	BYTE BufData[23];
+	//////////////////////////////////////////////////////////////////////////
+
+	SPage& Page = m_Page[uiPageIndex];
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (Page.uiChannel[i] < 0)
+			Page.uiChannel[i] = 0;
+	}
+
+	// Start
+	BufData[0] = 0x3A;
+	BufData[1] = 0x3A;
+
+	// Command
+	BufData[2] = 0x57;
+
+	// Page 
+	BufData[3] = uiPageIndex & 0xFF;
+
+	// Light Brightness Data
+	//Channel1 
+	BufData[4] = (BYTE)((Page.uiChannel[0] & 0xFF00) >> 8);
+	BufData[5] = (BYTE)Page.uiChannel[0] & 0xFF;
+
+	// Channel2 
+	BufData[6] = (BYTE)((Page.uiChannel[1] & 0xFF00) >> 8);
+	BufData[7] = (BYTE)Page.uiChannel[1] & 0xFF;
+
+	// Channel3
+	BufData[8] = (BYTE)((Page.uiChannel[2] & 0xFF00) >> 8);
+	BufData[9] = (BYTE)Page.uiChannel[2] & 0xFF;
+
+	// Channel4
+	BufData[10] = (BYTE)((Page.uiChannel[3] & 0xFF00) >> 8);
+	BufData[11] = (BYTE)Page.uiChannel[3] & 0xFF;
+
+	// Channel5
+	BufData[12] = (BYTE)((Page.uiChannel[4] & 0xFF00) >> 8);
+	BufData[13] = (BYTE)Page.uiChannel[4] & 0xFF;
+
+	// Channel6
+	BufData[14] = (BYTE)((Page.uiChannel[5] & 0xFF00) >> 8);
+	BufData[15] = (BYTE)Page.uiChannel[5] & 0xFF;
+
+	// Channel7
+	BufData[16] = (BYTE)((Page.uiChannel[6] & 0xFF00) >> 8);
+	BufData[17] = (BYTE)Page.uiChannel[6] & 0xFF;
+
+	// Channel8
+	BufData[18] = (BYTE)((Page.uiChannel[7] & 0xFF00) >> 8);
+	BufData[19] = (BYTE)Page.uiChannel[7] & 0xFF;
+
+	// Check Sum
+	BufData[20] = BufData[2] ^ BufData[3] ^ BufData[4] ^ BufData[5] ^ BufData[6] ^ BufData[7] ^ BufData[8] ^ BufData[9] ^ BufData[10] ^ BufData[11] ^ BufData[12] ^ BufData[13] ^ BufData[14] ^ BufData[15] ^ BufData[16] ^ BufData[17] ^ BufData[18] ^ BufData[19];
+
+	// End
+	BufData[21] = 0xEE;
+	BufData[22] = 0xEE;
+
+	m_ComPort.WriteComm(BufData, 23);
+	Sleep(300);
+
+}
+
 
 void CLightControl::SetIllumination_10CH(unsigned int uiPageIndex)
 {

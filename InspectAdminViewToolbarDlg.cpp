@@ -201,7 +201,19 @@ BOOL CInspectAdminViewToolbarDlg::OnInitDialog()
 	toolbarctrl.CheckButton(ID_TB_ROI_LOCK, m_bROILock);
 	toolbarctrl.CheckButton(ID_TB_ALIGN_DISP, m_bAlignDisplay);
 
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 	toolbarctrl.CheckButton(ID_TB_COLOR_IMAGE, TRUE);
+#else
+	toolbarctrl.SetState(ID_TB_COLOR_IMAGE, TBSTATE_HIDDEN);
+	toolbarctrl.SetState(ID_TB_R_IMAGE, TBSTATE_HIDDEN);
+	toolbarctrl.SetState(ID_TB_G_IMAGE, TBSTATE_HIDDEN);
+	toolbarctrl.SetState(ID_TB_B_IMAGE, TBSTATE_HIDDEN);
+	toolbarctrl.SetState(ID_TB_H_IMAGE, TBSTATE_HIDDEN);
+	toolbarctrl.SetState(ID_TB_S_IMAGE, TBSTATE_HIDDEN);
+	toolbarctrl.SetState(ID_TB_I_IMAGE, TBSTATE_HIDDEN);
+
+	toolbarctrl.CheckButton(ID_TB_I_IMAGE, TRUE);
+#endif
 
 	m_caliper_control_flag = 0;
 

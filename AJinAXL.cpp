@@ -21,6 +21,9 @@ CAJinAXL::CAJinAXL(void)
  	LARGE_INTEGER freq;
  	QueryPerformanceFrequency(&freq);
  	m_nFreq = freq.QuadPart;
+
+	for (int i = 0; i < VISION_NUMBER_MAX; i++)
+		m_hEventTrigger[i] = NULL;
 }
 
 CAJinAXL::~CAJinAXL(void)
@@ -31,18 +34,62 @@ BOOL CAJinAXL::Initialize()
 {
 #ifdef AJIN_BOARD_USE
 	DWORD dwReturn = AxlOpenNoReset(7);
-	if (dwReturn != AXT_RT_SUCCESS) 
+	if (dwReturn != AXT_RT_SUCCESS)
+	{
+		AfxMessageBox("AJin Open Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
 		return FALSE;
+	}
 
 	long lDIOCount;
 	dwReturn = AxdInfoGetModuleCount(&lDIOCount);
-	if (dwReturn != AXT_RT_SUCCESS) 
+	if (dwReturn != AXT_RT_SUCCESS)
+	{
+		AfxMessageBox("AJin Module Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
 		return FALSE;
-	if (lDIOCount < 1) 
+	}
+	if (lDIOCount < 1)
+	{
+		AfxMessageBox("AJin Module Count Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
 		return FALSE;	// Board 1 or 2장
-#endif
+	}
+
+	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
+	{
+		m_hEventTrigger[i] = ::CreateEventA(NULL, FALSE, FALSE, NULL);
+
+		if (m_hEventTrigger[i] == NULL)
+		{
+			AfxMessageBox("AJin Evenet Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
+			return FALSE;
+		}
+	}
 
 	Init_Trigger(FALSE);		// 시작시 All On
+
+	AxlInterruptEnable();
+	AxdiInterruptSetModuleEnable(0, ENABLE);
+
+		// --- 인터럽트 엣지 설정 변경 ---
+	// X000 (byte 0, bit 0): 상승엣지만
+	AxdiInterruptEdgeSetByte(0, 0, UP_EDGE, 0x01);
+	AxdiInterruptEdgeSetByte(0, 0, DOWN_EDGE, 0x00);
+
+	// X008~X015 (byte 1): 미사용
+	AxdiInterruptEdgeSetByte(0, 1, UP_EDGE, 0x00);
+	AxdiInterruptEdgeSetByte(0, 1, DOWN_EDGE, 0x00);
+
+	// X016 (byte 2, bit 0): 상승엣지만
+	AxdiInterruptEdgeSetByte(0, 2, UP_EDGE, 0x01);
+	AxdiInterruptEdgeSetByte(0, 2, DOWN_EDGE, 0x00);
+
+	// X024~X031 (byte 3): 미사용
+	AxdiInterruptEdgeSetByte(0, 3, UP_EDGE, 0x00);
+	AxdiInterruptEdgeSetByte(0, 3, DOWN_EDGE, 0x00);
+
+	AxdiInterruptSetModule(0, NULL, NULL, NULL, NULL);	// 초기화
+	AxdiInterruptSetModule(0, NULL, NULL, (AXT_INTERRUPT_PROC)OnDIOInterruptCallback, NULL);
+
+#endif
 
 	return TRUE;
 }
@@ -55,7 +102,33 @@ void CAJinAXL::Terminate()
 	if (AxlIsOpened()) 
 		AxlClose();
 #endif
+
+	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
+	{
+		if (m_hEventTrigger[i])
+		{
+			::CloseHandle(m_hEventTrigger[i]);
+			m_hEventTrigger[i] = NULL;
+		}
+	}
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// Interrupt Callback
+void __stdcall OnDIOInterruptCallback(long lActiveNo, DWORD uFlag)
+{
+	if (uFlag & (1 << 0))       // X000 → TOP Camera
+	{
+		::SetEvent(g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_1));
+	}
+	if (uFlag & (1 << 16))      // X016 → BTM Camera
+	{
+		::SetEvent(g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_2));
+	}
+
+	//g_objAJinAXL.Read_Input();
+}
+/////////////////////////////////////////////////////////////////////////////
 
 void CAJinAXL::Init_Trigger(BOOL bOn)
 {
@@ -70,6 +143,27 @@ void CAJinAXL::Init_Trigger(BOOL bOn)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void CAJinAXL::Read_Input()
+{
+	// 32bit 전체를 한 번에 읽음 (X000 ~ X031)
+	m_csInput.Lock();
+	AxdiReadInportDword(0, 0, &m_DX.nValue);
+	m_csInput.Unlock();
+}
+
+HANDLE CAJinAXL::GetTriggerEvent(int iVisionCamType)
+{
+	int idx = iVisionCamType - VISION_NUMBER_1;
+	if (idx < 0 || idx >= MAX_INTERRUPT_NUMBER) return NULL;
+	return m_hEventTrigger[idx];
+}
+
+void CAJinAXL::ResetTriggerEvent(int iVisionCamType)
+{
+	HANDLE h = GetTriggerEvent(iVisionCamType);
+	if (h) ::ResetEvent(h);
+}
 
 void CAJinAXL::Set_Trigger(int nPort, BOOL* bLight, int nS)
 {

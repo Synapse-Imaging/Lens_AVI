@@ -1021,11 +1021,15 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN1()
 
 	if (THEAPP.m_iModeSwitch == MODE_INSPECT_VIEW_ADMIN)  // 관리자 모드 아니면 화면 전환 안됨.
 	{
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 		CStageSelectDlg dlg;
 		if (dlg.DoModal() == IDCANCEL)
 			return;
 
 		THEAPP.m_iCurStageIndex = dlg.m_iRadioStageIndex;
+#else
+		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
+#endif
 
 		THEAPP.m_iCurTeachVision = VISION_NUMBER_1;
 		THEAPP.m_pModelDataManager = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][VISION_NUMBER_1];
@@ -1122,11 +1126,15 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN2()
 
 	if (THEAPP.m_iModeSwitch == MODE_INSPECT_VIEW_ADMIN)  // 관리자 모드 아니면 화면 전환 안됨.
 	{
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 		CStageSelectDlg dlg;
 		if (dlg.DoModal() == IDCANCEL)
 			return;
 
 		THEAPP.m_iCurStageIndex = dlg.m_iRadioStageIndex;
+#else
+		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
+#endif
 
 		THEAPP.m_iCurTeachVision = VISION_NUMBER_2;
 		THEAPP.m_pModelDataManager = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][VISION_NUMBER_2];
@@ -1223,11 +1231,15 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN3()
 
 	if (THEAPP.m_iModeSwitch == MODE_INSPECT_VIEW_ADMIN)  // ������ ��� �ƴϸ� ȭ�� ��ȯ �ȵ�.
 	{
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 		CStageSelectDlg dlg;
 		if (dlg.DoModal() == IDCANCEL)
 			return;
 
 		THEAPP.m_iCurStageIndex = dlg.m_iRadioStageIndex;
+#else
+		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
+#endif
 
 		THEAPP.m_iCurTeachVision = VISION_NUMBER_3;
 		THEAPP.m_pModelDataManager = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][VISION_NUMBER_3];
@@ -1324,11 +1336,15 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN4()
 
 	if (THEAPP.m_iModeSwitch == MODE_INSPECT_VIEW_ADMIN)  // ������ ��� �ƴϸ� ȭ�� ��ȯ �ȵ�.
 	{
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 		CStageSelectDlg dlg;
 		if (dlg.DoModal() == IDCANCEL)
 			return;
 
 		THEAPP.m_iCurStageIndex = dlg.m_iRadioStageIndex;
+#else
+		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
+#endif
 
 		THEAPP.m_iCurTeachVision = VISION_NUMBER_4;
 		THEAPP.m_pModelDataManager = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][VISION_NUMBER_4];

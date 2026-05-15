@@ -269,3 +269,20 @@ void CTriggerManager::AutoLightPageSet_Multi(int iLightControllerIndex, int iPag
 	Sleep(30);
 }
 
+void CTriggerManager::FireTrigger(int iCamIdx, int iTriggerPageIndex)
+{
+	BOOL bPageOnOff[LIGHTCTRL_PAGE_COUNT];
+	for (int i = 0; i < LIGHTCTRL_PAGE_COUNT; i++)
+		bPageOnOff[i] = FALSE;
+
+	bPageOnOff[iTriggerPageIndex] = TRUE;
+
+	int iVisionOrder = 2;
+
+	if (iCamIdx == VISION_NUMBER_1)
+		iVisionOrder = 2;
+	else if (iCamIdx == VISION_NUMBER_2)
+		iVisionOrder = 3;
+
+	m_AJinAXL.Set_Trigger(iVisionOrder, bPageOnOff, m_iSleepTime);	// FALSE: No Usage
+}

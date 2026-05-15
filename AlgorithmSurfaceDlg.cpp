@@ -244,7 +244,10 @@ void CAlgorithmSurfaceDlg::SetSelectedInspection(int iImageType, GTRegion *pSele
 	m_iSelectedInspectionTabIndex = iTabIndex;
 
 	for (int i = 0; i < CHANNEL_NUM; i++)
-		CopyImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType], &(m_HOrgScanImage[i]));
+	{
+		if (THEAPP.m_pGFunction->ValidHImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType]))
+			CopyImage(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType], &(m_HOrgScanImage[i]));
+	}
 }
 
 void CAlgorithmSurfaceDlg::SetParam(CAlgorithmParam AlgorithmParam)

@@ -424,7 +424,7 @@ public:
 	GTRegion *mpLastSelectedRegion;
 
 	void ResetManualBarcodeFlagForOCR();
-	void TeachingImageGrabSave();
+	void TeachingImageGrabSave(BOOL bColor=TRUE);
 	void LaserScanImageSave(int iStartImageIndex);
 	int GetDisplayChannelType() { return m_iDisplayChannelType; }
 	void UpdateHistogramImage();

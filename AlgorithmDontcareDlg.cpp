@@ -585,9 +585,25 @@ BOOL CAlgorithmDontcareDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	SetDlgStatus();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+void CAlgorithmDontcareDlg::SetDlgStatus()
+{
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	m_iRadioProcessChType = CHANNEL_TYPE_I;
+
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_COLOR)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_R)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_G)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_B)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_H)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_S)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_I)->EnableWindow(FALSE);
+#endif
 }
 
 void CAlgorithmDontcareDlg::OnBnClickedButtonAreaMin()

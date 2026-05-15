@@ -44,6 +44,9 @@ public:
 	std::vector<double> m_dStageXPosition[STAGE_NUMBER_MAX];		// Each Vision Head X Position
 	std::vector<double> m_dStageYPosition[STAGE_NUMBER_MAX];		// Each Vision Stage Y Position
 
+	int m_iTriggerImageNumber;
+	int m_iTriggerPeriod;
+
 	BOOL m_bUseDiffusedImage[MAX_IMAGE_TAB];
 	BOOL m_bUseSpecularImage[MAX_IMAGE_TAB];
 	BOOL m_bUseSeqStartImage[MAX_IMAGE_TAB];

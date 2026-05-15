@@ -437,10 +437,26 @@ BOOL CAlgorithmImageProcessDlg::OnInitDialog()
 	m_cbImageProcessMaskImageIndex.SetCurSel(0);
 	m_cbImageProcessMaskImageIndex2.SetCurSel(0);
 
+	SetDlgStatus();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
+void CAlgorithmImageProcessDlg::SetDlgStatus()
+{
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	m_iRadioProcessChType = CHANNEL_TYPE_I;
+
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_COLOR)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_R)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_G)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_B)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_H)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_S)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_PROCESS_IMAGE_I)->EnableWindow(FALSE);
+#endif
+}
 
 void CAlgorithmImageProcessDlg::OnBnClickedButtonDisplayProcessImage()
 {

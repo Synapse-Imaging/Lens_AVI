@@ -487,6 +487,14 @@ BOOL CuScanApp::InitInstance()
 
 	//////////////////////////////////////////////////////////////////////////
 
+#ifdef SINGLE_LENS
+	free((void*)m_pszAppName);
+	m_pszAppName = _tcsdup(_T("Single Lens AVI"));
+#elif ASSY_LENS
+	free((void*)m_pszAppName);
+	m_pszAppName = _tcsdup(_T("Ass'y Lens AVI"));
+#endif
+
 	m_bInitComplete = FALSE;
 	AfxEnableControlContainer();
 	AfxInitRichEdit(); // 리치에디트 초기화..
@@ -722,6 +730,7 @@ BOOL CuScanApp::InitInstance()
 
 	m_pHandlerService = CHandlerService::GetInstance();
 
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 	// Light Controller
 	CString sLightControllerIP;
 	sVisionCamType = m_ModelDefineInfo.m_strVisionName[VISION_NUMBER_1];
@@ -755,6 +764,7 @@ BOOL CuScanApp::InitInstance()
 		m_pHandlerService->SetTCP_IP(LIGHT_CONTROLLER_NUMBER_4, sLightControllerIP);
 		m_pHandlerService->SetTCP_PORT(LIGHT_CONTROLLER_NUMBER_4, Struct_PreferenceStruct.m_iVision4LightPort);
 	}
+#endif
 
 	BOOL bConnectCheck = FALSE;
 	bConnectCheck = m_pHandlerService->Initialize_TcpHandler(FALSE);
@@ -888,10 +898,22 @@ BOOL CuScanApp::InitInstance()
 		}
 		else
 		{
+#ifdef SINGLE_LENS
+			if (iPcVisionNo < 2)
+				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[0]);
+			else
+				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[1]);
+#elif ASSY_LENS
+			if (iPcVisionNo < 2)
+				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[0]);
+			else
+				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[1]);
+#else
 			if (iPcVisionNo < 2)
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface(m_MilSystem[0]);
 			else
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface(m_MilSystem[1]);
+#endif
 		}
 	}
 
@@ -1433,8 +1455,16 @@ BOOL CuScanApp::InitInstance()
 
 	if (Struct_PreferenceStruct.m_iPCType == PC_NUMBER_1)
 	{
+#ifdef SINGLE_LENS
+		m_pHandlerService->SetHandlerTCP_IP("192.168.0.11");
+		m_pHandlerService->SetHandlerTCP_PORT(12001);
+#elif ASSY_LENS
 		m_pHandlerService->SetHandlerTCP_IP("192.168.0.11");
 		m_pHandlerService->SetHandlerTCP_PORT(8001);
+#else
+		m_pHandlerService->SetHandlerTCP_IP("192.168.0.11");
+		m_pHandlerService->SetHandlerTCP_PORT(8001);
+#endif
 	}
 	else if (Struct_PreferenceStruct.m_iPCType == PC_NUMBER_2)
 	{

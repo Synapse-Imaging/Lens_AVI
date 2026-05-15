@@ -234,6 +234,20 @@ BOOL CGlobalMatchingDlg::OnInitDialog()
 
 	ChangeLanguage();
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	m_iRadioAlignProcessChType = CHANNEL_TYPE_I;
+	THEAPP.m_pInspectAdminViewToolbarDlg->SetDisplayChannel(CHANNEL_TYPE_I);
+	THEAPP.m_pInspectAdminViewDlg->UpdateView(FALSE);
+
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_COLOR)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_R)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_G)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_B)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_H)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_S)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO_GLOBAL_MATCHING_PROCESS_IMAGE_I)->EnableWindow(FALSE);
+#endif
+
 	UpdateData(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

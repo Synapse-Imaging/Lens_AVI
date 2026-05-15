@@ -33,6 +33,8 @@ public:
 
 	void AutoLightPageSet_Multi(int iLightControllerIndex, int iPageIndex, const std::vector<std::pair<int, int>>& vLightGroup);
 
+	void FireTrigger(int iCamIdx, int iTriggerPageIndex);
+
 protected:
 	CAJinAXL m_AJinAXL;
 	int		m_iSleepTime;

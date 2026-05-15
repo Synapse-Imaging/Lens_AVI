@@ -200,4 +200,6 @@ public:
 	afx_msg void OnBnClickedButtonYLengthMax();
 
 	afx_msg void OnBnClickedMfcbuttonNextProcessing();
+
+	void SetDlgStatus();
 };

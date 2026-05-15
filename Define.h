@@ -120,6 +120,9 @@
 #define LIGHTCTRL_GRAB_ADDR_PAGE_COUNT		16		// ºÐ¸®
 #define LIGHTCTRL_PAGE_COUNT				32		// 16 -> 32
 #define LIGHTCTRL_PAGE_COUNT_4CH			6
+#define LIGHTCTRL_PAGE_COUNT_6CH			10
+#define LIGHTCTRL_PAGE_COUNT_8CH			10
+#define LIGHTCTRL_PAGE_COUNT_2CH			6
 
 ////////////// Light Control ////////////////////
 //#define LIGHT_BRIGHT_MAX 999
@@ -261,7 +264,11 @@
 #define MAX_RESULT_IMAGE	18
 
 #ifdef INLINE_MODE
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	#define MAX_GRAB_BUFFER			MAX_IMAGE_TAB
+#else
 	#define MAX_GRAB_BUFFER			MAX_IMAGE_TAB + 30 + 6
+#endif
 	#define GRAB_BUFFER_VISION1		MAX_GRAB_BUFFER
 	#define GRAB_BUFFER_VISION2		MAX_GRAB_BUFFER
 	#define GRAB_BUFFER_VISION3		MAX_GRAB_BUFFER

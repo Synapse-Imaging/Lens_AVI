@@ -181,6 +181,8 @@ BOOL CLightControlDlg::OnInitDialog()
 
 	ChangeLanguage();
 
+	SetDlgStatus();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -280,6 +282,19 @@ void CLightControlDlg::ChangeLanguage()
 		SetDlgItemText(IDC_BUTTON_MOVE_Z_POS, _T("Grab position move"));
 		SetDlgItemText(IDC_GRAB, _T("Image grab"));
 	}
+}
+
+void CLightControlDlg::SetDlgStatus()
+{
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	GetDlgItem(IDC_BUTTON_SET_FAI)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_CAMERA_LIGHT_MANAGER)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_GRAB_SEQUENCE)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_CHANGE_SPECULAR)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_AUTO_FOCUS)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_MOTION_CONTROL)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_MOVE_Z_POS)->EnableWindow(FALSE);
+#endif
 }
 
 BOOL CLightControlDlg::PreTranslateMessage(MSG* pMsg)
@@ -441,6 +456,61 @@ UINT SequenceGrabThread(LPVOID lp)
 
 			if (THEAPP.m_pCameraManager->GetTeachImageSave())
 				THEAPP.m_pInspectAdminViewDlg->TeachingImageGrabSave();								// 티칭 이미지 저장  => 티칭화면에 있어야만 저장됨.
+		}
+	}
+
+	pLightControlDlg->m_bDFMManualGrabDone = TRUE;
+
+	return 1;
+}
+
+UINT SingleGrabThread(LPVOID lp)
+{
+	CString strLog;
+
+	CLightControlDlg* pLightControlDlg = (CLightControlDlg*)lp;
+
+	int iImageIndex = pLightControlDlg->m_iTeachingGrab - 1;
+	if (iImageIndex < 0)
+		iImageIndex = 0;
+
+	int iStartGrabBufferIndex = iImageIndex;
+
+	BOOL bGrabSuccess = FALSE;
+
+	THEAPP.m_pCameraManager->SetTeachImageSave(TRUE);
+
+	auto log_time_start = std::chrono::high_resolution_clock::now();
+
+	bGrabSuccess = THEAPP.m_pCameraManager->CameraStartGrab_NoSeq(iStartGrabBufferIndex, THEAPP.m_pModelDataManager->m_iLightPageIdx[iImageIndex]);
+	   
+	auto log_time_end = std::chrono::high_resolution_clock::now();
+	auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
+	strLog.Format("SEQ Grab, Time(ms): %d", log_time_ms);
+	THEAPP.m_log_scan->debug("{}", LOG_CSTR(strLog));
+
+	if (bGrabSuccess)
+	{
+		int iGrabCircularIdx = THEAPP.m_pCameraManager->GetGrabCircularIndex();
+
+		if (THEAPP.m_iModeSwitch == MODE_ADMIN_TEACH_VIEW)								// 티칭화면이면 ....
+		{
+			if (THEAPP.m_pCameraManager->GetCropFovUse())
+			{
+				CropPart(THEAPP.m_pCameraManager->m_hoCallBackImage[iGrabCircularIdx][iImageIndex][0], &(THEAPP.m_pInspectAdminViewDlg->m_pHLiveImage[CHANNEL_TYPE_I]), THEAPP.m_pCameraManager->GetCropFovLTY(), THEAPP.m_pCameraManager->GetCropFovLTX(), THEAPP.m_pCameraManager->GetCropFovSizeX(), THEAPP.m_pCameraManager->GetCropFovSizeY());
+			}
+			else
+			{
+				CopyImage(THEAPP.m_pCameraManager->m_hoCallBackImage[iGrabCircularIdx][iImageIndex][0], &(THEAPP.m_pInspectAdminViewDlg->m_pHLiveImage[CHANNEL_TYPE_I]));
+			}
+
+			CopyImage(THEAPP.m_pInspectAdminViewDlg->m_pHLiveImage[CHANNEL_TYPE_I], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[CHANNEL_TYPE_I][THEAPP.m_pTabControlDlg->m_iCurrentTab - 1]));
+
+			THEAPP.m_pInspectAdminViewDlg->UpdateView();
+
+			if (THEAPP.m_pCameraManager->GetTeachImageSave())
+				THEAPP.m_pInspectAdminViewDlg->TeachingImageGrabSave(FALSE);								// 티칭 이미지 저장  => 티칭화면에 있어야만 저장됨.
 		}
 	}
 
@@ -1081,7 +1151,12 @@ void CLightControlDlg::GrabSequence()
 
 	m_bDFMManualGrabDone = FALSE;
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	AfxBeginThread(SingleGrabThread, this);
+#else
 	AfxBeginThread(SequenceGrabThread, this);
+#endif
+
 #endif
 }
 

@@ -120,6 +120,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	
 	bool InitGrabInterface(MIL_ID MilSystem);
+	bool InitGrabInterface_Mono(MIL_ID MilSystem);
 	void UnInitGrabInterface();
 	void UpdateWhiteBalance(int iVisionNo);
 	
@@ -130,10 +131,12 @@ public:
 	int m_iSEQStartBufferIndex;
 	BOOL CameraStartGrab(int iImageGrabIndex, int iSeqAddressIndex = LIGHTCTRL_TEACHING_GRAB_ADDR_INDEX, int iNoGrabImage = 1, BOOL bAutoSetting = FALSE);
 	BOOL AutoRunCameraStartGrab(int iGrabStartBufferIdx, int iNoGrabImage);
+	BOOL CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPageIdx);
 
 	BOOL AutoRunCameraGrab_OneGrabFunction_Start(int iGrabStartBufferIdx, int iNoGrabImage);
 	BOOL AutoRunCameraGrab_OneGrabFunction_Stop(int iGrabStartBufferIdx, int iNoGrabImage);
 	BOOL AutoRunCameraGrab_OneGrabFunction(int iGrabStartBufferIdx, int iNoGrabImage);
+	BOOL AutoRunCameraGrab_SingleLens(int iGrabStartBufferIdx, int iNoGrabImage, int iVisionGrabPeriodMsec, int iDualModelData, int iPcVisionNo);
 
 	BOOL m_bGrabIndexMismatchDetected;
 	int m_iGrabIndexMismatchOffset;

@@ -23,15 +23,19 @@ public:
 	CLightControl();
 	virtual ~CLightControl();
 
-	// New Controller
 	void SetGrabSequence(int iLightControllerIndex, int iAddrIndex, int *piPageIndex, int iSeqCount);
 	void SetOnTime_Page(int iLightControllerIndex, int iPageIndex);
 	void SetOnTime_Channel(int iLightControllerIndex, int iPageIndex, int iChannelNumber, int iOnTime);
+
+	void SetIllumination_2CH(unsigned int uiPageIndex = 0);
 
 	void SetIllumination_4CH(unsigned int uiPageIndex = 0);
 	void SetChannelllumination_4CH(unsigned int uiPageIndex, unsigned int uiChannelIndex, unsigned int uiChannelValue);
 	void SetChannelClear_4CH();
 	void SetTotalChannelllumination_4CH(unsigned int uiChannelValue1, unsigned int uiChannelValue2, unsigned int uiChannelValue3, unsigned int uiChannelValue4);
+
+	void SetIllumination_6CH(unsigned int uiPageIndex = 0);
+	void SetIllumination_8CH(unsigned int uiPageIndex = 0);
 
 	void SetIllumination_10CH(unsigned int uiPageIndex = 0);
 	void SetChannelllumination_10CH(unsigned int uiPageIndex, unsigned int uiChannelIndex, unsigned int uiChannelValue);

@@ -5428,6 +5428,557 @@ UINT InspectionThread_AutoFocus_Inspect_OneGrabFunction(LPVOID lp)
 	}
 }
 
+UINT InspectionThread_SingleLens(LPVOID lp)
+{
+	CString strLog;
+
+	INSP_THREAD_PARAM* pThreadItem = (INSP_THREAD_PARAM*)lp;
+	CInspectService* pInspectService = pThreadItem->pInspectService;
+	int iVisionCamType = pThreadItem->iVisionCamType;
+	SAFE_DELETE(pThreadItem);
+
+	int iPcVisionNo = VISION_NUMBER_1;
+
+	if (iVisionCamType == VISION_NUMBER_1)
+		iPcVisionNo = VISION_NUMBER_1;
+	else if (iVisionCamType == VISION_NUMBER_2)
+		iPcVisionNo = VISION_NUMBER_2;
+	else if (iVisionCamType == VISION_NUMBER_3)
+		iPcVisionNo = VISION_NUMBER_3;
+	else if (iVisionCamType == VISION_NUMBER_4)
+		iPcVisionNo = VISION_NUMBER_4;
+
+	CString sVisionCamType_Short;
+	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[iPcVisionNo];
+
+	int i;
+	CString sLotID, sTrayID;
+	int iMzNo, iJigNo, iTrayNo, iModuleNo;
+	int iStageNo = STAGE_NUMBER_1;
+	sLotID = pInspectService->m_sLotID_H[iVisionCamType];
+	iMzNo = pInspectService->m_iMzNo_H[iVisionCamType];
+	sTrayID = pInspectService->m_sTrayID_H[iVisionCamType];
+	iJigNo = pInspectService->m_iJigNo_H[iVisionCamType];
+	iTrayNo = pInspectService->m_iTrayNo_H[iVisionCamType];
+	iModuleNo = pInspectService->m_iModuleNo_H[iVisionCamType];
+	int iDualModelData = THEAPP.g_iDualModelData[iMzNo - 1];
+
+#ifdef INLINE_MODE
+	iStageNo = pInspectService->m_iStageNo_H[iVisionCamType];
+#endif
+
+	CString sVisionCamType_Comm;
+	sVisionCamType_Comm = THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iPcVisionNo][iStageNo];
+	
+	try
+	{
+		if (THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_sModelName == ".")
+			return 0;
+
+		int iCurGrabCircularIndex = THEAPP.m_pDualCameraManager[iPcVisionNo]->GetGrabCircularIndex();
+
+		strLog.Format("%s/ Scan start, Time(ms): -, LotID: %s, Port: %d, Tray: %d, Module: %d, iCurGrabCircularIndex: %d", sVisionCamType_Short, sLotID, iMzNo, iTrayNo, iModuleNo, iCurGrabCircularIndex);
+		THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
+
+		auto total_log_time_start = std::chrono::high_resolution_clock::now();
+		auto log_time_start = std::chrono::high_resolution_clock::now();
+		auto log_time_end = std::chrono::high_resolution_clock::now();
+		auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
+		BOOL bGrabFail = FALSE;
+		BOOL bGrabSuccess = TRUE;
+
+		int iNoSeqGrabImage = 1;
+
+		int iLotModuleIndex, iStageIndex;
+
+		////////////////////////////// 스캔 시작 ////////////////////////////////////
+
+#ifdef INLINE_MODE
+		
+		int iNoCurImageGrab = 0;
+		int iRetryCnt;
+		BOOL bFocusMoveSuccess = FALSE;
+
+		int iGrabCount = 0;
+		int iNoGrabing = 0;
+		int iTriggerVisionGrabNumber = 4;
+		int iTriggerPeriodMsec = 25;
+		const DWORD TRIGGER_TIMEOUT_MS = 500;
+
+		iTriggerVisionGrabNumber = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iTriggerImageNumber;
+		iTriggerPeriodMsec = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iTriggerPeriod;
+		iNoGrabing = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iNoUsedImageGrab;
+		THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Start(iGrabCount, iNoGrabing);
+
+		g_objAJinAXL.ResetTriggerEvent(iVisionCamType);
+
+		THEAPP.m_pHandlerService->Set_TriggerRequest(sVisionCamType_Comm, sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo);
+
+		while (TRUE)
+		{
+			if (iNoCurImageGrab >= THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iNoUsedImageGrab)
+				break;
+
+			if (iGrabCount >= g_iVisionMaxGrabBuffer[iVisionCamType])
+				break;
+			
+			bGrabSuccess = FALSE;
+					   
+			log_time_start = std::chrono::high_resolution_clock::now();
+
+			HANDLE hTrigger = g_objAJinAXL.GetTriggerEvent(iVisionCamType);
+			DWORD dwWait = ::WaitForSingleObject(hTrigger, TRIGGER_TIMEOUT_MS);
+
+			if (dwWait == WAIT_TIMEOUT)
+			{
+				strLog.Format("%s/ Trigger TIMEOUT (%d ms), LotID: %s, Port: %d, Tray: %d, Module: %d, Image: %d",
+					sVisionCamType_Comm, TRIGGER_TIMEOUT_MS,
+					sLotID, iMzNo, iTrayNo, iModuleNo, iNoCurImageGrab + 1);
+				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
+
+				bGrabFail = TRUE;
+				break;
+			}
+			else if (dwWait != WAIT_OBJECT_0)
+			{
+				strLog.Format("%s/ Trigger WAIT ERROR (%lu), GetLastError: %lu", sVisionCamType_Comm, dwWait, ::GetLastError());
+				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
+
+				bGrabFail = TRUE;
+				break;
+			}
+
+			bGrabSuccess = THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_SingleLens(iGrabCount, iTriggerVisionGrabNumber, iTriggerPeriodMsec, iDualModelData, iPcVisionNo);
+
+			if (bGrabSuccess == FALSE)
+				bGrabFail = TRUE;		// 그랩이 한번이라도 성공하지 못하면 bGrabFail 활성화 시킨다
+
+			log_time_end = std::chrono::high_resolution_clock::now();
+			log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+			strLog.Format("%s/ Grab, Time(ms): %d, LotID: %s, Port: %d, Tray: %d, Module: %d, Image: %d, Grab Success: %s", sVisionCamType_Comm, log_time_ms, sLotID, iMzNo, iTrayNo, iModuleNo, iNoCurImageGrab + 1, bGrabSuccess ? "OK" : "NG");
+		
+			THEAPP.m_log_scan->info("{}", LOG_CSTR(strLog));
+
+			iNoCurImageGrab += iTriggerVisionGrabNumber;
+			iGrabCount += iTriggerVisionGrabNumber;
+
+			if (bGrabSuccess == FALSE)
+			{
+				break;
+			}
+		}
+
+		THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Stop(0, iNoGrabing);
+		THEAPP.m_pDualCameraManager[iPcVisionNo]->m_bGrabIndexMismatchDetected = FALSE;
+		THEAPP.m_pDualCameraManager[iPcVisionNo]->m_iGrabIndexMismatchOffset = 0;
+
+		//////////////////////////////////////////////////////////////////////////
+		//	Grab 완료 => 알고리즘 Thread 시작
+		//////////////////////////////////////////////////////////////////////////
+
+		if (bGrabFail == TRUE)
+		{
+			strLog.Format("%s/ Grab fail(No signal), Time(ms): -, LotID: %s, Port: %d, Tray: %d, Module: %d", sVisionCamType_Short, sLotID, iMzNo, iTrayNo, iModuleNo);
+			THEAPP.m_log_scan->warn("{}", LOG_CSTR(strLog));
+		}
+
+		if (THEAPP.Struct_PreferenceStruct.m_bUseGrabHold)
+		{
+			int iScanBufferIdx;
+			BOOL bBufferAvailable = TRUE;
+
+			log_time_start = std::chrono::high_resolution_clock::now();
+
+			while (1)
+			{
+				bBufferAvailable = TRUE;
+
+				iScanBufferIdx = pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iScanBufferIdx;
+
+				if (pInspectService->m_pInspectAlgorithm[iVisionCamType].IsPosProcessingDone(iScanBufferIdx) == FALSE)
+				{
+					bBufferAvailable = FALSE;
+					break;
+				}
+
+				++iScanBufferIdx;
+				if (iScanBufferIdx >= THEAPP.m_ModelDefineInfo.m_iMaxInspectionBufferCount[iVisionCamType])
+					iScanBufferIdx = 0;
+
+				if (bBufferAvailable)
+					break;
+
+				Sleep(100);
+
+				if (pInspectService->GetCycleStopStatus() == TRUE || pInspectService->GetReloadStatus() == TRUE)
+				{
+					Sleep(10);
+
+					return 0;
+				}
+			}
+
+			log_time_end = std::chrono::high_resolution_clock::now();
+			log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
+			strLog.Format("%s/ Scan complete holding, Time(ms): %d, LotID: %s, Port: %d, Tray: %d, Module: %d", sVisionCamType_Comm, log_time_ms, sLotID, iMzNo, iTrayNo, iModuleNo);
+			THEAPP.m_log_scan->info("{}", LOG_CSTR(strLog));
+		}
+
+		THEAPP.m_pHandlerService->Set_ScanComplete(sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo, sVisionCamType_Comm);
+		if (THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber > 0)
+			THEAPP.m_pHandlerService->Save_ScanComplete(sLotID, iMzNo, iJigNo, iTrayNo, iModuleNo, sVisionCamType_Comm);
+		THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = TRUE;
+
+		auto total_log_time_end = std::chrono::high_resolution_clock::now();
+		auto total_log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(total_log_time_end - total_log_time_start).count();
+		strLog.Format("%s/ Scan done, Time(ms): %d, LotID: %s, Port: %d, Tray: %d, Module: %d, iCurGrabCircularIndex: %d", sVisionCamType_Short, total_log_time_ms, sLotID, iMzNo, iTrayNo, iModuleNo, iCurGrabCircularIndex);
+		THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
+
+#else	// Offline Mode =>
+		HObject HInspectImage[MAX_IMAGE_TAB][3];
+
+		for (int iii = 0; iii < MAX_IMAGE_TAB; iii++)
+		{
+			for (int jjj = 0; jjj < 3; jjj++)
+				GenEmptyObj(&(HInspectImage[iii][jjj]));
+		}
+
+		CString FolderName, ImageName;
+
+		if (THEAPP.Struct_PreferenceStruct.m_strOfflineTestFolderPath != "")
+			FolderName.Format(THEAPP.Struct_PreferenceStruct.m_strOfflineTestFolderPath + "\\");
+		else
+		{
+			AfxMessageBox("디버깅 영상 폴더가 지정되지 않았습니다.", MB_SYSTEMMODAL);
+			return 0;
+		}
+
+		bGrabFail = TRUE;
+
+		char chSep = '_';
+		CString sFileBarcode = _T("NOREAD");
+
+		if (THEAPP.Struct_PreferenceStruct.m_bCombineRawImage)
+		{
+			try
+			{
+				HANDLE hFindFile;
+				WIN32_FIND_DATA FindFileData;
+				CString sReadFileName, strRawImageFileFullName;
+				BOOL bFileFindFail = FALSE;
+				HObject HColorImage;
+				HObject HCombineImage;
+
+				int iNoInspectImage = 0;
+				iNoInspectImage = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][iPcVisionNo]->m_iNoUsedImageGrab;
+
+				int iNoImageYDir, iModular;
+				int iCropImageSizeX, iCropImageSizeY;
+
+				iNoImageYDir = iNoInspectImage / MAX_COMBINE_IMAGE_NUMBER;
+				iModular = iNoInspectImage % MAX_COMBINE_IMAGE_NUMBER;
+				if (iModular > 0)
+					iNoImageYDir += 1;
+
+				ImageName.Format("Module%d_%s_Image%02d*", iModuleNo, sVisionCamType_Short, iNoInspectImage);
+				sReadFileName = FolderName + ImageName;
+
+				if ((hFindFile = FindFirstFile(sReadFileName, &FindFileData)) != INVALID_HANDLE_VALUE)
+				{
+					strRawImageFileFullName.Format("%s%s", FolderName, (LPCTSTR)FindFileData.cFileName);
+
+					FindClose(hFindFile);
+
+					ReadImage(&HCombineImage, (HTuple)strRawImageFileFullName);
+
+					AfxExtractSubString(sFileBarcode, FindFileData.cFileName, 3, chSep);
+
+					if (!THEAPP.Struct_PreferenceStruct.m_bRawImageType)
+						sFileBarcode.TrimRight(".bmp");
+					else
+						sFileBarcode.TrimRight(".jpg");
+
+					EnterCriticalSection(&THEAPP.m_csBarcodeRead);
+
+					THEAPP.m_strModuleBarcodeID[iMzNo - 1][iTrayNo - 1][iModuleNo - 1] = sFileBarcode;
+
+					LeaveCriticalSection(&THEAPP.m_csBarcodeRead);
+
+					if (THEAPP.m_pGFunction->ValidHImage(HCombineImage) == TRUE)
+					{
+						HTuple htImageHeight = 0;
+						HTuple htImageWidth = 0;
+						HalconCpp::GetImageSize(HCombineImage, &htImageWidth, &htImageHeight);
+						int wd = (int)htImageWidth.L();
+						int ht = (int)htImageHeight.L();
+
+						iCropImageSizeX = wd / MAX_COMBINE_IMAGE_NUMBER;
+						iCropImageSizeY = ht / iNoImageYDir;
+
+						POINT CropLTPoint, CropRBPoint;
+						int iImageIndexX, iImageIndexY;
+						HObject HCropImage;
+
+						for (i = 0; i < iNoInspectImage; i++)
+						{
+							iImageIndexX = i % MAX_COMBINE_IMAGE_NUMBER;
+							iImageIndexY = i / MAX_COMBINE_IMAGE_NUMBER;
+
+							CropLTPoint.x = iImageIndexX * iCropImageSizeX;
+							CropRBPoint.x = iImageIndexX * iCropImageSizeX + iCropImageSizeX - 1;
+							CropLTPoint.y = iImageIndexY * iCropImageSizeY;
+							CropRBPoint.y = iImageIndexY * iCropImageSizeY + iCropImageSizeY - 1;
+
+							CropRectangle1(HCombineImage, &HColorImage, CropLTPoint.y, CropLTPoint.x, CropRBPoint.y, CropRBPoint.x);
+
+							if (THEAPP.m_pGFunction->ValidHImage(HColorImage))
+							{
+								HTuple htImageHeight = 0;
+								HTuple htImageWidth = 0;
+								HalconCpp::GetImageSize(HColorImage, &htImageWidth, &htImageHeight);
+
+								if (htImageWidth.L() != THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[iVisionCamType] || htImageHeight.L() != THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[iVisionCamType])
+									ZoomImageSize(HColorImage, &HColorImage, THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[iVisionCamType], THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[iVisionCamType], "bicubic");
+
+								Decompose3(HColorImage, &(HInspectImage[i][0]), &(HInspectImage[i][1]), &(HInspectImage[i][2]));
+							}
+							else
+							{
+								bFileFindFail = TRUE;
+								break;
+							}
+						}
+					}
+				}
+				else
+					bFileFindFail = TRUE;
+
+				if (bFileFindFail == FALSE)
+					bGrabFail = FALSE;
+			}
+			catch (HException &except)
+			{
+				HTuple HExp;
+				HTuple HOperatorName, HErrMsg;
+				CString sOperatorName, sErrMsg;
+				except.ToHTuple(&HExp);
+				except.GetExceptionData(HExp, "operator", &HOperatorName);
+				except.GetExceptionData(HExp, "error_message", &HErrMsg);
+				sOperatorName = HOperatorName.S();
+				sErrMsg = HErrMsg.S();
+
+				strLog.Format("Halcon Exception [InspectService::InspectionThread_SingleLens Debug Read Image] : <%s>%s", sOperatorName, sErrMsg);
+				THEAPP.m_log_halcon->warn("{}", LOG_CSTR(strLog));
+			}
+		}
+		else
+		{
+			try
+			{
+				HANDLE hFindFile;
+				WIN32_FIND_DATA FindFileData;
+				CString sReadFileName, strRawImageFileFullName;
+				BOOL bFileFindFail = FALSE;
+				HObject HColorImage;
+
+				for (int i = 0; i < THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][iPcVisionNo]->m_iNoUsedImageGrab; i++)
+				{
+					if (!THEAPP.Struct_PreferenceStruct.m_bRawImageType)
+						ImageName.Format("Module%d_%s_Image%02d*.bmp", iModuleNo, sVisionCamType_Short, i + 1);
+					else
+						ImageName.Format("Module%d_%s_Image%02d*.jpg", iModuleNo, sVisionCamType_Short, i + 1);
+					sReadFileName = FolderName + ImageName;
+
+					if ((hFindFile = FindFirstFile(sReadFileName, &FindFileData)) != INVALID_HANDLE_VALUE)
+					{
+						strRawImageFileFullName.Format("%s%s", FolderName, (LPCTSTR)FindFileData.cFileName);
+
+						FindClose(hFindFile);
+					}
+					else
+					{
+						bFileFindFail = TRUE;
+						break;
+					}
+
+					ReadImage(&HColorImage, (HTuple)strRawImageFileFullName);
+
+					try
+					{
+						HTuple htImgPtrR, htImgPtrG, htImgPtrB;
+						HTuple htType = 0;
+						HTuple htImageHeight = 0;
+						HTuple htImageWidth = 0;
+						HalconCpp::GetImagePointer3(HColorImage, &htImgPtrR, &htImgPtrG, &htImgPtrB, &htType, &htImageWidth, &htImageHeight);
+
+						if (htImageWidth.L() != THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[iVisionCamType] || htImageHeight.L() != THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[iVisionCamType])
+							ZoomImageSize(HColorImage, &HColorImage, THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[iVisionCamType], THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[iVisionCamType], "bicubic");
+					}
+					catch (HException &except)
+					{
+						;
+					}
+
+					if (i == (THEAPP.m_nOfflineBarcodeImageNo - 1))		// default: if (i == 0)
+					{
+						AfxExtractSubString(sFileBarcode, FindFileData.cFileName, 3, chSep);
+
+						if (!THEAPP.Struct_PreferenceStruct.m_bRawImageType)
+							sFileBarcode.TrimRight(".bmp");
+						else
+							sFileBarcode.TrimRight(".jpg");
+
+						EnterCriticalSection(&THEAPP.m_csBarcodeRead);
+
+						THEAPP.m_strModuleBarcodeID[iMzNo - 1][iTrayNo - 1][iModuleNo - 1] = sFileBarcode;
+
+						LeaveCriticalSection(&THEAPP.m_csBarcodeRead);
+					}
+
+					Decompose3(HColorImage, &(HInspectImage[i][0]), &(HInspectImage[i][1]), &(HInspectImage[i][2]));
+				}
+
+				if (bFileFindFail == FALSE)
+					bGrabFail = FALSE;
+			}
+			catch (HException &except)
+			{
+				HTuple HExp;
+				HTuple HOperatorName, HErrMsg;
+				CString sOperatorName, sErrMsg;
+				except.ToHTuple(&HExp);
+				except.GetExceptionData(HExp, "operator", &HOperatorName);
+				except.GetExceptionData(HExp, "error_message", &HErrMsg);
+				sOperatorName = HOperatorName.S();
+				sErrMsg = HErrMsg.S();
+
+				strLog.Format("Halcon Exception [InspectService::InspectionThread_SingleLens Debug Read Image] : <%s>%s", sOperatorName, sErrMsg);
+				THEAPP.m_log_halcon->warn("{}", LOG_CSTR(strLog));
+			}
+		}
+
+		THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = TRUE;
+
+#endif	// Offline Mode
+
+		//////////////////////////////////////////////////////////////////////////
+		//	Grab 완료 => 알고리즘 Thread 시작
+		//////////////////////////////////////////////////////////////////////////
+
+		BOOL bCopyRet;
+		int i;
+
+#ifdef INLINE_MODE
+		pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iPcVisionNo = iPcVisionNo;
+		pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iVisionCamType = iVisionCamType;
+		pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iNoInspectImage = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iNoUsedImageGrab;
+
+		if (bGrabFail)
+		{
+			if (THEAPP.m_ModelDefineInfo.m_bVisionBarcode[iPcVisionNo])	// Barcode
+			{
+				THEAPP.m_pHandlerService->Set_BarcodeResult(sLotID, iMzNo, iTrayNo, iModuleNo, "NOREAD");
+				THEAPP.m_strModuleBarcodeID[iMzNo - 1][iTrayNo - 1][iModuleNo - 1] = "NOREAD";
+			}
+		}
+
+		AlgorithmCopyParam param;
+		param.bGrabFail = bGrabFail;
+		param.sLotID = sLotID;
+		param.iMzNo = iMzNo;
+		param.iStageNo = iStageNo;
+		param.iJigNo = iJigNo;
+		param.iTrayNo = iTrayNo;
+		param.iModuleNo = iModuleNo;
+		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
+		param.iNoGrabRetry = 0;
+		param.iNoFocusMoveRetry = 0;
+		param.copyMode = AlgorithmCopyParam::NORMAL;
+		param.ppGrabHImage = THEAPP.m_pDualCameraManager[iPcVisionNo]->m_hoCallBackImage[iCurGrabCircularIndex];
+		param.bColor = FALSE;
+
+		bCopyRet = pInspectService->m_pInspectAlgorithm[iVisionCamType].CopyInspectInformation(param);
+
+		if (bCopyRet == FALSE)
+		{
+			if (THEAPP.m_ModelDefineInfo.m_bVisionBarcode[iPcVisionNo])	// Barcode
+			{
+				THEAPP.m_pHandlerService->Set_BarcodeResult(sLotID, iMzNo, iTrayNo, iModuleNo, "NOREAD");
+				THEAPP.m_strModuleBarcodeID[iMzNo - 1][iTrayNo - 1][iModuleNo - 1] = "NOREAD";
+			}
+
+			param.bGrabFail = TRUE;
+			pInspectService->m_pInspectAlgorithm[iVisionCamType].CopyInspectInformation(param);
+		}
+#else
+		pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iPcVisionNo = iPcVisionNo;
+		pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iVisionCamType = iVisionCamType;
+		pInspectService->m_pInspectAlgorithm[iVisionCamType].m_iNoInspectImage = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][iPcVisionNo]->m_iNoUsedImageGrab;
+
+		AlgorithmCopyParam param;
+		param.bGrabFail = bGrabFail;
+		param.sLotID = sLotID;
+		param.iMzNo = iMzNo;
+		param.iStageNo = iStageNo;
+		param.iJigNo = iJigNo;
+		param.iTrayNo = iTrayNo;
+		param.iModuleNo = iModuleNo;
+		param.iCurCircularGrabIdx = iCurGrabCircularIndex;
+		param.iNoGrabRetry = 0;
+		param.iNoFocusMoveRetry = 0;
+		param.copyMode = AlgorithmCopyParam::NORMAL;
+		param.ppGrabHImage = HInspectImage;
+		param.bColor = FALSE;
+
+		bCopyRet = pInspectService->m_pInspectAlgorithm[iVisionCamType].CopyInspectInformation(param);
+
+		if (bCopyRet == FALSE)
+		{
+			param.bGrabFail = TRUE;
+			pInspectService->m_pInspectAlgorithm[iVisionCamType].CopyInspectInformation(param);
+		}
+#endif
+
+#ifndef INLINE_MODE
+#ifndef ONE_THREAD_INSPECTION
+		pInspectService->m_bOfflineModuleInspectDone[iPcVisionNo] = TRUE;
+#endif
+#endif
+
+		THEAPP.m_pDualCameraManager[iPcVisionNo]->m_bGrabCircularBufferCopyDone[iCurGrabCircularIndex] = TRUE;
+
+		return 0;
+	}
+	catch (HException &except)
+	{
+		HTuple HExp;
+		HTuple HOperatorName, HErrMsg;
+		except.ToHTuple(&HExp);
+		except.GetExceptionData(HExp, "operator", &HOperatorName);
+		except.GetExceptionData(HExp, "error_message", &HErrMsg);
+
+		strLog.Format("Halcon Exception [InspectService::InspectionThread_SingleLens] : <%s>%s", (const char *)HOperatorName.S(), (const char *)HErrMsg.S());
+		THEAPP.m_log_halcon->warn("{}", LOG_CSTR(strLog));
+
+#ifdef INLINE_MODE
+		THEAPP.m_pHandlerService->Set_ScanComplete(sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo, sVisionCamType_Comm);
+		if (THEAPP.Struct_PreferenceStruct.m_iSaveRecentlyCompleteInfoNumber > 0)
+			THEAPP.m_pHandlerService->Save_ScanComplete(sLotID, iMzNo, iJigNo, iTrayNo, iModuleNo, sVisionCamType_Comm);
+#endif
+		THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = TRUE;
+
+#ifndef INLINE_MODE
+#ifndef ONE_THREAD_INSPECTION
+		pInspectService->m_bOfflineModuleInspectDone[iPcVisionNo] = TRUE;
+#endif
+#endif
+
+		return 0;
+	}
+}
+
 UINT SaveRawImageThread(LPVOID lp)
 {
 	CString strLog;
@@ -6524,6 +7075,9 @@ void CInspectService::InspectionMove(int iVisionType, int iMzNo)
 		else
 		{
 #endif
+#ifdef SINGLE_LENS
+			AfxBeginThread(InspectionThread_SingleLens, LPVOID(pParam));
+#else
 			if (THEAPP.Struct_PreferenceStruct.m_bUseBatchInspection)
 			{
 				InspectionStart_Batch(iVisionType);
@@ -6545,6 +7099,7 @@ void CInspectService::InspectionMove(int iVisionType, int iMzNo)
 						AfxBeginThread(InspectionThread_Inspect, LPVOID(pParam));
 				}
 			}
+#endif
 #ifdef INLINE_MODE
 		}
 #endif

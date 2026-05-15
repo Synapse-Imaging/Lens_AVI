@@ -423,6 +423,105 @@ bool CCameraManager::InitGrabInterface(MIL_ID MilSystem)
 	return true;
 }
 
+bool CCameraManager::InitGrabInterface_Mono(MIL_ID MilSystem)
+{
+#ifdef INLINE_MODE
+	MIL_INT SizeX = 0;
+	MIL_INT SizeY = 0;
+	MIL_INT Band = 0;
+
+	//////////////////////////////////////////////////////////////////////////
+	// White Balance
+	float WB_Coefficients[3];
+	m_MilWBCoeff = MbufAlloc1d(MilSystem, 3, 32 + M_FLOAT, M_ARRAY, M_NULL);
+
+	CString strOpticModelFolder;
+	strOpticModelFolder.Format("%s\\Optical\\%s_%s_PC%d", THEAPP.GetWorkingDirectory(), THEAPP.Struct_PreferenceStruct.m_strEquipNo, THEAPP.g_strModelTypeName[THEAPP.GetModelType()], THEAPP.Struct_PreferenceStruct.m_iPCType + 1);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Board Set
+	for (int i = 0; i < 10; i++)
+	{
+		CString strDCFPath;
+		strDCFPath.Format("\\HW\\Vision_N%d\\%s.dcf", m_iVisionCamName + 1, THEAPP.m_ModelDefineInfo.m_strVisionName[m_iVisionCamName]);
+
+#ifdef POC_TEST
+		if (m_iVisionCamName == VISION_NUMBER_1)
+			MdigAlloc(MilSystem, M_DEV2, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		else if (m_iVisionCamName == VISION_NUMBER_2)
+			MdigAlloc(MilSystem, M_DEV0, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+#else
+		if (m_iVisionCamName == VISION_NUMBER_1)
+			MdigAlloc(MilSystem, M_DEV0, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		else if (m_iVisionCamName == VISION_NUMBER_2)
+			MdigAlloc(MilSystem, M_DEV2, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+#endif
+		else if (m_iVisionCamName == VISION_NUMBER_3)
+			MdigAlloc(MilSystem, M_DEV0, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		else if (m_iVisionCamName == VISION_NUMBER_4)
+			MdigAlloc(MilSystem, M_DEV2, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		else
+			return true;
+
+		if (MilDigitizer != 0)
+			break;
+
+		Sleep(50);
+	}
+
+	MdigInquire(MilDigitizer, M_SIZE_X, &SizeX);
+	MdigInquire(MilDigitizer, M_SIZE_Y, &SizeY);
+	MdigInquire(MilDigitizer, M_SIZE_BAND, &Band);
+
+	m_iMaxCircularGrab = THEAPP.m_ModelDefineInfo.m_iVisionGrabCircular[m_iVisionCamName];
+
+	for (int i = 0; i < m_iMaxCircularGrab; i++)
+	{
+		for (int j = 0; j < g_iVisionMaxGrabBuffer[m_iVisionCamName]; j++)
+		{
+			MbufAlloc2d(MilSystem, SizeX, SizeY, 8L + M_UNSIGNED, M_IMAGE + M_DISP + M_GRAB, &(MilMonoImageBuf[i][j]));
+		}
+	}
+
+	if (m_iVisionCamName == VISION_NUMBER_1 || m_iVisionCamName == VISION_NUMBER_2 || m_iVisionCamName == VISION_NUMBER_3 || m_iVisionCamName == VISION_NUMBER_4)
+	{
+		m_iCamImageSizeX = SizeX;
+		m_iCamImageSizeY = SizeY;
+
+		for (int i = 0; i < m_iMaxCircularGrab; i++)
+		{
+			for (int j = 0; j < g_iVisionMaxGrabBuffer[m_iVisionCamName]; j++)
+			{
+				MbufClear(MilMonoImageBuf[i][j], 128);
+			}
+		}
+
+		BYTE *addr;
+
+		for (int i = 0; i < m_iMaxCircularGrab; i++)
+		{
+			for (int j = 0; j < g_iVisionMaxGrabBuffer[m_iVisionCamName]; j++)
+			{
+				MbufInquire(MilMonoImageBuf[i][j], M_HOST_ADDRESS, &addr);
+				GenImage1Extern(&(m_hoCallBackImage[i][j][0]), "byte", SizeX, SizeY, (Hlong)addr, NULL);
+			}
+		}
+
+		MappControl(M_ERROR, M_PRINT_DISABLE);
+		MdigControl(MilDigitizer, M_GRAB_CONTINUOUS_END_TRIGGER, M_ENABLE);
+		MdigControl(MilDigitizer, M_GC_STREAMING_MODE, M_MANUAL);
+		MdigControl(MilDigitizer, M_GC_STREAMING_START, M_DEFAULT);
+	}
+	//////////////////////////////////////////////////////////////////////////
+
+#else
+	m_iCamImageSizeX = THEAPP.m_ModelDefineInfo.m_iVisionImageWidth[m_iVisionCamName];
+	m_iCamImageSizeY = THEAPP.m_ModelDefineInfo.m_iVisionImageHeight[m_iVisionCamName];
+#endif
+
+	return true;
+}
+
 void CCameraManager::UpdateWhiteBalance(int iVisionNo)
 {
 	//////////////////////////////////////////////////////////////////////////
@@ -735,6 +834,54 @@ BOOL CCameraManager::CameraStartGrab(int iGrabStartBufferIdx, int iSeqAddressInd
 	return TRUE;
 }
 
+BOOL CCameraManager::CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPageIdx)
+{
+	CString sVisionCamType_Short;
+	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+
+	m_bGrabDone = FALSE;
+	m_bReGrab = FALSE;
+
+	m_iSEQStartBufferIndex = iGrabStartBufferIdx;
+
+	m_nProcessCount = 0;
+	m_nSEQTargetCount = 1;
+
+	bCameraGrabProcStopFlag = FALSE;
+	iSeqGrabCountIndex = 0;
+
+	MdigProcess(MilDigitizer, MilMonoImageBuf[m_iGrabCircularIdx] + iGrabStartBufferIdx, 1, M_START, M_DEFAULT, CameraGrabProcFunc, this);
+
+	// Speedup
+	Sleep(1);
+
+	THEAPP.m_pTriggerManager->FireTrigger(GetVisionCamName(), iLightPageIdx);
+
+	DWORD ret;
+
+	ret = WaitForSingleObject(m_hEventCameraGrabDone, THEAPP.Struct_PreferenceStruct.m_iGrabDoneWaitTime);
+
+	if (ret == WAIT_FAILED || ret == WAIT_TIMEOUT)
+	{
+		strLog.Format("%s/ SEQ grabdone timeout", sVisionCamType_Short);
+		THEAPP.m_log_scan->warn("{}", LOG_CSTR(strLog));
+
+		if (bCameraGrabProcStopFlag == FALSE)
+		{
+			bCameraGrabProcStopFlag = TRUE;
+			MdigControl(MilDigitizer, M_GRAB_ABORT, M_DEFAULT);
+			MdigProcess(MilDigitizer, MilMonoImageBuf[m_iGrabCircularIdx] + m_iSEQStartBufferIndex, m_nSEQTargetCount, M_STOP, M_DEFAULT, CameraGrabProcFunc, this);
+		}
+
+		strLog.Format("%s/ MdigProcess STOP (SEQ)", sVisionCamType_Short);
+		THEAPP.m_log_scan->warn("{}", LOG_CSTR(strLog));
+
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 BOOL CCameraManager::AutoRunCameraStartGrab(int iGrabStartBufferIdx, int iNoGrabImage)
 {
 	CString sVisionCamType_Short;
@@ -841,6 +988,75 @@ BOOL CCameraManager::AutoRunCameraGrab_OneGrabFunction(int iGrabStartBufferIdx, 
 	return TRUE;
 }
 
+BOOL CCameraManager::AutoRunCameraGrab_SingleLens(int iGrabStartBufferIdx, int iNoGrabImage, int iVisionGrabPeriodMsec, int iDualModelData, int iPcVisionNo)
+{
+	CString sVisionCamType_Short;
+	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+
+	m_bGrabDone = FALSE;
+	m_bReGrab = FALSE;
+
+	m_iSEQStartBufferIndex = iGrabStartBufferIdx;
+
+	m_nProcessCount = 0;
+	m_nSEQTargetCount = iNoGrabImage;
+
+	bCameraGrabProcStopFlag = FALSE;
+	iSeqGrabCountIndex = iGrabStartBufferIdx;
+	
+	auto time_start = std::chrono::high_resolution_clock::now();
+	auto time_end = std::chrono::high_resolution_clock::now();
+	auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count();
+
+	int iGrabCnt = 0;
+
+	while (1)
+	{
+		if (iGrabCnt >= iNoGrabImage)
+			break;
+
+		time_start = std::chrono::high_resolution_clock::now();
+
+		THEAPP.m_pTriggerManager->FireTrigger(GetVisionCamName(), THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iLightPageIdx[iGrabStartBufferIdx+ iGrabCnt]);
+
+		while (1)
+		{
+			time_end = std::chrono::high_resolution_clock::now();
+			time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count();
+			if (time_ms >= iVisionGrabPeriodMsec)
+				break;
+
+			Sleep(1);
+		}
+
+		++iGrabCnt;
+	}
+
+	DWORD ret;
+
+	ret = WaitForSingleObject(m_hEventCameraGrabDone, THEAPP.Struct_PreferenceStruct.m_iGrabDoneWaitTime);
+
+	if (ret == WAIT_FAILED || ret == WAIT_TIMEOUT)
+	{
+		strLog.Format("%s/ SEQ grabdone timeout", sVisionCamType_Short);
+		THEAPP.m_log_scan->warn("{}", LOG_CSTR(strLog));
+
+		m_bGrabIndexMismatchDetected = TRUE;
+
+		if (bCameraGrabProcStopFlag == FALSE)
+		{
+			bCameraGrabProcStopFlag = TRUE;
+			MdigControl(MilDigitizer, M_GRAB_ABORT, M_DEFAULT);
+		}
+
+		strLog.Format("%s/ MdigProcess STOP (SEQ)", sVisionCamType_Short);
+		THEAPP.m_log_scan->warn("{}", LOG_CSTR(strLog));
+
+		return FALSE;
+	}
+
+	return TRUE;
+}
 
 
 /////////////////////////////////////////////////////

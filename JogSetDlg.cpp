@@ -50,6 +50,9 @@ CJogSetDlg::CJogSetDlg(CWnd* pParent /*=NULL*/)
 	{
 		m_bCheckMatchingImage[i] = FALSE;
 
+		m_iEditTriggerImageNumber = 4;
+		m_iEditTriggerPeriod = 25;
+
 		m_dEditImageLightZPosRef = MOTION_NOUSE;
 		m_dEditImageTiltPosRef = MOTION_NOUSE;
 		m_dEditImageRotatePosRef = MOTION_NOUSE;
@@ -80,6 +83,9 @@ void CJogSetDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_SAVE_POSITION_SETTING, m_bnSavePositionSetting);
 	DDX_Control(pDX, IDC_BUTTON_SAVE_LIGHT_SETTING, m_bnSaveLightSetting);
 	DDX_Control(pDX, IDC_BUTTON_SAVE_POSITION_LIGHT_SETTING, m_bnSavePositionLightSetting);
+
+	DDX_Text(pDX, IDC_EDIT_TRIGGER_IMAGE_NUMBER, m_iEditTriggerImageNumber);
+	DDX_Text(pDX, IDC_EDIT_TRIGGER_PERIOD, m_iEditTriggerPeriod);
 
 	DDX_Text(pDX, IDC_EDIT_IMAGE_LIGHT_Z_0, m_dEditImageLightZPosRef);
 	DDX_Text(pDX, IDC_EDIT_IMAGE_TILT_0, m_dEditImageTiltPosRef);
@@ -865,6 +871,8 @@ BOOL CJogSetDlg::OnInitDialog()
 
 	ChangeLanguage();
 
+	SetDlgStatus();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -1079,6 +1087,14 @@ void CJogSetDlg::LoadViewParam()
 		m_dEditImageZPos[i] = INI_MotionMovingPosition.Get_Double(strSection, strKey, MOTION_NOUSE);
 	}
 
+#ifdef SINGLE_LENS
+	strSection.Format("Single Lens Trigger");
+	strKey.Format("Trigger-Image-Number");
+	m_iEditTriggerImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 4);
+	strKey.Format("Trigger-Period");
+	m_iEditTriggerPeriod = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 25);
+#endif
+
 	CString strMotionMovingPosition_Offset;
 	strMotionMovingPosition_Offset.Format("%s\\HW\\Vision_N%d\\MotionMovingPosition_Offset.ini", strOpticModelFolder, THEAPP.m_pModelDataManager->GetModelIdx() + 1);
 
@@ -1173,8 +1189,11 @@ void CJogSetDlg::LoadViewParam()
 		m_bCheckSeqStartImage[i] = FALSE;
 		m_cbSeqAddrIndex[i].SetCurSel(0);
 		m_cbPageIndex[i].SetCurSel(0);
+
+#if !defined (SINGLE_LENS) && !defined (ASSY_LENS)
 		m_cbSeqAddrIndex[i].EnableWindow(TRUE);
 		m_cbPageIndex[i].EnableWindow(TRUE);
+#endif
 	}
 
 	int iPrevSeqIndex, iCurSeqIndex, iPageIndex;
@@ -1225,6 +1244,542 @@ void CJogSetDlg::UpdateViewParam()
 	UpdateData(FALSE);
 }
 
+void CJogSetDlg::SetDlgStatus()
+{
+	GetDlgItem(IDC_GROUPBOX_TRIGGER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_TRIGGER_IMAGE)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_TRIGGER_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_TRIGGER_PERIOD)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_TRIGGER_PERIOD)->ShowWindow(FALSE);
+
+#ifdef SINGLE_LENS
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_GROUPBOX_TRIGGER)->ShowWindow(TRUE);
+	GetDlgItem(IDC_STATIC_TRIGGER_IMAGE)->ShowWindow(TRUE);
+	GetDlgItem(IDC_EDIT_TRIGGER_IMAGE_NUMBER)->ShowWindow(TRUE);
+	GetDlgItem(IDC_STATIC_TRIGGER_PERIOD)->ShowWindow(TRUE);
+	GetDlgItem(IDC_EDIT_TRIGGER_PERIOD)->ShowWindow(TRUE);
+#endif
+
+#if defined (SINGLE_LENS) || defined (ASSY_LENS)
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_0)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_0)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_0)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_0)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_0)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_LIGHT_Z_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_TILT_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_ROTATE_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_X_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_IMAGE_STAGE_Y_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_DIFFUSED_IMAGE_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SPECULAR_IMAGE_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CHECK_SEQ_START_IMAGE_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_SEQ_ADDR_INDEX_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_1)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_2)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_3)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_4)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_11)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_12)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_13)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_14)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_15)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_16)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_17)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_18)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_19)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_20)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_21)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_22)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_23)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_24)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_25)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_26)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_27)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_28)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_29)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_30)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_31)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_32)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_33)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_34)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_35)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_36)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_37)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_38)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_39)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_40)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_41)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_42)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_43)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_44)->EnableWindow(FALSE);
+	GetDlgItem(IDC_COMBO_PAGE_INDEX_45)->EnableWindow(FALSE);
+
+	GetDlgItem(IDC_BUTTON_SAVE_LIGHT_SETTING)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_SAVE_POSITION_LIGHT_SETTING)->EnableWindow(FALSE);
+
+#endif
+	
+}
+
 void CJogSetDlg::OnBnClickedButtonSavePositionSetting()
 {
 	if (THEAPP.m_pModelDataManager->m_sModelName == ".")
@@ -1244,6 +1799,11 @@ void CJogSetDlg::OnBnClickedButtonSavePositionSetting()
 		return;
 
 	THEAPP.m_pModelDataManager->m_iNoUsedImageGrab = m_iRadioLastInspectionImageIndex + 1;
+
+#ifdef SINGLE_LENS
+	THEAPP.m_pModelDataManager->m_iTriggerImageNumber = m_iEditTriggerImageNumber;
+	THEAPP.m_pModelDataManager->m_iTriggerPeriod = m_iEditTriggerPeriod;
+#endif
 
 	THEAPP.m_pModelDataManager->m_dLightZPositionRef[THEAPP.m_iCurStageIndex] = m_dEditImageLightZPosRef;
 	THEAPP.m_pModelDataManager->m_dTiltPositionRef[THEAPP.m_iCurStageIndex] = m_dEditImageTiltPosRef;

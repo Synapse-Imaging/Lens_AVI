@@ -53,9 +53,15 @@ public:
 	CCriticalSection	m_csSendCmd;
 	CCriticalSection	m_csSendCmdTcp[LIGHT_CONTROLLER_NUMBER_MAX];
 
+#ifdef SINGLE_LENS
+	void Get_LotStart(CString sLotID, CString sMzNo, CString sTrayAmt, CString sModuleAmt, CString sHandlerModelName);
+	void Get_LotReadyDone(CString sLotID, CString sMzNo);
+#else
 	void Get_LotStart(CString sLotID, CString sMzNo, CString sTrayAmt, CString sModuleAmt, CString sHandlerModelName, CString sModelAutoLoad);
+#endif
 
 	void Get_LoadComplete(CString sVisionType, CString sJigNo, CString sLotID, CString sMzNo, CString sTrayNo, CString sModuleNo, CString sHeight, CString sBarcode);
+	void Get_LoadComplete(CString sVisionType, CString sLotID, CString sMzNo, CString sTrayID, CString sTrayNo, CString sModuleNo);
 
 	void Send_Tcp(int iLightControllerIndex, CString strSend, BOOL bSaveLog = TRUE);
 
@@ -169,6 +175,8 @@ public:
 
 	void Set_ScanComplete(CString sLotID, int iMzNo, int iJigNo, int iTrayNo, int iModuleNo, CString sVisionType);			 //검사영역을 모두 Scan 후 Complete 신호를 보낸다. (NewType)
 
+	void Set_ScanComplete(CString sLotID, int iMzNo, CString sTrayID, int iTrayNo, int iModuleNo, CString sVisionType);
+
 	void Set_InspectComplete(CString sLotID, int iMzNo, int iTrayNo, int iModuleNo, CString sVisionType, CString sModuleResult, CString sDefectCode);		//Inspection 완료 후 제어에 보낸다.
 	
 	void Set_AlignReply(CString sLotID);
@@ -200,6 +208,8 @@ public:
 	void Set_NetworkConnect(int iConnectStatus);
 
 	void Set_TrayComplete(CString sLotID, int iMzNo, int iTrayNo, CString sTrayResult);
+
+	void Set_TriggerRequest(CString sVision, CString sLotID, int iMzNo, CString sTrayID, int iZigNo, int iLensNo);
 
 	CCriticalSection	m_csLotStatusWrite[VISION_NUMBER_MAX];
 	void Save_ScanComplete(CString sLotID, int iMzNo, int iJigNo, int iTrayNo, int iModuleNo, CString sVisionType);

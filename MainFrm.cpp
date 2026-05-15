@@ -80,7 +80,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndToolBar);
 	*/
 
+#ifdef SINGLE_LENS
+	SetWindowText(_T("Single Lens AVI"));
+#elif ASSY_LENS
+	SetWindowText(_T("Ass'y Lens AVI"));
+#else
 	SetWindowText(_T("Universal Cosmetic AVI"));
+#endif
 
 	return 0;
 }

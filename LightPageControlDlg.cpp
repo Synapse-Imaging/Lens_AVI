@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CLightPageControlDlg, CDialog)
 CLightPageControlDlg::CLightPageControlDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CLightPageControlDlg::IDD, pParent)
 {
-	//m_iEditComPortNumber = 1;
+	m_iEditComPortNumber = 1;
 
 	m_sEditPageDesc = _T("");
 
@@ -132,7 +132,7 @@ void CLightPageControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_LIGHT31, m_iEditLight31);
 	DDX_Text(pDX, IDC_EDIT_LIGHT32, m_iEditLight32);
 
-	//DDX_Text(pDX, IDC_EDIT_COM_PORT_NUMBER, m_iEditComPortNumber);
+	DDX_Text(pDX, IDC_EDIT_COM_PORT_NUMBER, m_iEditComPortNumber);
 
 	DDX_Control(pDX, IDC_BUTTON_CHANGE_LIGHTVALUE, m_bnChangeLight);
 	DDX_Control(pDX, IDCANCEL, m_bnExit);
@@ -316,7 +316,7 @@ BOOL CLightPageControlDlg::OnInitDialog()
 	m_bnExit.Init_Ctrl(_T("Arial"), 10, FALSE, RGB(0x00, 0x00, 0x00), RGB(0x86, 0xAC, 0xE3), 0, 0);
 	m_bnShowLibrary.Init_Ctrl(_T("Malgun Gothic"), 10, TRUE, RGB(0x00, 0x00, 0x00), RGB(226, 226, 226), 0, 0);
 
-	//m_iEditComPortNumber = THEAPP.m_pModelDataManager->m_PageControlData.m_iComPortNumber;
+	m_iEditComPortNumber = THEAPP.m_pModelDataManager->m_PageControlData.m_iComPortNumber;
 
 	m_sEditPageDesc = THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].m_sPageDesc;
 
@@ -420,12 +420,22 @@ BOOL CLightPageControlDlg::OnInitDialog()
 	m_iEditLight32 = THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].uiChannel[31];
 
 	ChangeLanguage();
+
+	SetDlgStatus();
+
 	UpdateData(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
+void CLightPageControlDlg::SetDlgStatus()
+{
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
+	GetDlgItem(IDC_STATIC_PORT_NAME)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_COM_PORT_NUMBER)->ShowWindow(FALSE);
+#endif
+}
 
 void CLightPageControlDlg::ChangeLanguage()
 {
@@ -937,7 +947,7 @@ void CLightPageControlDlg::OnBnClickedButtonChangeLightvalue()
 	if (m_iEditLight31 < 0) m_iEditLight31 = 0; if (m_iEditLight31 > LIGHT_BRIGHT_MAX) m_iEditLight31 = LIGHT_BRIGHT_MAX;
 	if (m_iEditLight32 < 0) m_iEditLight32 = 0; if (m_iEditLight32 > LIGHT_BRIGHT_MAX) m_iEditLight32 = LIGHT_BRIGHT_MAX;
 
-	//THEAPP.m_pModelDataManager->m_PageControlData.m_iComPortNumber = m_iEditComPortNumber;
+	THEAPP.m_pModelDataManager->m_PageControlData.m_iComPortNumber = m_iEditComPortNumber;
 
 	THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].uiChannel[0] = m_iEditLight1;
 	THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].uiChannel[1] = m_iEditLight2;
@@ -976,7 +986,59 @@ void CLightPageControlDlg::OnBnClickedButtonChangeLightvalue()
 
 #ifdef INLINE_MODE
 
+#ifdef SINGLE_LENS
+
+	int iPageIdx;
+
+	if (THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.OpenPort(m_iEditComPortNumber, 19200))
+	{
+		for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
+		{
+			THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_8CH(iPageIdx);
+		}
+
+		THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.ClosePort();
+	}
+	else
+	{
+		AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+	}
+
+#elif ASSY_LENS
+
+	int iPageIdx;
+
+	if (THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.OpenPort(m_iEditComPortNumber, 19200))
+	{
+		if (m_iModelIdx == PC_VISION_1 || m_iModelIdx == PC_VISION_2)
+		{
+			for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
+			{
+				THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_8CH(iPageIdx);
+			}
+		}
+		else if (m_iModelIdx == PC_VISION_3)
+		{
+			for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_4CH; iPageIdx++)
+			{
+				THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_4CH(iPageIdx);
+			}
+		}
+		else
+		{
+			// Vision Case별 코딩 추가
+		}
+
+		THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.ClosePort();
+	}
+	else
+	{
+		AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+	}
+
+#else
 	THEAPP.m_pModelDataManager->m_PageControlData.SetOnTime_Page(THEAPP.m_iCurVisionCamType, m_iCurPageIndex);
+#endif
 
 #endif
 

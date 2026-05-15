@@ -728,7 +728,10 @@ void CTeachingAlgorithmTabDlg::OnBnClickedMfcbuttonAiTest()
 void CTeachingAlgorithmTabDlg::OnBnClickedButtonSaveAndClose()
 {
 	for (int i = 0; i < CHANNEL_NUM; i++)
-		CopyImage(m_pAlgorithmSurfaceDlg->m_HOrgScanImage[i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType]));
+	{
+		if (THEAPP.m_pGFunction->ValidHImage(m_pAlgorithmSurfaceDlg->m_HOrgScanImage[i]))
+			CopyImage(m_pAlgorithmSurfaceDlg->m_HOrgScanImage[i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType]));
+	}
 
 	THEAPP.m_pInspectAdminViewDlg->ResetInspectionResult();
 
@@ -742,7 +745,10 @@ void CTeachingAlgorithmTabDlg::OnBnClickedButtonSaveAndClose()
 void CTeachingAlgorithmTabDlg::OnBnClickedButtonClose()
 {
 	for (int i = 0; i < CHANNEL_NUM; i++)
-		CopyImage(m_pAlgorithmSurfaceDlg->m_HOrgScanImage[i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType]));
+	{
+		if (THEAPP.m_pGFunction->ValidHImage(m_pAlgorithmSurfaceDlg->m_HOrgScanImage[i]))
+			CopyImage(m_pAlgorithmSurfaceDlg->m_HOrgScanImage[i], &(THEAPP.m_pInspectAdminViewDlg->m_HTeachingImage[i][m_iSelectedImageType]));
+	}
 
 	THEAPP.m_pInspectAdminViewDlg->ResetInspectionResult();
 

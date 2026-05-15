@@ -146,7 +146,7 @@ public:
 
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedButtonChangeLightvalue();
-	//int m_iEditComPortNumber;
+	int m_iEditComPortNumber;
 	afx_msg void OnBnClickedRadioPage1();
 	afx_msg void OnBnClickedRadioPage2();
 	afx_msg void OnBnClickedRadioPage3();
@@ -183,4 +183,5 @@ public:
 	afx_msg void OnBnClickedButtonShowLibrary();
 
 	void ChangeLanguage();
+	void SetDlgStatus();
 };

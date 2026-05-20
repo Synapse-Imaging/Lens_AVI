@@ -118,6 +118,8 @@ private:
 
 	void Get_MoveComplete(CString sVisionType, int iJigNo);
 
+	void  Get_MoveComplete(CString sVisionType);
+
 	void Get_ShiftComplete(CString sVisionType);
 
 	void Get_SmoveComplete(CString sVisionType);
@@ -149,6 +151,7 @@ public:
 	void Terminate_Handler();
 	void Terminate_TcpHandler();
 	BOOL m_bMotionMoveComplete[VISION_NUMBER_MAX];
+	BOOL m_bLensMotionMoveComplete[VISION_NUMBER_MAX+TOTAL_SUB_CAM];
 
 	BOOL m_bShiftMoveComplete[VISION_NUMBER_MAX];
 	BOOL m_bTurnMoveComplete;
@@ -188,6 +191,8 @@ public:
 	void Set_PositionRequest(int iVisionType, int iStageNo, int iJigNo);//현재 모션 Z위치를 요구한다.
 	//////////////////////////////////////////////////////////////////////////  L10
 	void Set_AMoveRequest(int iVisionType, int iStageNo, int iJigNo, double dCameraZ, double dLightZ, double dHeadX, double dStageY, double dStageT, double dStageR);
+
+	void Set_ZPosAMoveRequest(double dZposition, int iVisionType);
 
 	void Set_ShiftRequest(int iVisionType, CString sLotID, int iMzNo);	// Y Shift 명령을 보낸다. (Bottom1, Top2)
 

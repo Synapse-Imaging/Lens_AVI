@@ -297,6 +297,7 @@ public:
 	int m_iCurVisionCamType;
 	int m_iCurStageIndex;
 	int m_iCurSelectedResultModule;
+	int m_iCurAlignCamIndex;
 	// SW Version
 	CString m_strVerInfo;
 
@@ -636,6 +637,7 @@ public:
 	CCameraManager* m_pCameraManager;
 	CCameraManager* m_pDualCameraManager[VISION_NUMBER_MAX];
 	CCameraManager* m_pCameraManagerSpecularMaster;
+	CCameraManager* m_pSubCameraManager[TOTAL_SUB_CAM];
 
 	CInspectLibraryDataManager* m_pInspectLibraryDataManager;
 	CLightLibraryDataManager* m_pLightLibraryDataManager;

@@ -329,6 +329,7 @@
     <ClCompile Include="AlgorithmStiffenerEpoxyDlg.cpp" />
     <ClCompile Include="AlgorithmSurfaceDlg.cpp" />
     <ClCompile Include="AlgorithmSurfaceDualDlg.cpp" />
+    <ClCompile Include="AlignCamSelectDlg.cpp" />
     <ClCompile Include="AutoCalService.cpp" />
     <ClCompile Include="AutoFocusDlg.cpp" />
     <ClCompile Include="AutoTrainGridCtrl.cpp" />
@@ -556,6 +557,7 @@
     <ClInclude Include="AlgorithmService\AlgorithmPipeline.h" />
     <ClInclude Include="AlgorithmService\AlgorithmSubThread.h" />
     <ClInclude Include="AlgorithmService\AlgorithmHelper.h" />
+    <ClInclude Include="AlignCamSelectDlg.h" />
     <ClInclude Include="Variation\VariationNormalizer.h" />
     <ClInclude Include="TrayAdminViewDlg.h" />
     <ClInclude Include="InspectAdminViewHideDlg.h" />

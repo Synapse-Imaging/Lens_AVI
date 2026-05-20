@@ -430,11 +430,6 @@ bool CCameraManager::InitGrabInterface_Mono(MIL_ID MilSystem)
 	MIL_INT SizeY = 0;
 	MIL_INT Band = 0;
 
-	//////////////////////////////////////////////////////////////////////////
-	// White Balance
-	float WB_Coefficients[3];
-	m_MilWBCoeff = MbufAlloc1d(MilSystem, 3, 32 + M_FLOAT, M_ARRAY, M_NULL);
-
 	CString strOpticModelFolder;
 	strOpticModelFolder.Format("%s\\Optical\\%s_%s_PC%d", THEAPP.GetWorkingDirectory(), THEAPP.Struct_PreferenceStruct.m_strEquipNo, THEAPP.g_strModelTypeName[THEAPP.GetModelType()], THEAPP.Struct_PreferenceStruct.m_iPCType + 1);
 
@@ -445,21 +440,24 @@ bool CCameraManager::InitGrabInterface_Mono(MIL_ID MilSystem)
 		CString strDCFPath;
 		strDCFPath.Format("\\HW\\Vision_N%d\\%s.dcf", m_iVisionCamName + 1, THEAPP.m_ModelDefineInfo.m_strVisionName[m_iVisionCamName]);
 
-#ifdef POC_TEST
-		if (m_iVisionCamName == VISION_NUMBER_1)
-			MdigAlloc(MilSystem, M_DEV2, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
-		else if (m_iVisionCamName == VISION_NUMBER_2)
-			MdigAlloc(MilSystem, M_DEV0, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
-#else
 		if (m_iVisionCamName == VISION_NUMBER_1)
 			MdigAlloc(MilSystem, M_DEV0, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
 		else if (m_iVisionCamName == VISION_NUMBER_2)
 			MdigAlloc(MilSystem, M_DEV2, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
-#endif
 		else if (m_iVisionCamName == VISION_NUMBER_3)
 			MdigAlloc(MilSystem, M_DEV0, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
 		else if (m_iVisionCamName == VISION_NUMBER_4)
+			MdigAlloc(MilSystem, M_DEV1, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		else if (m_iVisionCamName == VISION_NUMBER_4_2)
+		{
+			strDCFPath.Format("\\HW\\Vision_N%d\\%s.dcf", VISION_NUMBER_4 + 1, THEAPP.m_ModelDefineInfo.m_strVisionName[VISION_NUMBER_4]);
 			MdigAlloc(MilSystem, M_DEV2, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		}
+		else if (m_iVisionCamName == VISION_NUMBER_4_3)
+		{
+			strDCFPath.Format("\\HW\\Vision_N%d\\TopAlign.dcf", VISION_NUMBER_4 + 1);
+			MdigAlloc(MilSystem, M_DEV3, strOpticModelFolder + strDCFPath, M_DEFAULT, &MilDigitizer);
+		}
 		else
 			return true;
 

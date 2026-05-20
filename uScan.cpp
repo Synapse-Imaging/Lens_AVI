@@ -84,6 +84,7 @@ CuScanApp::CuScanApp() : m_pFAIDataManager(CFAIDataManager::GetInstance()),
 	m_iCurVisionCamType = VISION_NUMBER_2;
 	m_iCurStageIndex = STAGE_NUMBER_1;
 	m_iCurSelectedResultModule = SELECTED_RESULT_NONE;
+	m_iCurAlignCamIndex = ALIGN_CAM_BOTTOM_1;
 	m_iAppVersion = 0;
 	m_iSwParamVersion = 1000;
 	m_iHwParamVersion = 1000;
@@ -155,6 +156,10 @@ CuScanApp::CuScanApp() : m_pFAIDataManager(CFAIDataManager::GetInstance()),
 	m_pFAIDataManager.ResetTeachingMeasure();
 
 	m_pCameraManagerSpecularMaster = NULL;
+
+	for (i = 0; i < TOTAL_SUB_CAM; i++)
+		m_pSubCameraManager[i] = NULL;
+
 	m_pInspectLibraryDataManager = NULL;
 	m_pLightLibraryDataManager = NULL;
 
@@ -710,6 +715,14 @@ BOOL CuScanApp::InitInstance()
 	m_pDualCameraManager[VISION_NUMBER_3]->SetVisionCamName(VISION_NUMBER_3);
 	m_pDualCameraManager[VISION_NUMBER_4]->SetVisionCamName(VISION_NUMBER_4);
 
+#ifdef ASSY_LENS
+	for (iPcVisionNo = SUB_CAM_1; iPcVisionNo < TOTAL_SUB_CAM; iPcVisionNo++)
+		m_pSubCameraManager[iPcVisionNo] = new CCameraManager;
+
+	m_pSubCameraManager[SUB_CAM_1]->SetVisionCamName(VISION_NUMBER_4_2);
+	m_pSubCameraManager[SUB_CAM_2]->SetVisionCamName(VISION_NUMBER_4_3);
+#endif
+
 	for (iPcVisionNo = 0; iPcVisionNo < VISION_NUMBER_MAX; iPcVisionNo++)
 	{
 		if (m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
@@ -881,6 +894,8 @@ BOOL CuScanApp::InitInstance()
 	if ((strEquipModel == "BOI" || strEquipModel == "BOS" || strEquipModel == "KRIOS") &&
 		(Struct_PreferenceStruct.m_iPCType == PC_NUMBER_1 || Struct_PreferenceStruct.m_iPCType == PC_NUMBER_2))
 		MsysAlloc(M_DEFAULT, M_SYSTEM_RAPIXOCXP, M_DEV1, M_DEFAULT, &m_MilSystem[1]);
+	else if (strEquipModel == "ASSY_LENS")
+		MsysAlloc(M_DEFAULT, M_SYSTEM_RAPIXOCXP, M_DEV1, M_DEFAULT, &m_MilSystem[1]);
 
 	m_pDualCameraManager[VISION_NUMBER_1]->SetInitDiffusedVision();
 	for (iPcVisionNo = 0; iPcVisionNo < VISION_NUMBER_MAX; iPcVisionNo++)
@@ -903,11 +918,19 @@ BOOL CuScanApp::InitInstance()
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[0]);
 			else
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[1]);
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 			if (iPcVisionNo < 2)
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[0]);
 			else
+			{
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface_Mono(m_MilSystem[1]);
+
+				if (iPcVisionNo == (VISION_NUMBER_MAX - 1))
+				{
+					m_pSubCameraManager[SUB_CAM_1]->InitGrabInterface_Mono(m_MilSystem[1]);
+					m_pSubCameraManager[SUB_CAM_2]->InitGrabInterface_Mono(m_MilSystem[1]);
+				}
+			}
 #else
 			if (iPcVisionNo < 2)
 				m_pDualCameraManager[iPcVisionNo]->InitGrabInterface(m_MilSystem[0]);
@@ -935,6 +958,17 @@ BOOL CuScanApp::InitInstance()
 			continue;
 
 		m_pDualCameraManager[iPcVisionNo]->InitGrabInterface(m_MilSystem[0]);
+
+#ifdef ASSY_LENS
+		if (iPcVisionNo == (VISION_NUMBER_MAX - 1))
+		{
+			m_pSubCameraManager[SUB_CAM_1]->SetCamImageSizeX(m_pDualCameraManager[iPcVisionNo]->GetCamImageSizeX());
+			m_pSubCameraManager[SUB_CAM_1]->SetCamImageSizeY(m_pDualCameraManager[iPcVisionNo]->GetCamImageSizeY());
+
+			m_pSubCameraManager[SUB_CAM_2]->SetCamImageSizeX(m_pDualCameraManager[iPcVisionNo]->GetCamImageSizeX());
+			m_pSubCameraManager[SUB_CAM_2]->SetCamImageSizeY(m_pDualCameraManager[iPcVisionNo]->GetCamImageSizeY());
+		}
+#endif
 	}
 #endif
 
@@ -1759,6 +1793,11 @@ int CuScanApp::ExitInstance()
 
 		for (iPcVisionNo = VISION_NUMBER_1; iPcVisionNo < VISION_NUMBER_MAX; iPcVisionNo++)
 			delete m_pDualCameraManager[iPcVisionNo];
+
+#ifdef ASSY_LENS
+		for (iPcVisionNo = SUB_CAM_1; iPcVisionNo < TOTAL_SUB_CAM; iPcVisionNo++)
+			delete m_pSubCameraManager[iPcVisionNo];
+#endif
 
 		m_pInspectLibraryDataManager->UnInitialize();
 		m_pLightLibraryDataManager->UnInitialize();

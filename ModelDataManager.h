@@ -47,6 +47,10 @@ public:
 	int m_iTriggerImageNumber;
 	int m_iTriggerPeriod;
 
+	int m_iBottomAlign1EndImageNumber;
+	int m_iBottomAlign2EndImageNumber;
+	int m_iTopAlignEndImageNumber;
+
 	BOOL m_bUseDiffusedImage[MAX_IMAGE_TAB];
 	BOOL m_bUseSpecularImage[MAX_IMAGE_TAB];
 	BOOL m_bUseSeqStartImage[MAX_IMAGE_TAB];

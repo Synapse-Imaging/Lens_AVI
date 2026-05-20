@@ -31,6 +31,7 @@ public:
 	void LoadViewParam();
 	void UpdateViewParam();
 	void SetDlgStatus();
+	void UpdateDlgStatus();
 	void SetMotionParameter(int iInspectImageIndex, double dCurPos_Z, double dCurPos_LightZ, double dCurPos_T, double dCurPos_R, double dCurPos_X, double dCurPos_Y);
 	afx_msg void OnBnClickedButtonSavePositionSetting();
 	afx_msg void OnBnClickedButtonSaveLightSetting();
@@ -45,6 +46,10 @@ public:
 
 	int m_iEditTriggerImageNumber;
 	int m_iEditTriggerPeriod;
+
+	int m_iEditBa1ImageNumber;
+	int m_iEditBa2ImageNumber;
+	int m_iEditTaImageNumber;
 
 	double m_dEditImageLightZPosRef;
 	double m_dEditImageTiltPosRef;

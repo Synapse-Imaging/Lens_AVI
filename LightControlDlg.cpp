@@ -293,7 +293,6 @@ void CLightControlDlg::SetDlgStatus()
 	GetDlgItem(IDC_BUTTON_CHANGE_SPECULAR)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BUTTON_AUTO_FOCUS)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BUTTON_MOTION_CONTROL)->EnableWindow(FALSE);
-	GetDlgItem(IDC_BUTTON_MOVE_Z_POS)->EnableWindow(FALSE);
 #endif
 }
 
@@ -357,6 +356,28 @@ UINT LightControlAMoveRequest_Thread(LPVOID lp)
 
 	return 1;
 }
+
+UINT ZPosAMoveRequest_Thread(LPVOID lp)
+{
+	CLightControlDlg* pLightControlDlg = (CLightControlDlg*)lp;
+
+	if (THEAPP.m_pModelDataManager->m_sModelName == ".")
+		return 0;
+
+	THEAPP.m_pHandlerService->m_bLensMotionMoveComplete[THEAPP.m_pCameraManager->GetVisionCamName()] = FALSE;
+
+	THEAPP.m_pHandlerService->Set_ZPosAMoveRequest(pLightControlDlg->m_dCurZPosition, THEAPP.m_pCameraManager->GetVisionCamName());
+
+	while (!THEAPP.m_pHandlerService->m_bLensMotionMoveComplete[THEAPP.m_pCameraManager->GetVisionCamName()]) // 무브 컴플리트 기다림
+	{
+		Sleep(1);
+	}
+
+	AfxMessageBox("Z축 위치 이동 완료.", MB_SYSTEMMODAL | MB_ICONINFORMATION);
+
+	return 1;
+}
+
 
 UINT SequenceGrabThread(LPVOID lp)
 {
@@ -875,6 +896,15 @@ void CLightControlDlg::OnBnClickedButtonMotionControl()
 void CLightControlDlg::OnBnClickedButtonMoveZPos()
 {
 #ifdef INLINE_MODE
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+
+	THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateData(TRUE);
+
+	m_dCurZPosition = THEAPP.m_pTabControlDlg->m_pJogSetDlg->m_dEditImageZPos[THEAPP.m_pTabControlDlg->m_iCurrentTab - 1];
+
+	AfxBeginThread(ZPosAMoveRequest_Thread, this);
+
+#else
 	if (THEAPP.m_ModelDefineInfo.m_bVisionPWM[THEAPP.m_pCameraManager->GetVisionCamName()])
 		return;
 
@@ -899,6 +929,7 @@ void CLightControlDlg::OnBnClickedButtonMoveZPos()
 	m_dCurYPosition = THEAPP.m_pTabControlDlg->m_pJogSetDlg->m_dEditImageStageYPosRef + THEAPP.m_pTabControlDlg->m_pJogSetDlg->m_dEditImageStageYPos[THEAPP.m_pTabControlDlg->m_iCurrentTab - 1];
 
 	AfxBeginThread(LightControlAMoveRequest_Thread, this);
+#endif
 #endif
 }
 

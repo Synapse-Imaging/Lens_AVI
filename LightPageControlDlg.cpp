@@ -316,7 +316,12 @@ BOOL CLightPageControlDlg::OnInitDialog()
 	m_bnExit.Init_Ctrl(_T("Arial"), 10, FALSE, RGB(0x00, 0x00, 0x00), RGB(0x86, 0xAC, 0xE3), 0, 0);
 	m_bnShowLibrary.Init_Ctrl(_T("Malgun Gothic"), 10, TRUE, RGB(0x00, 0x00, 0x00), RGB(226, 226, 226), 0, 0);
 
+#ifdef ASSY_LENS
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4 && THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+		m_iEditComPortNumber = THEAPP.m_pModelDataManager->m_PageControlData.m_iSubComPortNumber;
+#else
 	m_iEditComPortNumber = THEAPP.m_pModelDataManager->m_PageControlData.m_iComPortNumber;
+#endif
 
 	m_sEditPageDesc = THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].m_sPageDesc;
 
@@ -421,7 +426,9 @@ BOOL CLightPageControlDlg::OnInitDialog()
 
 	ChangeLanguage();
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
 	SetDlgStatus();
+#endif
 
 	UpdateData(FALSE);
 
@@ -431,10 +438,164 @@ BOOL CLightPageControlDlg::OnInitDialog()
 
 void CLightPageControlDlg::SetDlgStatus()
 {
-#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
-	GetDlgItem(IDC_STATIC_PORT_NAME)->ShowWindow(FALSE);
-	GetDlgItem(IDC_EDIT_COM_PORT_NUMBER)->ShowWindow(FALSE);
-#endif
+	GetDlgItem(IDC_STATIC_PORT_NAME)->ShowWindow(TRUE);
+	GetDlgItem(IDC_EDIT_COM_PORT_NUMBER)->ShowWindow(TRUE);
+
+	GetDlgItem(IDC_RADIO_PAGE_1)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_2)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_3)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_4)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_5)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_6)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_7)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_8)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_9)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_10)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_11)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_12)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_13)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_14)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_15)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_16)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_17)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_18)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_19)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_20)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_21)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_22)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_23)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_24)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_25)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_26)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_27)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_28)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_29)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_30)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_31)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO_PAGE_32)->EnableWindow(TRUE);
+
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_1 || THEAPP.m_iCurTeachVision == VISION_NUMBER_2)
+	{
+		GetDlgItem(IDC_RADIO_PAGE_13)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_14)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_15)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_16)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_17)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_18)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_19)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_20)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_21)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_22)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_23)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_24)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_25)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_26)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_27)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_28)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_29)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_30)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_31)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_32)->EnableWindow(FALSE);
+	}
+	else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_3)
+	{
+		GetDlgItem(IDC_RADIO_PAGE_7)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_8)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_9)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_10)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_11)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_12)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_13)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_14)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_15)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_16)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_17)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_18)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_19)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_20)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_21)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_22)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_23)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_24)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_25)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_26)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_27)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_28)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_29)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_30)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_31)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_32)->EnableWindow(FALSE);
+	}
+	else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4)
+	{
+		if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_1 || THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_2)
+		{
+			GetDlgItem(IDC_RADIO_PAGE_4)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_5)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_6)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_7)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_8)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_9)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_10)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_11)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_12)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_13)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_14)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_15)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_16)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_17)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_18)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_19)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_20)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_21)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_22)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_23)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_24)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_25)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_26)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_27)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_28)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_29)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_30)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_31)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_32)->EnableWindow(FALSE);
+		}
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+		{
+			m_iRadioPageNumber = 3;
+
+			GetDlgItem(IDC_RADIO_PAGE_1)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_2)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_3)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_6)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_7)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_8)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_9)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_10)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_11)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_12)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_13)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_14)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_15)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_16)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_17)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_18)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_19)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_20)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_21)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_22)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_23)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_24)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_25)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_26)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_27)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_28)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_29)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_30)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_31)->EnableWindow(FALSE);
+			GetDlgItem(IDC_RADIO_PAGE_32)->EnableWindow(FALSE);
+		}
+	}
 }
 
 void CLightPageControlDlg::ChangeLanguage()
@@ -947,7 +1108,12 @@ void CLightPageControlDlg::OnBnClickedButtonChangeLightvalue()
 	if (m_iEditLight31 < 0) m_iEditLight31 = 0; if (m_iEditLight31 > LIGHT_BRIGHT_MAX) m_iEditLight31 = LIGHT_BRIGHT_MAX;
 	if (m_iEditLight32 < 0) m_iEditLight32 = 0; if (m_iEditLight32 > LIGHT_BRIGHT_MAX) m_iEditLight32 = LIGHT_BRIGHT_MAX;
 
+#ifdef ASSY_LENS
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4 && THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+		THEAPP.m_pModelDataManager->m_PageControlData.m_iSubComPortNumber = m_iEditComPortNumber;
+#else
 	THEAPP.m_pModelDataManager->m_PageControlData.m_iComPortNumber = m_iEditComPortNumber;
+#endif
 
 	THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].uiChannel[0] = m_iEditLight1;
 	THEAPP.m_pModelDataManager->m_PageControlData.m_Page[m_iCurPageIndex].uiChannel[1] = m_iEditLight2;
@@ -992,11 +1158,7 @@ void CLightPageControlDlg::OnBnClickedButtonChangeLightvalue()
 
 	if (THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.OpenPort(m_iEditComPortNumber, 19200))
 	{
-		for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
-		{
-			THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_8CH(iPageIdx);
-		}
-
+		THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_8CH(m_iCurPageIndex);
 		THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.ClosePort();
 	}
 	else
@@ -1004,29 +1166,30 @@ void CLightPageControlDlg::OnBnClickedButtonChangeLightvalue()
 		AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
 	}
 
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 
 	int iPageIdx;
 
 	if (THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.OpenPort(m_iEditComPortNumber, 19200))
 	{
-		if (m_iModelIdx == PC_VISION_1 || m_iModelIdx == PC_VISION_2)
+		if (THEAPP.m_iCurTeachVision == VISION_NUMBER_1 || THEAPP.m_iCurTeachVision == VISION_NUMBER_2)
 		{
-			for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
-			{
-				THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_8CH(iPageIdx);
-			}
+			THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_8CH(m_iCurPageIndex);
 		}
-		else if (m_iModelIdx == PC_VISION_3)
+		else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_3)
 		{
-			for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_4CH; iPageIdx++)
-			{
-				THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_4CH(iPageIdx);
-			}
+			THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_4CH(m_iCurPageIndex);
 		}
-		else
+		else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4)
 		{
-			// Vision Case별 코딩 추가
+			if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_1 || THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_2)
+			{
+				THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_6CH(m_iCurPageIndex);
+			}
+			else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+			{
+				THEAPP.m_pModelDataManager->m_PageControlData.SetIllumination_2CH(m_iCurPageIndex);
+			}
 		}
 
 		THEAPP.m_pModelDataManager->m_PageControlData.m_ComPort.ClosePort();

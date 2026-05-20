@@ -19,6 +19,7 @@ static char THIS_FILE[] = __FILE__;
 CLightControl::CLightControl()
 {
 	m_iComPortNumber = 1;
+	m_iSubComPortNumber = -1;
 
 	int i;
 

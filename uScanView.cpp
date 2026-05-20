@@ -1071,6 +1071,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN1()
 
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
+		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();
@@ -1176,6 +1177,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN2()
 
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
+		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();
@@ -1281,6 +1283,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN3()
 
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
+		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();
@@ -1305,6 +1308,8 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN3()
 		THEAPP.m_iCurSelectedResultModule = SELECTED_RESULT_NONE;
 	}
 }
+
+#include "AlignCamSelectDlg.h"
 
 void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN4()
 {
@@ -1336,21 +1341,41 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN4()
 
 	if (THEAPP.m_iModeSwitch == MODE_INSPECT_VIEW_ADMIN)  // ������ ��� �ƴϸ� ȭ�� ��ȯ �ȵ�.
 	{
-#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
+#if defined(SINGLE_LENS)
+		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
+#elif defined(ASSY_LENS)
+		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
+
+		CAlignCamSelectDlg dlg;
+		if (dlg.DoModal() == IDCANCEL)
+			return;
+
+		THEAPP.m_iCurAlignCamIndex = dlg.m_iRadioAlignCamIndex;
+#else
 		CStageSelectDlg dlg;
 		if (dlg.DoModal() == IDCANCEL)
 			return;
 
 		THEAPP.m_iCurStageIndex = dlg.m_iRadioStageIndex;
-#else
-		THEAPP.m_iCurStageIndex = STAGE_NUMBER_1;
 #endif
 
 		THEAPP.m_iCurTeachVision = VISION_NUMBER_4;
 		THEAPP.m_pModelDataManager = THEAPP.m_pDualModelDataManager[TEACHING_MZ_NO - 1][VISION_NUMBER_4];
 		UpdateTeachModule();
 
+#ifdef ASSY_LENS
+		if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_1)
+			THEAPP.m_pCameraManager = THEAPP.m_pDualCameraManager[VISION_NUMBER_4];
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_2)
+			THEAPP.m_pCameraManager = THEAPP.m_pSubCameraManager[SUB_CAM_1];
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+			THEAPP.m_pCameraManager = THEAPP.m_pSubCameraManager[SUB_CAM_2];
+		else
+			return;
+#else
 		THEAPP.m_pCameraManager = THEAPP.m_pDualCameraManager[VISION_NUMBER_4];
+#endif
+
 		THEAPP.m_pCameraManager->SetGrabCircularIndex(0);
 
 		THEAPP.m_pCameraManagerSpecularMaster = THEAPP.m_pDualCameraManager[VISION_NUMBER_1];
@@ -1386,6 +1411,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN4()
 
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
+		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();

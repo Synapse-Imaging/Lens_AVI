@@ -43,6 +43,7 @@ public:
 	void SetTotalChannelllumination_10CH(unsigned int uiChannelValue1, unsigned int uiChannelValue2,  unsigned int uiChannelValue3, unsigned int uiChannelValue4,  unsigned int uiChannelValue5, unsigned int uiChannelValue6, unsigned int uiChannelValue7, unsigned int uiChannelValue8, unsigned int uiChannelValue9, unsigned int uiChannelValue10);
 
 	int m_iComPortNumber;
+	int m_iSubComPortNumber;
 	CCommThread m_ComPort;
 
 	// Page

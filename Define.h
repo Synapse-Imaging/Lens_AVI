@@ -94,6 +94,18 @@
 #define VISION_NUMBER_2		1
 #define VISION_NUMBER_3		2
 #define VISION_NUMBER_4		3
+#define VISION_NUMBER_4_2	4
+#define VISION_NUMBER_4_3	5
+
+#define TOTAL_SUB_CAM		2
+#define SUB_CAM_1			0
+#define SUB_CAM_2			1
+
+// Align Cam Index
+#define ALIGN_CAM_NUMBER_MAX	3
+#define ALIGN_CAM_BOTTOM_1		0
+#define ALIGN_CAM_BOTTOM_2		1
+#define ALIGN_CAM_TOP			2
 
 // Stage Index
 #define STAGE_NUMBER_MAX	2
@@ -123,6 +135,8 @@
 #define LIGHTCTRL_PAGE_COUNT_6CH			10
 #define LIGHTCTRL_PAGE_COUNT_8CH			10
 #define LIGHTCTRL_PAGE_COUNT_2CH			6
+#define LIGHTCTRL_PAGE_COUNT_BTM_ALIGN		3
+#define LIGHTCTRL_PAGE_COUNT_TOP_ALIGN		2
 
 ////////////// Light Control ////////////////////
 //#define LIGHT_BRIGHT_MAX 999

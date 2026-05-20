@@ -1003,6 +1003,7 @@
     <ClInclude Include="VmParamSetDlg.h" />
     <ClInclude Include="Variation\VariationNormalizer.h" />
     <ClInclude Include="AIService\UniversalAIData.h" />
+    <ClInclude Include="AlignCamSelectDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\Arrow.ico" />
@@ -1960,5 +1961,6 @@
     <ClCompile Include="AutoTrainStatusDlg.cpp" />
     <ClCompile Include="VmParamSetDlg.cpp" />
     <ClCompile Include="Variation\VariationNormalizer.cpp" />
+    <ClCompile Include="AlignCamSelectDlg.cpp" />
   </ItemGroup>
 </Project>

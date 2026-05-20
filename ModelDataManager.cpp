@@ -304,6 +304,10 @@ void CModelDataManager::InitModelData()
 	m_iTriggerImageNumber = 4;
 	m_iTriggerPeriod = 25;
 
+	m_iBottomAlign1EndImageNumber = 3;
+	m_iBottomAlign2EndImageNumber = 6;
+	m_iTopAlignEndImageNumber = 8;
+
 	m_iLightValueStart = 10;
 	m_iLightValueEnd = 10;
 	m_iLightValueInterval = 2;
@@ -453,6 +457,10 @@ int CModelDataManager::LoadLightInfo(CString sLinfoPath)
 	strKey.Format("PortNumber");
 	m_PageControlData.m_iComPortNumber = INIInspectionLight.Get_Integer(strSection, strKey, 1);
 
+	strSection.Format("SubComPort");
+	strKey.Format("PortNumber");
+	m_PageControlData.m_iSubComPortNumber = INIInspectionLight.Get_Integer(strSection, strKey, -1);
+
 	for (int i = 0; i < MAX_IMAGE_TAB; i++)
 	{
 		strSection.Format("Image_%d", i + 1);
@@ -502,6 +510,12 @@ void CModelDataManager::SaveLightInfo(CString sLinfoPath, int iCurPageIndex)
 	strSection.Format("ComPort");
 	strKey.Format("PortNumber");
 	INIInspectionLight.Set_Integer(strSection, strKey, m_PageControlData.m_iComPortNumber);
+
+#ifdef ASSY_LENS
+	strSection.Format("SubComPort");
+	strKey.Format("PortNumber");
+	INIInspectionLight.Set_Integer(strSection, strKey, m_PageControlData.m_iSubComPortNumber);
+#endif
 
 	for (int i = 0; i < MAX_IMAGE_TAB; i++)
 	{
@@ -1250,11 +1264,21 @@ int CModelDataManager::LoadMotionMovingPosition(CString sLinfoPath)
 		}
 	}
 
+#ifdef SINGLE_LENS
 	strSection.Format("Single Lens Trigger");
 	strKey.Format("Trigger-Image-Number");
 	m_iTriggerImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 4);
 	strKey.Format("Trigger-Period");
 	m_iTriggerPeriod = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 25);
+#elif defined (ASSY_LENS)
+	strSection.Format("Assy Lens Align End Image Number");
+	strKey.Format("Bottom-Align-1");
+	m_iBottomAlign1EndImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 3);
+	strKey.Format("Bottom-Align-2");
+	m_iBottomAlign2EndImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 6);
+	strKey.Format("Top-Align");
+	m_iTopAlignEndImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 8);
+#endif
 
 	if (iMotionMovingPositionVer == 1001)
 	{
@@ -1296,11 +1320,23 @@ void CModelDataManager::SaveMotionMovingPosition(CString sLinfoPath, int iCurSta
 		}
 	}
 
+#ifdef SINGLE_LENS
 	strSection.Format("Single Lens Trigger");
 	strKey.Format("Trigger-Image-Number");
 	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerImageNumber);
 	strKey.Format("Trigger-Period");
 	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerPeriod);
+#elif defined (ASSY_LENS)
+	strSection.Format("Assy Lens Align End Image Number");
+	strKey.Format("Bottom-Align-1");
+	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iBottomAlign1EndImageNumber);
+	strKey.Format("Bottom-Align-2");
+	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iBottomAlign2EndImageNumber);
+	strKey.Format("Top-Align");
+	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTopAlignEndImageNumber);
+#endif
+
+
 }
 
 int CModelDataManager::LoadMotionMovingPosition_Offset(CString sLinfoPath)
@@ -1728,41 +1764,76 @@ BOOL CModelDataManager::LoadModelHWData()
 			}
 			else
 			{
-				AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+				if (m_iModelIdx == VISION_NUMBER_1)
+					AfxMessageBox("통신 포트 열기 실패!!!. Viison#1 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+				else if (m_iModelIdx == VISION_NUMBER_2)
+					AfxMessageBox("통신 포트 열기 실패!!!. Viison#2 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
 			}
 
-#elif ASSY_LENS
+#elif defined(ASSY_LENS)
 
 			int iPageIdx;
+			int iPortNumber;
 
-			if (m_PageControlData.m_ComPort.OpenPort(m_PageControlData.m_iComPortNumber, 19200))
+			if (m_iModelIdx == VISION_NUMBER_4)
 			{
-				if (m_iModelIdx == PC_VISION_1 || m_iModelIdx == PC_VISION_2)
+				if (m_PageControlData.m_ComPort.OpenPort(m_PageControlData.m_iComPortNumber, 19200))
 				{
-					for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
+					for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_BTM_ALIGN; iPageIdx++)
 					{
-						m_PageControlData.SetIllumination_8CH(iPageIdx);
+						m_PageControlData.SetIllumination_6CH(iPageIdx);
 					}
-				}
-				else if (m_iModelIdx == PC_VISION_3)
-				{
-					for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_4CH; iPageIdx++)
-					{
-						m_PageControlData.SetIllumination_4CH(iPageIdx);
-					}
+					m_PageControlData.m_ComPort.ClosePort();
 				}
 				else
 				{
-					// Vision Case별 코딩 추가
+					AfxMessageBox("통신 포트 열기 실패!!!. Vision#4, Bottom Align 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
 				}
 
-				m_PageControlData.m_ComPort.ClosePort();
+				if (m_PageControlData.m_ComPort.OpenPort(m_PageControlData.m_iSubComPortNumber, 19200))
+				{
+					for (iPageIdx = LIGHTCTRL_PAGE_COUNT_BTM_ALIGN; iPageIdx < (LIGHTCTRL_PAGE_COUNT_BTM_ALIGN+ LIGHTCTRL_PAGE_COUNT_TOP_ALIGN); iPageIdx++)
+					{
+						m_PageControlData.SetIllumination_2CH(iPageIdx);
+					}
+					m_PageControlData.m_ComPort.ClosePort();
+				}
+				else
+				{
+					AfxMessageBox("통신 포트 열기 실패!!!. Vision#4, Top Align 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+				}
 			}
 			else
 			{
-				AfxMessageBox("통신 포트 열기 실패!!!. 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
-			}
+				if (m_PageControlData.m_ComPort.OpenPort(m_PageControlData.m_iComPortNumber, 19200))
+				{
+					if (m_iModelIdx == VISION_NUMBER_1 || m_iModelIdx == VISION_NUMBER_2)
+					{
+						for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_8CH; iPageIdx++)
+						{
+							m_PageControlData.SetIllumination_8CH(iPageIdx);
+						}
+					}
+					else if (m_iModelIdx == VISION_NUMBER_3)
+					{
+						for (iPageIdx = 0; iPageIdx < LIGHTCTRL_PAGE_COUNT_4CH; iPageIdx++)
+						{
+							m_PageControlData.SetIllumination_4CH(iPageIdx);
+						}
+					}
 
+					m_PageControlData.m_ComPort.ClosePort();
+				}
+				else
+				{
+					if (m_iModelIdx == VISION_NUMBER_1)
+						AfxMessageBox("통신 포트 열기 실패!!!. Viison#1 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+					else if (m_iModelIdx == VISION_NUMBER_2)
+						AfxMessageBox("통신 포트 열기 실패!!!. Viison#2 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+					else if (m_iModelIdx == VISION_NUMBER_3)
+						AfxMessageBox("통신 포트 열기 실패!!!. Viison#3 조명 컨트롤러 포트번호를 확인해 주십시요.", MB_ICONERROR | MB_SYSTEMMODAL);
+				}
+			}
 #else
 			for (int i = 0; i < LIGHTCTRL_GRAB_ADDR_SEQ_COUNT; i++)
 				m_PageControlData.SetGrabSequence(m_iModelIdx, i, m_PageControlData.m_iAddrSeq[i], m_PageControlData.m_iAddrCount[i]);

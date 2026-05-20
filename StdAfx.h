@@ -34,7 +34,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 ////////////////////////////////////////// If Machine is Connected ->
-//#define INLINE_MODE
+#define INLINE_MODE
 ////////////////////////////////////////// <- If Machine is Connected
 
 // #define POC_TEST
@@ -50,15 +50,15 @@
 // #define UAVI_BOS
 // #define UAVI_RENO
 // #define UAVI_KRIOS
-#define SINGLE_LENS
-//#define ASSY_LENS
+//#define SINGLE_LENS
+#define ASSY_LENS
 
 // AI 라이브러리 선택
 #define SYAI
 // #define LGITAI
 
 // 면적당 조건 불러오기, 저장
-#define DEFECT_CONDITION
+//#define DEFECT_CONDITION
 
 #ifdef INLINE_MODE
 #define AJIN_BOARD_USE

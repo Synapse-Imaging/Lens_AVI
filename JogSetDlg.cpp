@@ -53,6 +53,10 @@ CJogSetDlg::CJogSetDlg(CWnd* pParent /*=NULL*/)
 		m_iEditTriggerImageNumber = 4;
 		m_iEditTriggerPeriod = 25;
 
+		m_iEditBa1ImageNumber = 3;
+		m_iEditBa2ImageNumber = 6;
+		m_iEditTaImageNumber = 8;
+
 		m_dEditImageLightZPosRef = MOTION_NOUSE;
 		m_dEditImageTiltPosRef = MOTION_NOUSE;
 		m_dEditImageRotatePosRef = MOTION_NOUSE;
@@ -86,6 +90,10 @@ void CJogSetDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_EDIT_TRIGGER_IMAGE_NUMBER, m_iEditTriggerImageNumber);
 	DDX_Text(pDX, IDC_EDIT_TRIGGER_PERIOD, m_iEditTriggerPeriod);
+
+	DDX_Text(pDX, IDC_EDIT_BA1_IMAGE_NUMBER, m_iEditBa1ImageNumber);
+	DDX_Text(pDX, IDC_EDIT_BA2_IMAGE_NUMBER, m_iEditBa2ImageNumber);
+	DDX_Text(pDX, IDC_EDIT_TA_IMAGE_NUMBER, m_iEditTaImageNumber);
 
 	DDX_Text(pDX, IDC_EDIT_IMAGE_LIGHT_Z_0, m_dEditImageLightZPosRef);
 	DDX_Text(pDX, IDC_EDIT_IMAGE_TILT_0, m_dEditImageTiltPosRef);
@@ -1093,6 +1101,14 @@ void CJogSetDlg::LoadViewParam()
 	m_iEditTriggerImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 4);
 	strKey.Format("Trigger-Period");
 	m_iEditTriggerPeriod = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 25);
+#elif defined (ASSY_LENS)
+	strSection.Format("Assy Lens Align End Image Number");
+	strKey.Format("Bottom-Align-1");
+	m_iEditBa1ImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 3);
+	strKey.Format("Bottom-Align-2");
+	m_iEditBa2ImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 6);
+	strKey.Format("Top-Align");
+	m_iEditTaImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 8);
 #endif
 
 	CString strMotionMovingPosition_Offset;
@@ -1252,53 +1268,15 @@ void CJogSetDlg::SetDlgStatus()
 	GetDlgItem(IDC_STATIC_TRIGGER_PERIOD)->ShowWindow(FALSE);
 	GetDlgItem(IDC_EDIT_TRIGGER_PERIOD)->ShowWindow(FALSE);
 
-#ifdef SINGLE_LENS
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_1)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_2)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_3)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_4)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_5)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_6)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_7)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_8)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_9)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_10)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_11)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_12)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_13)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_14)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_15)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_16)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_17)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_18)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_19)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_20)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_21)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_22)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_23)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_24)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_25)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_26)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_27)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_28)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_29)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_30)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_31)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_32)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_33)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_34)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_35)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_36)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_37)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_38)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_39)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_40)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_41)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_42)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_43)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_44)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_IMAGE_ZPOS_45)->EnableWindow(FALSE);
+	GetDlgItem(IDC_STATIC_GROUPBOX_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_BA1_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_BA2_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_TA_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_BA1_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_BA2_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_TA_IMAGE_NUMBER)->ShowWindow(FALSE);
 
+#ifdef SINGLE_LENS
 	GetDlgItem(IDC_GROUPBOX_TRIGGER)->ShowWindow(TRUE);
 	GetDlgItem(IDC_STATIC_TRIGGER_IMAGE)->ShowWindow(TRUE);
 	GetDlgItem(IDC_EDIT_TRIGGER_IMAGE_NUMBER)->ShowWindow(TRUE);
@@ -1780,6 +1758,32 @@ void CJogSetDlg::SetDlgStatus()
 	
 }
 
+void CJogSetDlg::UpdateDlgStatus()
+{
+#ifdef ASSY_LENS
+	GetDlgItem(IDC_STATIC_GROUPBOX_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_BA1_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_BA2_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_TA_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_BA1_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_BA2_IMAGE_NUMBER)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_TA_IMAGE_NUMBER)->ShowWindow(FALSE);
+
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4)
+	{
+		GetDlgItem(IDC_STATIC_GROUPBOX_IMAGE_NUMBER)->ShowWindow(TRUE);
+		GetDlgItem(IDC_STATIC_BA1_IMAGE_NUMBER)->ShowWindow(TRUE);
+		GetDlgItem(IDC_STATIC_BA2_IMAGE_NUMBER)->ShowWindow(TRUE);
+		GetDlgItem(IDC_STATIC_TA_IMAGE_NUMBER)->ShowWindow(TRUE);
+		GetDlgItem(IDC_EDIT_BA1_IMAGE_NUMBER)->ShowWindow(TRUE);
+		GetDlgItem(IDC_EDIT_BA2_IMAGE_NUMBER)->ShowWindow(TRUE);
+		GetDlgItem(IDC_EDIT_TA_IMAGE_NUMBER)->ShowWindow(TRUE);
+	}
+
+#endif
+
+}
+
 void CJogSetDlg::OnBnClickedButtonSavePositionSetting()
 {
 	if (THEAPP.m_pModelDataManager->m_sModelName == ".")
@@ -1803,6 +1807,11 @@ void CJogSetDlg::OnBnClickedButtonSavePositionSetting()
 #ifdef SINGLE_LENS
 	THEAPP.m_pModelDataManager->m_iTriggerImageNumber = m_iEditTriggerImageNumber;
 	THEAPP.m_pModelDataManager->m_iTriggerPeriod = m_iEditTriggerPeriod;
+#elif defined (ASSY_LENS)
+	THEAPP.m_pModelDataManager->m_iBottomAlign1EndImageNumber = m_iEditBa1ImageNumber;
+	THEAPP.m_pModelDataManager->m_iBottomAlign2EndImageNumber = m_iEditBa2ImageNumber;
+	THEAPP.m_pModelDataManager->m_iTopAlignEndImageNumber = m_iEditTaImageNumber;
+
 #endif
 
 	THEAPP.m_pModelDataManager->m_dLightZPositionRef[THEAPP.m_iCurStageIndex] = m_dEditImageLightZPosRef;

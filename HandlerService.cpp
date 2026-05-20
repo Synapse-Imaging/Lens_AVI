@@ -63,6 +63,9 @@ CHandlerService::CHandlerService()
 		m_iInspectCompleteCheckIndex[i] = 0;
 	}
 
+	for (int i = 0; i < (VISION_NUMBER_MAX+TOTAL_SUB_CAM); i++)
+		m_bLensMotionMoveComplete[i] = FALSE;
+
 	m_bTurnMoveComplete = FALSE;
 
 	m_sHandler_TCP_IP = "192.168.1.11";
@@ -761,6 +764,26 @@ void  CHandlerService::Get_MoveComplete(CString sVisionType, int iJigNo)
 	m_bMotionMoveComplete[iPcVisionNo] = TRUE;
 }
 
+void  CHandlerService::Get_MoveComplete(CString sVisionType)
+{
+	int iVisionType = -1;
+
+	if (sVisionType == "TC")
+		iVisionType = VISION_NUMBER_1;
+	else if (sVisionType == "BC")
+		iVisionType = VISION_NUMBER_2;
+	else if (sVisionType == "SC")
+		iVisionType = VISION_NUMBER_3;
+	else if (sVisionType == "B1")
+		iVisionType = VISION_NUMBER_4;
+	else if (sVisionType == "B2")
+		iVisionType = VISION_NUMBER_4_2;
+	else if (sVisionType == "TA")
+		iVisionType = VISION_NUMBER_4_3;
+
+	m_bLensMotionMoveComplete[iVisionType] = TRUE;
+}
+
 void CHandlerService::Get_ShiftComplete(CString sVisionType)
 {
 	int iPcVisionNo, iStageNo;
@@ -1113,6 +1136,15 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 			if (strOp == "REPLY") Get_PositionReply(sTemp1, iJigNo, dPositionZ, dLightZ, dStageX, dStageY, dTilt, dRotate);
 		}
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+		else if (strCmd == "MOVE") {
+			AfxExtractSubString(sTemp1, strRecv, 2, chSep);			// Vision Type (B1, B2, T1, T2)
+			if (strOp == "COMPLETE")
+			{
+
+			}
+		}
+#else
 		else if (strCmd == "MOVE") {
 			if (strEquipModel == "BOI" || strEquipModel == "BOS" || strEquipModel == "KRIOS")
 			{
@@ -1143,6 +1175,7 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 					Get_MoveComplete(sTemp1, iJigNo);
 			}
 		}
+#endif
 
 		else if (strCmd == "SHIFT") {
 			AfxExtractSubString(sTemp1, strRecv, 2, chSep);
@@ -1442,6 +1475,28 @@ void CHandlerService::Set_AMoveRequest(int iVisionType, int iStageNo, int iJigNo
 		strSendMsg.Format("@AMOVE,REQUEST,%s,%d,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf\n", THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iVisionType][iStageNo], iJigNo, dCameraZ, dLightZ, dHeadX, dStageY, dStageT, dStageR);
 	else
 		strSendMsg.Format("@AMOVE,REQUEST,%s,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf\n", THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iVisionType][iStageNo], dCameraZ, dLightZ, dHeadX, dStageY, dStageT, dStageR);
+
+	Send_Command(strSendMsg);
+}
+
+void CHandlerService::Set_ZPosAMoveRequest(double dZposition, int iVisionType)	//절대이동 구동 명령을 보낸다. (""이면 움직이지 않는다)
+{
+	CString	strSendMsg;
+
+#ifdef SINGLE_LENS
+	strSendMsg.Format("@AMOVE,REQUEST,%s,%.3lf\n", THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iVisionType][0], dZposition);
+#elif defined(ASSY_LENS)
+
+	if (iVisionType>=VISION_NUMBER_1 && iVisionType <= VISION_NUMBER_3)
+		strSendMsg.Format("@AMOVE,REQUEST,%s,%.3lf\n", THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iVisionType][0], dZposition);
+	else if (iVisionType == VISION_NUMBER_4)
+		strSendMsg.Format("@AMOVE,REQUEST,B1,%.3lf\n", dZposition);
+	else if (iVisionType == VISION_NUMBER_4_2)
+		strSendMsg.Format("@AMOVE,REQUEST,B2,%.3lf\n", dZposition);
+	else if (iVisionType == VISION_NUMBER_4_3)
+		strSendMsg.Format("@AMOVE,REQUEST,TA,%.3lf\n", dZposition);
+
+#endif
 
 	Send_Command(strSendMsg);
 }

@@ -67,6 +67,8 @@ run/
 model/
 data/
 *BACKUP/
+Run - SingleLens/
+Run - AssyLens/
 
 # LGIT/Model 폴더는 추적하도록 예외 처리
 !LGIT/Model/

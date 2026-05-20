@@ -1257,16 +1257,16 @@ void CTeachParamDlg::AISetUpdate(int iTabIdx)
 		return;
 	}
 
-	if ((THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 >= INSPECTION_TYPE_FIRST &&
-		 THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 <= INSPECTION_TYPE_LAST) == FALSE) {
-		m_ButtonSetAISet1.SetFaceColor(BUTTON_LIGHT_RED_COLOR);
-		m_ButtonSetAISet2.SetFaceColor(BUTTON_LIGHT_RED_COLOR);
-		m_ButtonSetAISet3.SetFaceColor(BUTTON_LIGHT_RED_COLOR);
-		m_bCheckUseFilter1 = FALSE;
-		m_bCheckUseFilter2 = FALSE;
-		m_bCheckUseFilter3 = FALSE;
-		return;
-	}
+	//if ((THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 >= INSPECTION_TYPE_FIRST &&
+	//	 THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 <= INSPECTION_TYPE_LAST) == FALSE) {
+	//	m_ButtonSetAISet1.SetFaceColor(BUTTON_LIGHT_RED_COLOR);
+	//	m_ButtonSetAISet2.SetFaceColor(BUTTON_LIGHT_RED_COLOR);
+	//	m_ButtonSetAISet3.SetFaceColor(BUTTON_LIGHT_RED_COLOR);
+	//	m_bCheckUseFilter1 = FALSE;
+	//	m_bCheckUseFilter2 = FALSE;
+	//	m_bCheckUseFilter3 = FALSE;
+	//	return;
+	//}
 
 #ifdef SYAI
 	int defect_name_index = m_ComboDefectType.GetCurSel();

@@ -146,6 +146,7 @@ namespace syai::runtime::domain::config
 				thread_count_ != other.thread_count_ ||
 				image_save_format_ != other.image_save_format_ ||
 				is_save_train_image_ != other.is_save_train_image_ ||
+				session_pool_size_ != other.session_pool_size_ ||
 				model_infos_.size() != other.model_infos_.size())
 				return false;
 
@@ -190,6 +191,12 @@ namespace syai::runtime::domain::config
 		 * @return 최대 배치 크기
 		 */
 		inline int get_max_batch_size() const { return max_batch_size_; }
+
+		/**
+		 * @brief PR-6 Commit 6-1: 세션 풀 크기 반환 (1 = 단일 세션, ≥2 = 풀)
+		 * @return 세션 풀 크기
+		 */
+		inline int get_session_pool_size() const { return session_pool_size_; }
 
 		/**
 		 * @brief 로그 이름을 C 스타일 문자열로 반환
@@ -397,6 +404,28 @@ namespace syai::runtime::domain::config
 				return;
 			}
 			max_batch_size_ = size;
+		}
+
+		/**
+		 * @brief PR-6 Commit 6-1: 세션 풀 크기 설정 (유효 범위: 1-8)
+		 *
+		 * 동일 모델을 N개 세션으로 복제해 외부 병렬 검사 요청을 진짜 GPU 병렬로 처리한다.
+		 * 메모리 비용: 동일 모델이라도 가중치/workspace가 N배로 증가한다 (ORT는 세션 간 가중치 공유 API 없음).
+		 * 기본값 1은 기존 단일 세션 동작과 동일.
+		 *
+		 * @param n 세션 풀 크기 (1-8). 1 미만은 1로, 8 초과는 8로 clamp.
+		 */
+		inline void set_session_pool_size(int n)
+		{
+			if (n <= 0) {
+				session_pool_size_ = 1;
+				return;
+			}
+			if (n > 8) {
+				session_pool_size_ = 8;
+				return;
+			}
+			session_pool_size_ = n;
 		}
 
 		/**
@@ -741,6 +770,9 @@ namespace syai::runtime::domain::config
 		std::string image_save_format_;											//!< 이미지 저장 포맷
 		bool is_save_train_image_ = false;										//!< 학습용 이미지 저장 여부
 
+		// PR-6 Commit 6-1: 세션 풀 크기 (1=단일, ≥2=풀). 기존 ABI 호환을 위해 클래스 원소 마지막에 배치.
+		int session_pool_size_ = 1;												//!< 동일 모델의 동시 세션 수
+
 
 		// ========== 헬퍼 함수 (private) ==========
 
@@ -810,6 +842,7 @@ namespace syai::runtime::domain::config
 			{"thread_count", p.get_thread_count()},
 			{"image_save_format", p.get_image_save_format()},
 			{"is_save_train_image", p.get_is_save_train_image()},
+			{"session_pool_size", p.get_session_pool_size()},
 			{"modelInfos", p.get_model_infos()}
 		};
 	}
@@ -839,6 +872,11 @@ namespace syai::runtime::domain::config
 
 		if (j.contains("is_save_train_image")) {
 			p.set_is_save_train_image(j.at("is_save_train_image").get<bool>());
+		}
+
+		// PR-6 Commit 6-1: session_pool_size 는 구 설정 파일과 호환을 위해 옥셔널로 읽는다.
+		if (j.contains("session_pool_size")) {
+			p.set_session_pool_size(j.at("session_pool_size").get<int>());
 		}
 
 		if (j.contains("modelInfos")) {

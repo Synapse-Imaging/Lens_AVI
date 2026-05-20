@@ -369,6 +369,15 @@ namespace syai::runtime::domain::config
 			return setup_.get_max_batch_size();
 		}
 
+		/**
+		 * @brief PR-6 Commit 6-1: 세션 풀 크기 반환 (1 = 단일 세션, ≥2 = 풀)
+		 * @return 세션 풀 크기
+		 */
+		inline int get_session_pool_size() const
+		{
+			return setup_.get_session_pool_size();
+		}
+
 		// ========== 비교 연산자 ==========
 
 		/**

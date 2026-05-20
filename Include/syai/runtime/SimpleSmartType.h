@@ -219,8 +219,7 @@ bool operator!=(const SmartList& other) const;
 		void release()
 		{
 			if (data_ && data_->ref_count) {
-				--(*data_->ref_count);
-				if (*data_->ref_count == 0) {
+				if (_InterlockedDecrement((long*)data_->ref_count) == 0) {
 					delete data_;
 				}
 				data_ = nullptr;
@@ -233,7 +232,7 @@ bool operator!=(const SmartList& other) const;
 		void add_ref()
 		{
 			if (data_ && data_->ref_count) {
-				++(*data_->ref_count);
+				_InterlockedIncrement((long*)data_->ref_count);
 			}
 		}
 
@@ -243,7 +242,7 @@ bool operator!=(const SmartList& other) const;
 		 */
 		void ensure_unique()
 		{
-			if (!data_ || !data_->ref_count || *data_->ref_count <= 1) {
+			if (!data_ || !data_->ref_count || _InterlockedCompareExchange((long*)data_->ref_count, 0, 0) <= 1) {
 				return;
 			}
 
@@ -487,6 +486,11 @@ bool operator!=(const SmartList& other) const;
 			if (!data_) return;
 
 			ensure_unique();
+
+			// 기존 항목 소멸자 호출 후 기본값으로 재설정
+			for (int i = 0; i < data_->size; ++i) {
+				data_->items[i] = T{};
+			}
 			data_->size = 0;
 		}
 
@@ -773,8 +777,7 @@ bool operator!=(const SmartList& other) const;
 		void release()
 		{
 			if (data_ && data_->ref_count) {
-				--(*data_->ref_count);
-				if (*data_->ref_count == 0) {
+				if (_InterlockedDecrement((long*)data_->ref_count) == 0) {
 					delete data_;
 				}
 				data_ = nullptr;
@@ -787,7 +790,7 @@ bool operator!=(const SmartList& other) const;
 		void add_ref()
 		{
 			if (data_ && data_->ref_count) {
-				++(*data_->ref_count);
+				_InterlockedIncrement((long*)data_->ref_count);
 			}
 		}
 
@@ -797,7 +800,7 @@ bool operator!=(const SmartList& other) const;
 		 */
 		void ensure_unique()
 		{
-			if (!data_ || !data_->ref_count || *data_->ref_count <= 1) {
+			if (!data_ || !data_->ref_count || _InterlockedCompareExchange((long*)data_->ref_count, 0, 0) <= 1) {
 				return;
 			}
 
@@ -1047,6 +1050,11 @@ bool operator!=(const SmartList& other) const;
 			if (!data_) return;
 
 			ensure_unique();
+
+			// 기존 키-값 쌍 소멸자 호출 후 기본값으로 재설정
+			for (int i = 0; i < data_->size; ++i) {
+				data_->pairs[i] = KeyValuePair{};
+			}
 			data_->size = 0;
 		}
 

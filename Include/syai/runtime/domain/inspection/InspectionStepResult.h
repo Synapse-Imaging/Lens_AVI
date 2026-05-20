@@ -1,9 +1,10 @@
 #pragma once
-#include "syai/runtime/syai_runtime_inspection_export.h"
 #include "syai/runtime/SimpleSmartType.h"
+#include "syai/runtime/syai_runtime_inspection_export.h"
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/mat.inl.hpp>
 #include <opencv2/core/types.hpp>
+#include <syai/runtime/domain/config/ConfigurationEnum.h>
 
 namespace syai::runtime::domain::inspection
 {
@@ -23,20 +24,25 @@ namespace syai::runtime::domain::inspection
 	 *     step_result.success = true;
 	 *     step_result.message = "검사 통과";
 	 *     step_result.mask = result_mask_image;
+	 *     step_result.ok_mask = ok_region_mask_image;
 	 * @endcode
 	 */
 	class SYAIRUNTIMEINSPECTION_API InspectionStepResult
 	{
 	public:
-		bool success;							//!< 해당 단계의 검사 성공 여부
-		SmartString message;					//!< 해당 단계의 검사 결과 메시지
-		cv::Mat mask;							//!< 해당 단계의 결과 마스크 (단일 채널, 0 또는 255 값)
-		int predicted_index;					//!< 예측된 클래스 인덱스
+		bool success;																//!< 해당 단계의 검사 성공 여부
+		SmartString message;														//!< 해당 단계의 검사 결과 메시지
+		cv::Mat mask;																//!< 해당 단계의 결과 마스크 (단일 채널, 0 또는 255 값) - NG/결함 영역
+		cv::Mat ok_mask;															//!< 해당 단계의 OK 결과 마스크 (단일 채널, 0 또는 255 값) - 정상 영역
+		int predicted_index;														//!< 예측된 클래스 인덱스
+		syai::runtime::domain::config::InspectionType inspection_type;				//!< 검사 유형 (예: Classification, Segmentation 등)
 
 		InspectionStepResult();
 		InspectionStepResult(bool success, const char* message);
 		InspectionStepResult(bool success, const char* message, const cv::Mat& mask);
+		InspectionStepResult(bool success, const char* message, const cv::Mat& mask, const cv::Mat& ok_mask);
 		InspectionStepResult(bool success, const char* message, int predicted_index, const cv::Mat& mask = cv::Mat());
+		InspectionStepResult(bool success, const char* message, int predicted_index, const cv::Mat& mask, const cv::Mat& ok_mask);
 		InspectionStepResult(const InspectionStepResult& other);
 		InspectionStepResult& operator=(const InspectionStepResult& other);
 

@@ -1528,11 +1528,11 @@ bool CTeachingAlgorithmTabDlg::InspectionTest(bool enableVision, bool enableAi)
 			THEAPP.m_syai_logger->debug("[TEST Inspection] ROI Image Preprocessing disabled. Skip AI inspection.");
 			can_submit = false;
 		}
-		if ((THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 >= INSPECTION_TYPE_FIRST &&
-			 THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 <= INSPECTION_TYPE_LAST) == FALSE) {
-			can_submit = false;
-			THEAPP.m_syai_logger->error("[TEST Inspection] Invalid inspection type for AI inspection.");
-		}
+		//if ((THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 >= INSPECTION_TYPE_FIRST &&
+		//	 THEAPP.m_pInspectAdminViewDlg->mpLastSelectedRegion->miInspectionType - 1 <= INSPECTION_TYPE_LAST) == FALSE) {
+		//	can_submit = false;
+		//	THEAPP.m_syai_logger->error("[TEST Inspection] Invalid inspection type for AI inspection.");
+		//}
 		if (can_submit && CGFunction::ValidHRegion(inspection_req_rgn)) {
 			// 마스크 이진화
 			cv::Mat mask_binary;

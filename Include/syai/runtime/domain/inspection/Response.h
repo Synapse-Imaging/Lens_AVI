@@ -66,6 +66,7 @@ void register_steps(const SmartList& step_names, bool initial_success = false, c
 bool set_step_success(const char* step_name, bool success);
 bool set_step_message(const char* step_name, const char* message);
 bool set_step_mask(const char* step_name, const cv::Mat& mask);
+bool set_step_ok_mask(const char* step_name, const cv::Mat& ok_mask);
 bool set_step_success_and_message(const char* step_name, bool success, const char* message);
 bool update_step_result(const char* step_name, bool success, const char* message, int predicted_index, const cv::Mat& mask);
 InspectionStepResult& get_step_result_ref(const char* step_name);
@@ -73,6 +74,7 @@ InspectionStepResult get_step_result(const char* step_name) const;
 bool get_step_success(const char* step_name) const;
 const char* get_step_message(const char* step_name) const;
 cv::Mat get_step_mask(const char* step_name) const;
+cv::Mat get_step_ok_mask(const char* step_name) const;
 bool remove_step_result(const char* step_name);
 void clear_step_results();
 bool has_step_result(const char* step_name) const;
@@ -82,6 +84,7 @@ int get_step_count() const;
 bool get_overall_success() const;
 SmartString get_overall_message(const char* separator = "; ") const;
 cv::Mat get_overall_mask() const;
+cv::Mat get_overall_ok_mask() const;
 
 // ========== 단계 리스트 메서드 ==========
 SmartList get_step_names() const;
@@ -105,6 +108,7 @@ void register_step_model(const char* step_name, const char* model_name, bool ini
 bool set_step_model_success(const char* step_name, const char* model_name, bool success);
 bool set_step_model_message(const char* step_name, const char* model_name, const char* message);
 bool set_step_model_mask(const char* step_name, const char* model_name, const cv::Mat& mask);
+bool set_step_model_ok_mask(const char* step_name, const char* model_name, const cv::Mat& ok_mask);
 bool set_step_model_success_and_message(const char* step_name, const char* model_name, bool success, const char* message);
 bool update_step_model_result(const char* step_name, const char* model_name, bool success, const char* message, int predicted_index, const cv::Mat& mask);
 InspectionStepResult& get_step_model_result_ref(const char* step_name, const char* model_name);
@@ -112,6 +116,7 @@ InspectionStepResult get_step_model_result(const char* step_name, const char* mo
 bool get_step_model_success(const char* step_name, const char* model_name) const;
 const char* get_step_model_message(const char* step_name, const char* model_name) const;
 cv::Mat get_step_model_mask(const char* step_name, const char* model_name) const;
+cv::Mat get_step_model_ok_mask(const char* step_name, const char* model_name) const;
 int get_step_model_predicted_index(const char* step_name, const char* model_name) const;
 bool remove_step_model_result(const char* step_name, const char* model_name);
 bool has_step_model_result(const char* step_name, const char* model_name) const;

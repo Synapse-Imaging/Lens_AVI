@@ -1056,7 +1056,12 @@ void AlgorithmHelper::SubmitSYAI(
 
 	int roi_id = pInspectROIRgn->miInspectionROIID;
 	int roi_idx = iROIIndex;
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	HObject image = pAlgorithm->m_HInspectCImage[iCurInspectionBufferIdx][CHANNEL_TYPE_I][iImageIdx - 1];
+#else
 	HObject image = pAlgorithm->m_HInspectCImage[iCurInspectionBufferIdx][CHANNEL_TYPE_COLOR][iImageIdx - 1];
+#endif
+	// HObject image = pAlgorithm->m_HInspectCImage[iCurInspectionBufferIdx][CHANNEL_TYPE_COLOR][iImageIdx - 1];
 	HObject ho_Cropped, ho_Cropped_v2;
 	cv::Mat cv_roi_img, cv_roi_img_v2;
 	HalconCpp::HTuple raw_image_width, raw_image_height;

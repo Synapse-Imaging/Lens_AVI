@@ -7056,6 +7056,29 @@ void CInspectService::InspectionMove(int iVisionType, int iMzNo)
 {
 	INSP_THREAD_PARAM* pParam = new INSP_THREAD_PARAM(iVisionType, this);
 
+#ifdef ASSY_LENS
+
+	if (iVisionType >= VISION_NUMBER_1 && iVisionType <= VISION_NUMBER_3)		// TC, BC, SC
+	{
+#ifdef INLINE_MODE
+		int iCurGrabCircularIndex;
+		THEAPP.m_pDualCameraManager[iVisionType]->IncGrabCircularIndex();
+		iCurGrabCircularIndex = THEAPP.m_pDualCameraManager[iVisionType]->GetGrabCircularIndex();
+		THEAPP.m_pDualCameraManager[iVisionType]->m_bGrabCircularBufferCopyDone[iCurGrabCircularIndex] = FALSE;
+#endif
+		AfxBeginThread(InspectionThread_SingleLens, LPVOID(pParam));
+	}
+	else if (iVisionType == VISION_NUMBER_4)		// Bottom Align (Align + Inspection)
+	{
+
+	}
+	else if (iVisionType == VISION_NUMBER_4_3)		// Top Align (Align)
+	{
+
+	}
+
+#else
+
 	if (THEAPP.m_ModelDefineInfo.m_bVisionPWM[iVisionType])
 		AfxBeginThread(InspectionThread_Align, LPVOID(pParam));
 	else
@@ -7115,6 +7138,7 @@ void CInspectService::InspectionMove(int iVisionType, int iMzNo)
 		}
 #endif
 	}
+#endif
 }
 
 BOOL CInspectService::InspectionStart_Batch(int iVisionCamType)

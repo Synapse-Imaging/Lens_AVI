@@ -149,6 +149,35 @@ typedef union tag_DY_3 {	// Vision4
 
 #define MAX_INTERRUPT_NUMBER 2
 
+// ===== [Assy Lens / VPC1] Vision Trigger (Bit 분할, 단일 출력 모듈) =====
+const int ASSY_OUTPUT_MODULE = 0;   // Assy Lens: 모듈0 = 출력 (IO 모듈 1개)
+
+enum E_ASSY_VISION_CAM
+{
+	AVCAM_TOP_INSP_1 = 0,   // Cam Y000, Light Y001~Y009
+	AVCAM_BTM_INSP_1,       // Cam Y010, Light Y011~Y019
+	AVCAM_SIDE_INSP_1,      // Cam Y020, Light Y021~Y023
+	AVCAM_BTM_ALIGN,        // Cam Y024,Y025, Light Y026~Y028
+	AVCAM_TOP_ALIGN_1,      // Cam Y029, Light Y030~Y031
+	AVCAM_MAX
+};
+
+struct ASSY_TRIGGER_MAP
+{
+	int iCamBitStart;    // 카메라 트리거 시작 비트
+	int iCamBitCount;    // 카메라 트리거 비트 수 (Btm Align = 2)
+	int iLightBitStart;  // 조명 Page 트리거 시작 비트
+	int iLightBitCount;  // 조명 Page 트리거 비트 수
+};
+
+// Bottom Align 카메라 선택
+enum E_ASSY_CAM_SELECT
+{
+	ACAM_SEL_ALL = 0,   // 매핑된 카메라 비트 전체 (Btm Align = Y024,Y025 동시)
+	ACAM_SEL_1,         // 첫 번째 카메라 비트만 (Btm Align = Y024)
+	ACAM_SEL_2,         // 두 번째 카메라 비트만 (Btm Align = Y025)
+};
+
 class CAJinAXL
 {
 public:
@@ -166,6 +195,8 @@ private:
 	void Init_Trigger(BOOL bOn);
 
 	HANDLE m_hEventTrigger[MAX_INTERRUPT_NUMBER];
+
+	DWORD m_dwAssyOutput;   // Assy Lens 32비트 출력 캐시 (idle = 0xFFFFFFFF)
 
 public:
 	BOOL Initialize();
@@ -194,6 +225,8 @@ public:
 	HANDLE GetTriggerEvent(int iVisionCamType);
 	void ResetTriggerEvent(int iVisionCamType);
 
+	void Init_AssyTrigger();                                  // Assy Lens idle 초기화
+	void Set_AssyTrigger(int iCam, int iPageIndex, int nS, int iCamSelect = ACAM_SEL_ALL);
 };
 
 extern CAJinAXL g_objAJinAXL;

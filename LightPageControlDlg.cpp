@@ -476,6 +476,11 @@ void CLightPageControlDlg::SetDlgStatus()
 
 	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_1 || THEAPP.m_iCurTeachVision == VISION_NUMBER_2)
 	{
+#ifdef ASSY_LENS
+		GetDlgItem(IDC_RADIO_PAGE_10)->EnableWindow(FALSE);
+#endif
+		GetDlgItem(IDC_RADIO_PAGE_11)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_12)->EnableWindow(FALSE);
 		GetDlgItem(IDC_RADIO_PAGE_13)->EnableWindow(FALSE);
 		GetDlgItem(IDC_RADIO_PAGE_14)->EnableWindow(FALSE);
 		GetDlgItem(IDC_RADIO_PAGE_15)->EnableWindow(FALSE);
@@ -499,6 +504,9 @@ void CLightPageControlDlg::SetDlgStatus()
 	}
 	else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_3)
 	{
+		GetDlgItem(IDC_RADIO_PAGE_4)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_5)->EnableWindow(FALSE);
+		GetDlgItem(IDC_RADIO_PAGE_6)->EnableWindow(FALSE);
 		GetDlgItem(IDC_RADIO_PAGE_7)->EnableWindow(FALSE);
 		GetDlgItem(IDC_RADIO_PAGE_8)->EnableWindow(FALSE);
 		GetDlgItem(IDC_RADIO_PAGE_9)->EnableWindow(FALSE);

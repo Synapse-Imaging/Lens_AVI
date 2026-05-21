@@ -835,7 +835,19 @@ BOOL CCameraManager::CameraStartGrab(int iGrabStartBufferIdx, int iSeqAddressInd
 BOOL CCameraManager::CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPageIdx)
 {
 	CString sVisionCamType_Short;
+
+#ifdef ASSY_LENS
+	if (GetVisionCamName() < (VISION_NUMBER_MAX - 1))
+		sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+	else if (GetVisionCamName() == VISION_NUMBER_4)
+		sVisionCamType_Short = "B1";
+	else if (GetVisionCamName() == VISION_NUMBER_4_2)
+		sVisionCamType_Short = "B2";
+	else if (GetVisionCamName() == VISION_NUMBER_4_3)
+		sVisionCamType_Short = "TA";
+#else
 	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+#endif
 
 	m_bGrabDone = FALSE;
 	m_bReGrab = FALSE;
@@ -853,7 +865,11 @@ BOOL CCameraManager::CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPa
 	// Speedup
 	Sleep(1);
 
+#ifdef ASSY_LENS
+	THEAPP.m_pTriggerManager->FireAssyTrigger(GetVisionCamName(), iLightPageIdx, FALSE);
+#else
 	THEAPP.m_pTriggerManager->FireTrigger(GetVisionCamName(), iLightPageIdx);
+#endif
 
 	DWORD ret;
 
@@ -883,7 +899,19 @@ BOOL CCameraManager::CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPa
 BOOL CCameraManager::AutoRunCameraStartGrab(int iGrabStartBufferIdx, int iNoGrabImage)
 {
 	CString sVisionCamType_Short;
+
+#ifdef ASSY_LENS
+	if (GetVisionCamName() < (VISION_NUMBER_MAX - 1))
+		sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+	else if (GetVisionCamName() == VISION_NUMBER_4)
+		sVisionCamType_Short = "B1";
+	else if (GetVisionCamName() == VISION_NUMBER_4_2)
+		sVisionCamType_Short = "B2";
+	else if (GetVisionCamName() == VISION_NUMBER_4_3)
+		sVisionCamType_Short = "TA";
+#else
 	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+#endif
 
 	m_bGrabDone = FALSE;
 	m_bReGrab = FALSE;
@@ -945,7 +973,19 @@ BOOL CCameraManager::AutoRunCameraGrab_OneGrabFunction_Stop(int iGrabStartBuffer
 BOOL CCameraManager::AutoRunCameraGrab_OneGrabFunction(int iGrabStartBufferIdx, int iNoGrabImage)
 {
 	CString sVisionCamType_Short;
+
+#ifdef ASSY_LENS
+	if (GetVisionCamName() < (VISION_NUMBER_MAX - 1))
+		sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+	else if (GetVisionCamName() == VISION_NUMBER_4)
+		sVisionCamType_Short = "B1";
+	else if (GetVisionCamName() == VISION_NUMBER_4_2)
+		sVisionCamType_Short = "B2";
+	else if (GetVisionCamName() == VISION_NUMBER_4_3)
+		sVisionCamType_Short = "TA";
+#else
 	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+#endif
 
 	m_bGrabDone = FALSE;
 	m_bReGrab = FALSE;
@@ -989,7 +1029,19 @@ BOOL CCameraManager::AutoRunCameraGrab_OneGrabFunction(int iGrabStartBufferIdx, 
 BOOL CCameraManager::AutoRunCameraGrab_SingleLens(int iGrabStartBufferIdx, int iNoGrabImage, int iVisionGrabPeriodMsec, int iDualModelData, int iPcVisionNo)
 {
 	CString sVisionCamType_Short;
+
+#ifdef ASSY_LENS
+	if (GetVisionCamName() < (VISION_NUMBER_MAX - 1))
+		sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+	else if (GetVisionCamName() == VISION_NUMBER_4)
+		sVisionCamType_Short = "B1";
+	else if (GetVisionCamName() == VISION_NUMBER_4_2)
+		sVisionCamType_Short = "B2";
+	else if (GetVisionCamName() == VISION_NUMBER_4_3)
+		sVisionCamType_Short = "TA";
+#else
 	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[GetVisionCamName()];
+#endif
 
 	m_bGrabDone = FALSE;
 	m_bReGrab = FALSE;
@@ -1193,7 +1245,19 @@ MIL_INT MFTYPE CCameraManager::CameraGrabProcFunc(MIL_INT HookType, MIL_ID HookI
 	CCameraManager* pCameraManager = (CCameraManager*)HookDataPtr;
 
 	CString sVisionCamType_Short;
+
+#ifdef ASSY_LENS
+	if (pCameraManager->GetVisionCamName() < (VISION_NUMBER_MAX - 1))
+		sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[pCameraManager->GetVisionCamName()];
+	else if (pCameraManager->GetVisionCamName() == VISION_NUMBER_4)
+		sVisionCamType_Short = "B1";
+	else if (pCameraManager->GetVisionCamName() == VISION_NUMBER_4_2)
+		sVisionCamType_Short = "B2";
+	else if (pCameraManager->GetVisionCamName() == VISION_NUMBER_4_3)
+		sVisionCamType_Short = "TA";
+#else
 	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[pCameraManager->GetVisionCamName()];
+#endif
 
 	MIL_ID DigitigerID = 0;
 	MdigGetHookInfo(HookId, M_DIGITIZER_ID, &DigitigerID);
@@ -1249,7 +1313,19 @@ MIL_INT MFTYPE CCameraManager::CameraGrabProcFunc_OneGrabFunction(MIL_INT HookTy
 	CCameraManager* pCameraManager = (CCameraManager*)HookDataPtr;
 
 	CString sVisionCamType_Short;
+
+#ifdef ASSY_LENS
+	if (pCameraManager->GetVisionCamName() < (VISION_NUMBER_MAX - 1))
+		sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[pCameraManager->GetVisionCamName()];
+	else if (pCameraManager->GetVisionCamName() == VISION_NUMBER_4)
+		sVisionCamType_Short = "B1";
+	else if (pCameraManager->GetVisionCamName() == VISION_NUMBER_4_2)
+		sVisionCamType_Short = "B2";
+	else if (pCameraManager->GetVisionCamName() == VISION_NUMBER_4_3)
+		sVisionCamType_Short = "TA";
+#else
 	sVisionCamType_Short = THEAPP.m_ModelDefineInfo.m_strVisionName_Short[pCameraManager->GetVisionCamName()];
+#endif
 
 	MIL_ID DigitigerID = 0;
 	MdigGetHookInfo(HookId, M_DIGITIZER_ID, &DigitigerID);

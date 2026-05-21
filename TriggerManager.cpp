@@ -286,3 +286,30 @@ void CTriggerManager::FireTrigger(int iCamIdx, int iTriggerPageIndex)
 
 	m_AJinAXL.Set_Trigger(iVisionOrder, bPageOnOff, m_iSleepTime);	// FALSE: No Usage
 }
+
+void CTriggerManager::FireAssyTrigger(int iCamIdx, int iTriggerPageIndex, BOOL bSimulGrabBottomAlign)
+{
+	// iTriggerPageIndex = 해당 카메라 기준 0-base Page 번호
+
+	if (iCamIdx>= VISION_NUMBER_1 && iCamIdx <= VISION_NUMBER_3)
+		m_AJinAXL.Set_AssyTrigger(iCamIdx, iTriggerPageIndex, m_iSleepTime);
+	else
+	{
+		if (iCamIdx >= VISION_NUMBER_4 && iCamIdx <= VISION_NUMBER_4_2)
+		{
+			if (bSimulGrabBottomAlign)
+				m_AJinAXL.Set_AssyTrigger(iCamIdx, iTriggerPageIndex, m_iSleepTime);
+			else
+			{
+				if (iCamIdx== VISION_NUMBER_4)
+					m_AJinAXL.Set_AssyTrigger(iCamIdx, iTriggerPageIndex, m_iSleepTime, ACAM_SEL_1);
+				else
+					m_AJinAXL.Set_AssyTrigger(iCamIdx-1, iTriggerPageIndex, m_iSleepTime, ACAM_SEL_2);
+			}
+		}
+		else if (iCamIdx <= VISION_NUMBER_4_3)
+		{
+			m_AJinAXL.Set_AssyTrigger(iCamIdx-1, iTriggerPageIndex, m_iSleepTime);
+		}
+	}
+}

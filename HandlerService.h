@@ -53,7 +53,7 @@ public:
 	CCriticalSection	m_csSendCmd;
 	CCriticalSection	m_csSendCmdTcp[LIGHT_CONTROLLER_NUMBER_MAX];
 
-#ifdef SINGLE_LENS
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
 	void Get_LotStart(CString sLotID, CString sMzNo, CString sTrayAmt, CString sModuleAmt, CString sHandlerModelName);
 	void Get_LotReadyDone(CString sLotID, CString sMzNo);
 #else
@@ -62,6 +62,7 @@ public:
 
 	void Get_LoadComplete(CString sVisionType, CString sJigNo, CString sLotID, CString sMzNo, CString sTrayNo, CString sModuleNo, CString sHeight, CString sBarcode);
 	void Get_LoadComplete(CString sVisionType, CString sLotID, CString sMzNo, CString sTrayID, CString sTrayNo, CString sModuleNo);
+	void Get_LoadComplete(CString sVisionType, CString sLotID, CString sMzNo, CString sTrayNo1, CString sModuleNo1, CString sTrayNo2, CString sModuleNo2);
 
 	void Send_Tcp(int iLightControllerIndex, CString strSend, BOOL bSaveLog = TRUE);
 

@@ -35,6 +35,10 @@ public:
 
 	void FireTrigger(int iCamIdx, int iTriggerPageIndex);
 
+	void FireAssyTrigger(int iAssyCamIdx, int iTriggerPageIndex, BOOL bSimulGrabBottomAlign=TRUE);
+
+	void InitAssyTrigger() { m_AJinAXL.Init_AssyTrigger(); }
+
 protected:
 	CAJinAXL m_AJinAXL;
 	int		m_iSleepTime;

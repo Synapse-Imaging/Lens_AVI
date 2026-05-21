@@ -296,6 +296,173 @@ void CLightControlDlg::SetDlgStatus()
 #endif
 }
 
+void CLightControlDlg::UpdateDlgStatus()
+{
+	GetDlgItem(IDC_CHECK_PAGE_1)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_2)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_3)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_4)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_5)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_6)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_7)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_8)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_9)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_10)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_11)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_12)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_13)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_14)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_15)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_16)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_17)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_18)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_19)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_20)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_21)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_22)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_23)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_24)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_25)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_26)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_27)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_28)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_29)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_30)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_31)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CHECK_PAGE_32)->EnableWindow(TRUE);
+
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_1 || THEAPP.m_iCurTeachVision == VISION_NUMBER_2)
+	{
+#ifdef ASSY_LENS
+		GetDlgItem(IDC_CHECK_PAGE_10)->EnableWindow(FALSE);
+#endif
+		GetDlgItem(IDC_CHECK_PAGE_11)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_12)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_13)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_14)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_15)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_16)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_17)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_18)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_19)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_20)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_21)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_22)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_23)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_24)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_25)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_26)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_27)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_28)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_29)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_30)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_31)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_32)->EnableWindow(FALSE);
+	}
+	else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_3)
+	{
+		GetDlgItem(IDC_CHECK_PAGE_4)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_5)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_6)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_7)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_8)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_9)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_10)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_11)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_12)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_13)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_14)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_15)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_16)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_17)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_18)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_19)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_20)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_21)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_22)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_23)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_24)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_25)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_26)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_27)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_28)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_29)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_30)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_31)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_PAGE_32)->EnableWindow(FALSE);
+	}
+	else if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4)
+	{
+		if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_1 || THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_2)
+		{
+			GetDlgItem(IDC_CHECK_PAGE_4)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_5)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_6)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_7)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_8)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_9)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_10)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_11)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_12)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_13)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_14)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_15)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_16)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_17)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_18)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_19)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_20)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_21)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_22)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_23)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_24)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_25)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_26)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_27)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_28)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_29)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_30)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_31)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_32)->EnableWindow(FALSE);
+		}
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+		{
+			GetDlgItem(IDC_CHECK_PAGE_1)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_2)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_3)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_6)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_7)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_8)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_9)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_10)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_11)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_12)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_13)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_14)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_15)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_16)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_17)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_18)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_19)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_20)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_21)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_22)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_23)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_24)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_25)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_26)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_27)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_28)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_29)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_30)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_31)->EnableWindow(FALSE);
+			GetDlgItem(IDC_CHECK_PAGE_32)->EnableWindow(FALSE);
+		}
+	}
+
+
+}
+
 BOOL CLightControlDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -503,7 +670,23 @@ UINT SingleGrabThread(LPVOID lp)
 
 	auto log_time_start = std::chrono::high_resolution_clock::now();
 
+#ifdef ASSY_LENS
+	int iLightPageIdx = 0;
+
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4)
+	{
+		if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_1 || THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_2)
+			iLightPageIdx = THEAPP.m_pModelDataManager->m_iLightPageIdx[iImageIndex];
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+			iLightPageIdx = THEAPP.m_pModelDataManager->m_iLightPageIdx[iImageIndex] - 3;
+	}
+	else
+		iLightPageIdx = THEAPP.m_pModelDataManager->m_iLightPageIdx[iImageIndex];
+
+	bGrabSuccess = THEAPP.m_pCameraManager->CameraStartGrab_NoSeq(iStartGrabBufferIndex, iLightPageIdx);
+#else
 	bGrabSuccess = THEAPP.m_pCameraManager->CameraStartGrab_NoSeq(iStartGrabBufferIndex, THEAPP.m_pModelDataManager->m_iLightPageIdx[iImageIndex]);
+#endif
 	   
 	auto log_time_end = std::chrono::high_resolution_clock::now();
 	auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
@@ -935,6 +1118,42 @@ void CLightControlDlg::OnBnClickedButtonMoveZPos()
 
 void CLightControlDlg::OnBnClickedGrab()
 {
+#ifdef ASSY_LENS
+	if (THEAPP.m_iCurTeachVision == VISION_NUMBER_4)
+	{
+		CString sMsg;
+		int iImageTabNo = THEAPP.m_pTabControlDlg->m_iCurrentTab;
+
+		if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_1)
+		{
+			if ((iImageTabNo >= 1 && iImageTabNo <= THEAPP.m_pModelDataManager->m_iBottomAlign1EndImageNumber) == FALSE)
+			{
+				sMsg.Format("Bottom Align #1 비전은 영상 %d~%d 에서 그랩하도록 설정되어 있습니다.\r\n기본정보 탭에서 설정 변경 후 [포지션 설정 저장] 버튼을 클릭해 주세요.", 1, THEAPP.m_pModelDataManager->m_iBottomAlign1EndImageNumber);
+				AfxMessageBox(sMsg, MB_SYSTEMMODAL | MB_ICONWARNING);
+				return;
+			}
+		}
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_BOTTOM_2)
+		{
+			if ((iImageTabNo >= (THEAPP.m_pModelDataManager->m_iBottomAlign1EndImageNumber+1) && iImageTabNo <= THEAPP.m_pModelDataManager->m_iBottomAlign2EndImageNumber) == FALSE)
+			{
+				sMsg.Format("Bottom Align #2 비전은 영상 %d~%d 에서 그랩하도록 설정되어 있습니다.\r\n기본정보 탭에서 설정 변경 후 [포지션 설정 저장] 버튼을 클릭해 주세요.", THEAPP.m_pModelDataManager->m_iBottomAlign1EndImageNumber + 1, THEAPP.m_pModelDataManager->m_iBottomAlign2EndImageNumber);
+				AfxMessageBox(sMsg, MB_SYSTEMMODAL | MB_ICONWARNING);
+				return;
+			}
+		}
+		else if (THEAPP.m_iCurAlignCamIndex == ALIGN_CAM_TOP)
+		{
+			if ((iImageTabNo >= (THEAPP.m_pModelDataManager->m_iBottomAlign2EndImageNumber + 1) && iImageTabNo <= THEAPP.m_pModelDataManager->m_iTopAlignEndImageNumber) == FALSE)
+			{
+				sMsg.Format("Top Align 비전은 영상 %d~%d 에서 그랩하도록 설정되어 있습니다.\r\n기본정보 탭에서 설정 변경 후 [포지션 설정 저장] 버튼을 클릭해 주세요.", THEAPP.m_pModelDataManager->m_iBottomAlign2EndImageNumber + 1, THEAPP.m_pModelDataManager->m_iTopAlignEndImageNumber);
+				AfxMessageBox(sMsg, MB_SYSTEMMODAL | MB_ICONWARNING);
+				return;
+			}
+		}
+	}
+#endif
+
 	if (THEAPP.m_pModelDataManager->m_bUseSpecularImage[THEAPP.m_pTabControlDlg->m_iCurrentTab - 1])
 		GrabDeflectometry();
 	else if (THEAPP.m_pModelDataManager->m_bUseDiffusedImage[THEAPP.m_pTabControlDlg->m_iCurrentTab - 1])

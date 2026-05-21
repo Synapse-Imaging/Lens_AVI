@@ -120,5 +120,7 @@ public:
 
 	void SetDlgStatus();
 
+	void UpdateDlgStatus();
+
 	CString strMessageBox;
 };

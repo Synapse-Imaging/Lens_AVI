@@ -11,12 +11,24 @@ CAJinAXL g_objAJinAXL;
 
 CCriticalSection TriggerCS;
 
+static const ASSY_TRIGGER_MAP s_AssyMap[AVCAM_MAX] =
+{
+	//  camStart, camCnt, lightStart, lightCnt
+	{  0, 1,  1, 9 },   // AVCAM_TOP_INSP_1
+	{ 10, 1, 11, 9 },   // AVCAM_BTM_INSP_1
+	{ 20, 1, 21, 3 },   // AVCAM_SIDE_INSP_1
+	{ 24, 2, 26, 3 },   // AVCAM_BTM_ALIGN
+	{ 29, 1, 30, 2 },   // AVCAM_TOP_ALIGN_1
+};
+
 CAJinAXL::CAJinAXL(void)
 {
 	m_DY0.nValue = 0;
 	m_DY1.nValue = 0;
 	m_DY2.nValue = 0;
 	m_DY3.nValue = 0;
+
+	m_dwAssyOutput = 0xFFFFFFFF;
 
  	LARGE_INTEGER freq;
  	QueryPerformanceFrequency(&freq);
@@ -30,6 +42,48 @@ CAJinAXL::~CAJinAXL(void)
 {
 }
 
+#ifdef ASSY_LENS
+BOOL CAJinAXL::Initialize()
+{
+#ifdef AJIN_BOARD_USE
+	DWORD dwReturn = AxlOpenNoReset(7);
+	if (dwReturn != AXT_RT_SUCCESS)
+	{
+		AfxMessageBox("AJin Open Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
+		return FALSE;
+	}
+
+	long lDIOCount;
+	dwReturn = AxdInfoGetModuleCount(&lDIOCount);
+	if (dwReturn != AXT_RT_SUCCESS)
+	{
+		AfxMessageBox("AJin Module Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
+		return FALSE;
+	}
+	if (lDIOCount < 1)
+	{
+		AfxMessageBox("AJin Module Count Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
+		return FALSE;	// Board 1 or 2장
+	}
+
+	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
+	{
+		m_hEventTrigger[i] = ::CreateEventA(NULL, FALSE, FALSE, NULL);
+
+		if (m_hEventTrigger[i] == NULL)
+		{
+			AfxMessageBox("AJin Evenet Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
+			return FALSE;
+		}
+	}
+#endif
+
+	// 출력 모듈(모듈0) idle 초기화 (Active-Low: 전 비트 High)
+	Init_AssyTrigger();
+
+	return TRUE;
+}
+#else
 BOOL CAJinAXL::Initialize()
 {
 #ifdef AJIN_BOARD_USE
@@ -69,8 +123,8 @@ BOOL CAJinAXL::Initialize()
 	AxlInterruptEnable();
 	AxdiInterruptSetModuleEnable(0, ENABLE);
 
-		// --- 인터럽트 엣지 설정 변경 ---
-	// X000 (byte 0, bit 0): 상승엣지만
+	// --- 인터럽트 엣지 설정 변경 ---
+// X000 (byte 0, bit 0): 상승엣지만
 	AxdiInterruptEdgeSetByte(0, 0, UP_EDGE, 0x01);
 	AxdiInterruptEdgeSetByte(0, 0, DOWN_EDGE, 0x00);
 
@@ -93,13 +147,33 @@ BOOL CAJinAXL::Initialize()
 
 	return TRUE;
 }
+#endif
 
+void CAJinAXL::Init_AssyTrigger()
+{
+	m_dwAssyOutput = 0xFFFFFFFF;   // Active-Low: 전 비트 idle(High)
+#ifdef AJIN_BOARD_USE
+	AxdoWriteOutportDword(ASSY_OUTPUT_MODULE, 0, m_dwAssyOutput);
+#endif
+}
+
+#ifdef ASSY_LENS
+void CAJinAXL::Terminate()
+{
+	Init_AssyTrigger();
+
+#ifdef AJIN_BOARD_USE
+	if (AxlIsOpened()) 
+		AxlClose();
+#endif
+}
+#else
 void CAJinAXL::Terminate()
 {
 	Init_Trigger(FALSE);	// 종료시 All Off
 
 #ifdef AJIN_BOARD_USE
-	if (AxlIsOpened()) 
+	if (AxlIsOpened())
 		AxlClose();
 #endif
 
@@ -112,6 +186,7 @@ void CAJinAXL::Terminate()
 		}
 	}
 }
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // Interrupt Callback
@@ -203,6 +278,54 @@ void CAJinAXL::Set_Trigger(int nPort, BOOL* bLight, int nS)
 	}
 #ifdef AJIN_BOARD_USE
 	AxdoWriteOutportWord(nModule, nOffset, dwValue);
+#endif
+
+	TriggerCS.Unlock();
+}
+
+void CAJinAXL::Set_AssyTrigger(int iCam, int iPageIndex, int nS, int iCamSelect /*= ACAM_SEL_ALL*/)
+{
+	if (iCam < 0 || iCam >= AVCAM_MAX)
+		return;
+
+	const ASSY_TRIGGER_MAP& map = s_AssyMap[iCam];
+
+	DWORD dwMask = 0;
+
+	// 카메라 트리거 비트
+	//  ACAM_SEL_ALL  : 매핑된 카메라 비트 전체 동시 (Btm Align = Y024+Y025)
+	//  ACAM_SEL_1/_2 : 해당 인덱스 카메라 비트 1개만 (Btm Align 개별 촬상용)
+	if (iCamSelect == ACAM_SEL_ALL)
+	{
+		for (int i = 0; i < map.iCamBitCount; i++)
+			dwMask |= (1u << (map.iCamBitStart + i));
+	}
+	else
+	{
+		int iSelIdx = iCamSelect - ACAM_SEL_1;   // ACAM_SEL_1 -> 0, ACAM_SEL_2 -> 1
+		if (iSelIdx >= 0 && iSelIdx < map.iCamBitCount)
+			dwMask |= (1u << (map.iCamBitStart + iSelIdx));
+		else
+			dwMask |= (1u << map.iCamBitStart);  // 범위 밖이면 첫 비트로 폴백
+	}
+
+	// 선택 조명 Page 비트 (Page Index는 카메라 기준 0-base)
+	if (iPageIndex >= 0 && iPageIndex < map.iLightBitCount)
+		dwMask |= (1u << (map.iLightBitStart + iPageIndex));
+
+	TriggerCS.Lock();
+
+	// Active-Low 펄스: 선택 비트만 0, 나머지는 idle(1) 유지, 32비트 동시 출력
+	m_dwAssyOutput &= ~dwMask;
+#ifdef AJIN_BOARD_USE
+	AxdoWriteOutportDword(ASSY_OUTPUT_MODULE, 0, m_dwAssyOutput);
+#endif
+
+	Delay(nS);
+
+	m_dwAssyOutput |= dwMask;   // 해제
+#ifdef AJIN_BOARD_USE
+	AxdoWriteOutportDword(ASSY_OUTPUT_MODULE, 0, m_dwAssyOutput);
 #endif
 
 	TriggerCS.Unlock();

@@ -78,14 +78,16 @@ public:
 
 	void OfflineInspection_Folder(CString sCurrentLotID);
 
-	CString m_sLotID_H[VISION_NUMBER_MAX];
-	int m_iMzNo_H[VISION_NUMBER_MAX];										// for Scan
-	int m_iJigNo_H[VISION_NUMBER_MAX];										// for Scan
-	int m_iStageNo_H[VISION_NUMBER_MAX];									// for Scan
-	double m_dHeight_H[VISION_NUMBER_MAX];									// for Scan
-	CString m_sTrayID_H[VISION_NUMBER_MAX];									// for Scan
-	int m_iTrayNo_H[VISION_NUMBER_MAX];										// for Scan
-	int m_iModuleNo_H[VISION_NUMBER_MAX];									// for Scan
+	CString m_sLotID_H[VISION_NUMBER_MAX + 2];
+	int m_iMzNo_H[VISION_NUMBER_MAX + 2];									// for Scan
+	int m_iJigNo_H[VISION_NUMBER_MAX + 2];									// for Scan
+	int m_iStageNo_H[VISION_NUMBER_MAX + 2];								// for Scan
+	double m_dHeight_H[VISION_NUMBER_MAX + 2];								// for Scan
+	CString m_sTrayID_H[VISION_NUMBER_MAX + 2];								// for Scan
+	int m_iTrayNo_H[VISION_NUMBER_MAX + 2];									// for Scan
+	int m_iModuleNo_H[VISION_NUMBER_MAX + 2];								// for Scan
+	int m_iTrayNo2_H;														// for Scan
+	int m_iModuleNo2_H;														// for Scan
 	int m_iAlignVisionSeqNo_H;												// for Scan
 
 	int m_iLotTrayAmt_H[MAX_MAGAZINE_NO];			// for Handler data, added for CMI 3000 2000
@@ -94,8 +96,8 @@ public:
 	BOOL m_bSaveResultLogThreadDone[MAX_MAGAZINE_NO];			// Log Save Done Flag
 	BOOL m_bContDefectLogThreadDone[MAX_MAGAZINE_NO];			// 동일 위치 불량 알람
 
-	int	 m_iOfflineMultiModuleInspectionDoneCnt[VISION_NUMBER_MAX];			// Temporary
-	BOOL m_bOfflineModuleInspectDone[VISION_NUMBER_MAX];		// Offline
+	int	 m_iOfflineMultiModuleInspectionDoneCnt[VISION_NUMBER_MAX + 2];		// Temporary
+	BOOL m_bOfflineModuleInspectDone[VISION_NUMBER_MAX + 2];		// Offline
 
 	BOOL m_bGrabTest_ScanComplete;
 

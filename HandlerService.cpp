@@ -225,7 +225,7 @@ void  CHandlerService::Get_ModelReply(int iFlag)
 	m_iModelCheck = iFlag;
 }
 
-#ifdef SINGLE_LENS
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
 void  CHandlerService::Get_LotStart(CString sLotID, CString sMzNo, CString sTrayAmt, CString sModuleAmt, CString sHandlerModelName)
 {
 	CString strLog;
@@ -250,22 +250,6 @@ void  CHandlerService::Get_LotStart(CString sLotID, CString sMzNo, CString sTray
 
 	strLog.Format("Lot start, LotID: %s", sLotID);
 	THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
-
-#ifdef HANDLER_USE
-
-#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
-	for (int i = 0; i < LIGHT_CONTROLLER_NUMBER_MAX; i++)
-	{
-		CString sVisionCamType;
-		sVisionCamType = THEAPP.m_ModelDefineInfo.m_strVisionName[i];
-		if (THEAPP.Struct_PreferenceStruct.m_bUseVision[i]
-			&& sVisionCamType != "Undefine" && sVisionCamType != "Align"
-			&& m_bTcpConnect[i] == FALSE)
-			THEAPP.m_pHandlerService->Set_ErrorRequest(HANDLER_ERROR_LIGHT_CONTROLLER_CONNECT_FAIL);
-	}
-#endif
-
-#endif
 }
 
 
@@ -587,6 +571,61 @@ void  CHandlerService::Get_LoadComplete(CString sVisionType, CString sLotID, CSt
 
 	THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = FALSE;
 	THEAPP.m_bLoadCompleteFlag[iMzNo - 1][iTrayNo - 1][iModuleNo - 1][iPcVisionNo] = TRUE;
+
+	THEAPP.m_pInspectService->InspectionMove(iPcVisionNo, iMzNo);				// 스캔과 검사 시작
+}
+
+void  CHandlerService::Get_LoadComplete(CString sVisionType, CString sLotID, CString sMzNo, CString sTrayNo1, CString sModuleNo1, CString sTrayNo2, CString sModuleNo2)
+{
+	int iPcVisionNo;
+
+	if (sVisionType == "TC")
+		iPcVisionNo = 0;
+	else if (sVisionType == "BC")
+		iPcVisionNo = 1;
+	else if (sVisionType == "SC")
+		iPcVisionNo = 2;
+	else if (sVisionType == "BA")
+		iPcVisionNo = 3;
+	else if (sVisionType == "TA")
+		iPcVisionNo = 5;
+	else
+		return;
+
+	int iMzNo, iTrayNo1, iModuleNo1, iTrayNo2, iModuleNo2;
+	iMzNo = atoi((LPSTR)(LPCSTR)sMzNo);
+
+	THEAPP.m_pInspectService->m_sLotID_H[iPcVisionNo] = sLotID;
+	THEAPP.m_pInspectService->m_iMzNo_H[iPcVisionNo] = iMzNo;
+	THEAPP.m_pInspectService->m_iJigNo_H[iPcVisionNo] = 1;
+	THEAPP.m_pInspectService->m_iStageNo_H[iPcVisionNo] = 1;
+	THEAPP.m_pInspectService->m_dHeight_H[iPcVisionNo] = 0;
+
+	THEAPP.m_pInspectService->m_iTrayNo_H[iPcVisionNo] = EMPTY_TRAY_MODULE;
+	THEAPP.m_pInspectService->m_iModuleNo_H[iPcVisionNo] = EMPTY_TRAY_MODULE;
+
+	iTrayNo1 = atoi((LPSTR)(LPCSTR)sTrayNo1);
+	iModuleNo1 = atoi((LPSTR)(LPCSTR)sModuleNo1);
+
+	THEAPP.m_pInspectService->m_sTrayID_H[iPcVisionNo] = _T("NoUse");
+	THEAPP.m_pInspectService->m_iTrayNo_H[iPcVisionNo] = iTrayNo1;
+	THEAPP.m_pInspectService->m_iModuleNo_H[iPcVisionNo] = iModuleNo1;
+
+	if (sVisionType != "TA")
+	{
+		THEAPP.m_bScanCompleteFlag[iMzNo - 1][iTrayNo1 - 1][iModuleNo1 - 1][iPcVisionNo] = FALSE;
+		THEAPP.m_bLoadCompleteFlag[iMzNo - 1][iTrayNo1 - 1][iModuleNo1 - 1][iPcVisionNo] = TRUE;
+	}
+
+	if (sVisionType == "BA")	// Picker #1은 항상 모듈 있음
+	{
+		THEAPP.m_pInspectService->m_iTrayNo2_H = EMPTY_TRAY_MODULE;
+		THEAPP.m_pInspectService->m_iModuleNo2_H = EMPTY_TRAY_MODULE;
+		iTrayNo2 = atoi((LPSTR)(LPCSTR)sTrayNo2);
+		iModuleNo2 = atoi((LPSTR)(LPCSTR)sModuleNo2);
+		THEAPP.m_pInspectService->m_iTrayNo2_H = iTrayNo2;
+		THEAPP.m_pInspectService->m_iModuleNo2_H = iModuleNo2;
+	}
 
 	THEAPP.m_pInspectService->InspectionMove(iPcVisionNo, iMzNo);				// 스캔과 검사 시작
 }
@@ -964,7 +1003,7 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 			if (strOp == "REPLY") Get_ModelReply(iFlag);
 		}
 
-#ifdef SINGLE_LENS
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
 		else if (strCmd == "LOT") {
 			AfxExtractSubString(sTemp1, strRecv, 2, chSep);		// Lot ID
 			AfxExtractSubString(sTemp2, strRecv, 3, chSep);		// Lot No
@@ -1009,6 +1048,18 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 			AfxExtractSubString(sTemp6, strRecv, 7, chSep);		// Lens No
 
 			if (strOp == "COMPLETE") Get_LoadComplete(sTemp1, sTemp2, sTemp3, sTemp4, sTemp5, sTemp6);
+		}
+#elif defined(ASSY_LENS)
+		else if (strCmd == "LOAD") {
+			AfxExtractSubString(sTemp1, strRecv, 2, chSep);		// VIsion: TC, BC, SC, BA, TA
+			AfxExtractSubString(sTemp2, strRecv, 3, chSep);		// MZ ID 
+			AfxExtractSubString(sTemp3, strRecv, 4, chSep);		// MZ No (Default: 1)
+			AfxExtractSubString(sTemp4, strRecv, 5, chSep);		// Zig No 1
+			AfxExtractSubString(sTemp5, strRecv, 6, chSep);		// Lens No 1
+			AfxExtractSubString(sTemp6, strRecv, 7, chSep);		// Zig No 2
+			AfxExtractSubString(sTemp7, strRecv, 8, chSep);		// Lens No 2
+
+			if (strOp == "COMPLETE") Get_LoadComplete(sTemp1, sTemp2, sTemp3, sTemp4, sTemp5, sTemp6, sTemp7);
 		}
 #else
 

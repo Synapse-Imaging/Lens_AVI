@@ -1072,6 +1072,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN1()
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
+		THEAPP.m_pTabControlDlg->m_pLightControlDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();
@@ -1178,6 +1179,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN2()
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
+		THEAPP.m_pTabControlDlg->m_pLightControlDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();
@@ -1284,6 +1286,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN3()
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
+		THEAPP.m_pTabControlDlg->m_pLightControlDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();
@@ -1412,6 +1415,7 @@ void CuScanView::OnBnClickedMfcbuttonFormTeachingVisionN4()
 		THEAPP.m_pTabControlDlg->Show();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->UpdateDlgStatus();
+		THEAPP.m_pTabControlDlg->m_pLightControlDlg->UpdateDlgStatus();
 		THEAPP.m_pTabControlDlg->m_pJogSetDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pCameraLightManagerDlg->LoadViewParam();
 		THEAPP.m_pTabControlDlg->m_pExtraDlg->SetTeachModeControl();

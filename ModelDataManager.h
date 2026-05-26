@@ -46,6 +46,7 @@ public:
 
 	int m_iTriggerImageNumber;
 	int m_iTriggerPeriod;
+	int m_iTriggerTimeout;
 
 	int m_iBottomAlign1EndImageNumber;
 	int m_iBottomAlign2EndImageNumber;
@@ -167,6 +168,7 @@ public:
 	void InitLightInfo();
 	int LoadLightInfo(CString sLinfoPath);
 	void SaveLightInfo(CString sLinfoPath, int iCurPageIndex);
+	void SaveImagePageInfo(CString sLinfoPath);
 	int LoadPwmLightInfo(CString sLinfoPath);
 	void SavePwmLightInfo(CString sLinfoPath);
 	int LoadSequenceInfo(CString sLinfoPath);

@@ -46,6 +46,7 @@ public:
 
 	int m_iEditTriggerImageNumber;
 	int m_iEditTriggerPeriod;
+	int m_iEditTriggerTimeout;
 
 	int m_iEditBa1ImageNumber;
 	int m_iEditBa2ImageNumber;

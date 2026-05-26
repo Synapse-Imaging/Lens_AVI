@@ -303,6 +303,7 @@ void CModelDataManager::InitModelData()
 
 	m_iTriggerImageNumber = 4;
 	m_iTriggerPeriod = 25;
+	m_iTriggerTimeout = 10000;
 
 	m_iBottomAlign1EndImageNumber = 3;
 	m_iBottomAlign2EndImageNumber = 6;
@@ -538,6 +539,23 @@ void CModelDataManager::SaveLightInfo(CString sLinfoPath, int iCurPageIndex)
 			strKey.Format("Ch%d", iChIdx + 1);
 			INIInspectionLight.Set_Integer(strSection, strKey, m_PageControlData.m_Page[iPageIdx].uiChannel[iChIdx]);
 		}
+	}
+}
+
+void CModelDataManager::SaveImagePageInfo(CString sLinfoPath)
+{
+	CIniFileCS INIInspectionLight(sLinfoPath);
+
+	CString strSection, strKey;
+	strSection.Format("Model Base");
+	strKey.Format("HWParameterVersion");
+	INIInspectionLight.Set_Integer(strSection, strKey, 1002);
+
+	for (int i = 0; i < MAX_IMAGE_TAB; i++)
+	{
+		strSection.Format("Image_%d", i + 1);
+		strKey.Format("PageNo");
+		INIInspectionLight.Set_Integer(strSection, strKey, m_iLightPageIdx[i] + 1);
 	}
 }
 
@@ -1270,6 +1288,8 @@ int CModelDataManager::LoadMotionMovingPosition(CString sLinfoPath)
 	m_iTriggerImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 4);
 	strKey.Format("Trigger-Period");
 	m_iTriggerPeriod = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 25);
+	strKey.Format("Trigger-Timeout");
+	m_iTriggerTimeout = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 10000);
 #elif defined (ASSY_LENS)
 	strSection.Format("Assy Lens Align End Image Number");
 	strKey.Format("Bottom-Align-1");
@@ -1326,6 +1346,8 @@ void CModelDataManager::SaveMotionMovingPosition(CString sLinfoPath, int iCurSta
 	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerImageNumber);
 	strKey.Format("Trigger-Period");
 	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerPeriod);
+	strKey.Format("Trigger-Timeout");
+	INI_MotionMovingPosition.Set_Integer(strSection, strKey, m_iTriggerTimeout);
 #elif defined (ASSY_LENS)
 	strSection.Format("Assy Lens Align End Image Number");
 	strKey.Format("Bottom-Align-1");

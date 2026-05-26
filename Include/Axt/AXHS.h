@@ -81,10 +81,12 @@ typedef enum _AXT_BASE_BOARD
     AXT_PCIEN804                                            = 0x86,    // PCIe bus, Half size On-Board 8 Axis controller.
     AXT_PCIEN404                                            = 0x87,    // PCIe bus, Half size On-Board 4 Axis controller.
     AXT_PCI_AIO1602HR                                       = 0x93,    // PCI bus, Half size, AI-16ch, AO-2ch AI16HR
+	AXT_PCI_Rxx04RTEX_B0									= 0xC0,	   // PCI bus[PCI9056], Half size, RTEX based 16 axis 240208 jhy Device 추가
     AXT_PCI_R1604                                           = 0xC1,    // PCI bus[PCI9030], Half size, RTEX based 16 axis controller
     AXT_PCI_R3204                                           = 0xC2,    // PCI bus[PCI9030], Half size, RTEX based 32 axis controller
     AXT_PCI_R32IO                                           = 0xC3,    // PCI bus[PCI9030], Half size, RTEX based IO only.
     AXT_PCI_REV2                                            = 0xC4,    // Reserved.
+	//AXT_PCI_R32IO_RTEX_KP_B0								= 0xC4,	   // PCI bus[~~~~~~~], Half size, RTEX based IO Only. 240325 jhy Device 추가
     AXT_PCI_R1604MLII                                       = 0xC5,    // PCI bus[PCI9030], Half size, Mechatrolink-II 16/32 axis controller.
     AXT_PCI_R0804MLII                                       = 0xC6,    // PCI bus[PCI9030], Half size, Mechatrolink-II 08 axis controller.
     AXT_PCI_Rxx00MLIII                                      = 0xC7,    // PCI Board, Mechatrolink III AXT, PCI Bus[PCI9030], Half size, Max.32 Slave module support
@@ -149,7 +151,7 @@ typedef enum _AXT_FUNC_MODULE
     AXT_SMC_R1V04MLIIISV_MD                                 = 0x22,    // DSP, 1 Axis, For ML-3 SigmaV-MD/YASKAWA only (Multi-Axis Control amp)
     AXT_SMC_R1V04MLIIIS7S                                   = 0x23,    // DSP, 1 Axis, For ML-3 Sigma7S/YASKAWA only
     AXT_SMC_R1V04MLIIIS7W                                   = 0x24,    // DSP, 2 Axis, For ML-3 Sigma7W/YASKAWA only(Dual-Axis control amp)
-    AXT_SMC_R1V04MLIIIRS2                                   = 0x25,    // DSP, 1 Axis, For ML-3 RS2A/SANYO DENKY
+    AXT_SMC_R1V04MLIIIRS2                                   = 0x25,    // DSP, 1 Axis, For ML-3 RS2A/SANYO DENKI
     AXT_SMC_R1V04MLIIIS7_MD                                 = 0x26,    // DSP, 1 Axis, For ML-3 Sigma7-MD/YASKAWA only (Multi-Axis Control amp)
     AXT_SMC_R1V04MLIIIAZ                                    = 0x27,    // DSP, 4 Axis, For ML-3 AZD/ORIENTAL only (Multi-Axis Control amp)
     AXT_SMC_R1V04MLIIIPCON                                  = 0x28,    // DSP, 1 Axis, For ML-3 PCON/IAI only
@@ -231,7 +233,15 @@ typedef enum _AXT_FUNC_MODULE
     AXT_SIO_RCNT2RTEX                                       = 0xB2,    // Counter slave module, Reversible counter, 2 channels, For RTEX Only
     AXT_SIO_RCNT2MLIII                                      = 0xB3,    // Counter slave module, MechatroLink III AXT, 2 ch, Trigger per channel
     AXT_SIO_RHPC4MLIII                                      = 0xB4,    // Counter slave module, MechatroLink III AXT, 4 ch
-    AXT_SIO_RAI16RTEX                                       = 0xC0,    // ANALOG VOLTAGE INPUT(+- 10V) 16 Channel RTEX 
+	AXT_SIO_RDO32RTEX_N4                                    = 0xB5,    // RTEX N4 Series Digital OUT 32
+	AXT_SIO_RDI32RTEX_N4                                    = 0xB6,    // RTEX N4 Series Digital IN 32
+	AXT_SIO_RDB32RTEX_N4                                    = 0xB7,    // RTEX N4 Series Digital DB 32
+	AXT_SIO_RDO16RTEX_N4                                    = 0xB8,    // RTEX N4 Series Digital OUT 16
+	AXT_SIO_RDI16RTEX_N4                                    = 0xB9,    // RTEX N4 Series Digital IN 16
+	AXT_SIO_RDB16RTEX_N4                                    = 0xBA,    // RTEX N4 Series Digital DB 16
+	AXT_SIO_RAI08RTEX_N4                                    = 0xBB,    // RTEX N4 Series Analog IN 08
+	AXT_SIO_RAO04RTEX_N4                                    = 0xBC,    // RTEX N4 Series Analog OUT 04
+	AXT_SIO_RAI16RTEX                                       = 0xC0,    // ANALOG VOLTAGE INPUT(+- 10V) 16 Channel RTEX 
     AXT_SIO_RAO08RTEX                                       = 0xC1,    // ANALOG VOLTAGE OUTPUT(+- 10V) 08 Channel RTEX
     AXT_SIO_RAI8MLIII                                       = 0xC2,    // AI slave module, MechatroLink III AXT, Analog IN 8ch, 16 bit
     AXT_SIO_RAI16MLIII                                      = 0xC3,    // AI slave module, MechatroLink III AXT, Analog IN 16ch, 16 bit
@@ -269,7 +279,8 @@ typedef enum _AXT_FUNC_MODULE
     AXT_VIRTUAL_DIO                                         = 0xEC,    // Virtual DIO Module
     AXT_VIRTUAL_AIO                                         = 0xED,    // Virtual AIO Module
     AXT_EXDEV_DIO                                           = 0xF5,    //AXTEXDEV	3rd party External device DIO
-    AXT_EXDEV_AIO                                           = 0xF6     //AXTEXDEV	3rd party External device AIO
+    AXT_EXDEV_AIO                                           = 0xF6,     //AXTEXDEV	3rd party External device AIO
+	AXT_SMC_UNI60B_RTEX										= 0xF7	   // Emotiontek RTEX Step DRIVER
 
 
 } AXT_FUNC_MODULE;
@@ -296,8 +307,8 @@ typedef enum _AXT_FUNC_RESULT
     AXT_RT_SLAVE_OP_TIMEOUT_WARNING                         = 1063,    // Slave들이 OP 모드가 될 때까지 대기중 Timeout이 발생
     AXT_RT_SLAVE_NOT_OP                                     = 1064,    // OP 모드가 아닌 Slave가 존재함
 
-    AXT_RT_RESCAN_NOT_EXIST_BOARD                           = 1060,    // 보드가 존재하지 않음
-    AXT_RT_RESCAN_TIMEOUT                                   = 1061,    // Rescan 명령 후 대기 시간 초과
+    AXT_RT_RESCAN_NOT_EXIST_BOARD                           = 1065,    // 보드가 존재하지 않음
+    AXT_RT_RESCAN_TIMEOUT                                   = 1066,    // Rescan 명령 후 대기 시간 초과
 
     AXT_RT_BAD_PARAMETER                                    = 1070,    // 사용자가 입력한 파라미터가 적절하지 않음
 
@@ -746,10 +757,6 @@ typedef enum _AXT_FUNC_RESULT
     AXT_MK_RT_INVALID_RESET                                 = 7611,
     AXT_MK_RT_INVALID_ENABLE                                = 7612,
 
-    AXT_MK_RT_NOT_SUPPORT                                   = 7900,
-    AXT_MK_RT_ERROR                                         = 7901,
-    AXT_MK_RT_INVLID_FUNCTION_TYPE                          = 7902,
-
     AXT_MK_RT_INVALID_ROBOT_SIZE                            = 7700,
     AXT_MK_RT_INVALID_ROBOT_AXIS_SIZE                       = 7701,
     AXT_MK_RT_INVALID_ROBOT_COORD_SIZE                      = 7702,
@@ -784,11 +791,13 @@ typedef enum _AXT_FUNC_RESULT
     AXT_MK_RT_INVALID_FREQUENCY_SIZE                        = 7800,
     AXT_MK_RT_INVALID_IMPULSE_COUNT                         = 7801,
     AXT_MK_RT_INVALID_AMPLITUDE                             = 7802,
-
     AXT_MK_RT_INVALID_INPUT_SHAPER__NONE                    = 7803,
     AXT_MK_RT_INVALID_INPUT_SHAPER_ENABLED                  = 7804,
-
-    AXT_MK_RT_INVALID_ARRAY_SIZE                            = 7805
+    AXT_MK_RT_INVALID_ARRAY_SIZE                            = 7805,
+	
+	AXT_MK_RT_NOT_SUPPORT                                   = 7900,
+    AXT_MK_RT_ERROR                                         = 7901,
+    AXT_MK_RT_INVLID_FUNCTION_TYPE                          = 7902
 } AXT_FUNC_RESULT;
 #endif
 
@@ -2580,5 +2589,56 @@ typedef enum _AXT_COUNTER_HPC4_TRRIGER_MODE
 
 typedef void (__stdcall *AXT_EVENT_PROC)(long lActiveNo, DWORD uFlag);
 typedef void (__stdcall *AXT_INTERRUPT_PROC)(long lActiveNo, DWORD  uFlag);
+
+#ifndef	__AXL_MOVE_PARAM_DEFINE_
+#define	__AXL_MOVE_PARAM_DEFINE_
+// Get Move Parameter Function 231031 lsg
+// move parameter struct
+typedef struct _AXT_MOVE_START_POS_PARAM
+{
+	long lAxisNo;
+	double dPos;
+	double dVel;
+	double dAccel;
+	double dDecel;
+}AXT_MOVE_START_POS_PARAM;
+
+typedef struct _AXT_MOVE_POS_PARAM
+{
+	long lAxisNo;
+	double dPos;
+	double dVel;
+	double dAccel;
+	double dDecel;
+}AXT_MOVE_POS_PARAM;
+
+typedef struct _AXT_MOVE_VEL_PARAM
+{
+	long lAxisNo;
+	double dVel;
+	double dAccel;
+	double dDecel;
+}AXT_MOVE_VEL_PARAM;
+
+typedef struct _AXT_MOVE_START_MULTI_POS_PARAM
+{
+	long lArraySize;
+	long* lMultiAxesNo;
+	double* dMultiPos;
+	double* dMultiVel;
+	double* dMultiAccel;
+	double* dMultiDecel;
+}AXT_MOVE_START_MULTI_POS_PARAM;
+
+// lsg 231114
+typedef struct _AXT_MOVE_TO_ABS_POS_PARAM
+{
+	long lAxisNo;
+	double dPos;
+	double dVel;
+	double dAccel;
+	double dDecel;
+}AXT_MOVE_TO_ABS_POS_PARAM;
+#endif
                                                                     
 #endif                                                                //__AXT_AXHS_H__                                                                                     

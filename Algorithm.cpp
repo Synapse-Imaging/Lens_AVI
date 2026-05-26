@@ -469,7 +469,12 @@ BOOL Algorithm::CopyRawImage(int iInspectionBufferIdx)
 			{
 				GenEmptyObj(&(pSaveThreadIDParam->HSaveImage[i]));
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+				int iImageChType = CHANNEL_TYPE_I;
+#else
 				int iImageChType = CHANNEL_TYPE_COLOR;
+#endif
+
 				if (THEAPP.m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
 					iImageChType = CHANNEL_TYPE_I;
 
@@ -509,7 +514,12 @@ BOOL Algorithm::CopyRawImage(int iInspectionBufferIdx)
 			{
 				GenEmptyObj(&(pSaveThreadIDParam->HSaveImage[i]));
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+				int iImageChType = CHANNEL_TYPE_I;
+#else
 				int iImageChType = CHANNEL_TYPE_COLOR;
+#endif
+
 				if (THEAPP.m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
 					iImageChType = CHANNEL_TYPE_I;
 

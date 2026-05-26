@@ -777,7 +777,6 @@ BOOL CuScanApp::InitInstance()
 		m_pHandlerService->SetTCP_IP(LIGHT_CONTROLLER_NUMBER_4, sLightControllerIP);
 		m_pHandlerService->SetTCP_PORT(LIGHT_CONTROLLER_NUMBER_4, Struct_PreferenceStruct.m_iVision4LightPort);
 	}
-#endif
 
 	BOOL bConnectCheck = FALSE;
 	bConnectCheck = m_pHandlerService->Initialize_TcpHandler(FALSE);
@@ -790,6 +789,8 @@ BOOL CuScanApp::InitInstance()
 
 	strLog.Format("Create HandlerService class complete");
 	m_log_system->debug("{}", LOG_CSTR(strLog));
+#endif
+
 
 #ifdef SNZEROMQ
 
@@ -1814,7 +1815,10 @@ int CuScanApp::ExitInstance()
 		THEAPP.m_zeromq_client.~ZeroMQClient();
 #endif // SNZEROMQ
 
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
 		m_pHandlerService->Terminate_TcpHandler();
+#endif
+
 		m_pHandlerService->DeleteInstance();
 
 		m_pInspectSummary->DeleteInstance();
@@ -11790,4 +11794,35 @@ BOOL CuScanApp::InitializeVisionLogger()
 		std::cerr << "Failed to initialize vision loggers: " << e.what() << std::endl;
 		return false;
 	}
+}
+
+CString CuScanApp::GetErrorMessageStr(DWORD dwErr)
+{
+	LPVOID lpMsgBuf = NULL;
+	DWORD dwLen = ::FormatMessageA(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		dwErr,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),  // 시스템 기본 언어 (한국어 OS면 한글 메시지)
+		(LPSTR)&lpMsgBuf,
+		0,
+		NULL);
+
+	CString strMsg;
+	if (dwLen && lpMsgBuf)
+	{
+		strMsg = (LPCSTR)lpMsgBuf;
+		strMsg.TrimRight("\r\n");   // FormatMessage는 끝에 CR/LF를 붙임
+	}
+	else
+	{
+		strMsg = "Unknown error";
+	}
+
+	if (lpMsgBuf)
+		::LocalFree(lpMsgBuf);   // ALLOCATE_BUFFER로 받은 버퍼는 반드시 해제
+
+	return strMsg;
 }

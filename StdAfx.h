@@ -50,12 +50,15 @@
 // #define UAVI_BOS
 // #define UAVI_RENO
 // #define UAVI_KRIOS
-//#define SINGLE_LENS
-#define ASSY_LENS
+#define SINGLE_LENS
+//#define ASSY_LENS
 
 // AI 라이브러리 선택
 #define SYAI
 // #define LGITAI
+
+// FAI 기능 사용
+#define USE_FAI
 
 // 면적당 조건 불러오기, 저장
 //#define DEFECT_CONDITION

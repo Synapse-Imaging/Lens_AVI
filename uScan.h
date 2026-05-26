@@ -248,6 +248,8 @@ public:
 	std::shared_ptr<spdlog::logger> m_log_etc;
 	BOOL InitializeVisionLogger();
 
+	CString GetErrorMessageStr(DWORD dwErr);
+
 	GTRegion* GetDefectTeachingInfo(HObject* pHDefectRgn, int iVisionCamType, int iMzNo, int iPcVisionNo, int iInspectionBufferIdx, int iInspectionTypeIndex, int iDefectNameIndex, int* piImageNo, int* piRoiLeft, int* piRoiTop, int* piRoiRight, int* piRoiBottom, int* piInspectionTabNo, CAlgorithmParam* pAlgorithmParam);
 
 	int	CheckProcessExist();
@@ -1063,6 +1065,7 @@ public:
 	// /FAI/ModelData/FAIDataManager.h 참고
 	CFAIDataManager &m_pFAIDataManager;
 	// AlgorithmPipeline.cpp 등 기존 코드와의 호환성 유지 (CFAIDataManager 배열 별칭)
+
 	CenterlineMeasureStruct (&m_StructFaiMeasure)[MAX_MAGAZINE_NO][MAX_TRAY_LOT][MAX_MODULE_TRAY][MAX_FAI_PARAMETER];
 	//////////////////////////////////////////////////////////////////////////	Continuous Defect Check (All Module in a LOT)
 

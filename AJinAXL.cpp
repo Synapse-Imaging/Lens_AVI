@@ -1,6 +1,7 @@
-// AJinAXL.cpp : ±∏«ˆ ∆ƒ¿œ
+Ôªø// AJinAXL.cpp : Íµ¨ÌòÑ ÌååÏùº
 //
 #include "stdafx.h"
+#include "uScan.h"
 #include "AJinAXL.h"
 
 #include "AXL.h"
@@ -28,13 +29,15 @@ CAJinAXL::CAJinAXL(void)
 	m_DY2.nValue = 0;
 	m_DY3.nValue = 0;
 
+	m_lModuleNo = 1;
+
 	m_dwAssyOutput = 0xFFFFFFFF;
 
  	LARGE_INTEGER freq;
  	QueryPerformanceFrequency(&freq);
  	m_nFreq = freq.QuadPart;
-
-	for (int i = 0; i < VISION_NUMBER_MAX; i++)
+	   
+	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
 		m_hEventTrigger[i] = NULL;
 }
 
@@ -63,22 +66,12 @@ BOOL CAJinAXL::Initialize()
 	if (lDIOCount < 1)
 	{
 		AfxMessageBox("AJin Module Count Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
-		return FALSE;	// Board 1 or 2¿Â
+		return FALSE;	// Board 1 or 2Ïû•
 	}
 
-	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
-	{
-		m_hEventTrigger[i] = ::CreateEventA(NULL, FALSE, FALSE, NULL);
-
-		if (m_hEventTrigger[i] == NULL)
-		{
-			AfxMessageBox("AJin Evenet Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
-			return FALSE;
-		}
-	}
 #endif
 
-	// √‚∑¬ ∏µ‚(∏µ‚0) idle √ ±‚»≠ (Active-Low: ¿¸ ∫Ò∆Æ High)
+	// Ï∂úÎ†• Î™®Îìà(Î™®Îìà0) idle Ï¥àÍ∏∞Ìôî (Active-Low: Ï†Ñ ÎπÑÌä∏ High)
 	Init_AssyTrigger();
 
 	return TRUE;
@@ -88,6 +81,7 @@ BOOL CAJinAXL::Initialize()
 {
 #ifdef AJIN_BOARD_USE
 	DWORD dwReturn = AxlOpenNoReset(7);
+//	DWORD dwReturn = AxlOpen(7);   // Î¶¨ÏÖã Ìè¨Ìï® Ïò§ÌîàÏúºÎ°ú Î≥ÄÍ≤Ω
 	if (dwReturn != AXT_RT_SUCCESS)
 	{
 		AfxMessageBox("AJin Open Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
@@ -104,7 +98,7 @@ BOOL CAJinAXL::Initialize()
 	if (lDIOCount < 1)
 	{
 		AfxMessageBox("AJin Module Count Error!!", MB_SYSTEMMODAL | MB_ICONERROR);
-		return FALSE;	// Board 1 or 2¿Â
+		return FALSE;	// Board 1 or 2Ïû•
 	}
 
 	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
@@ -118,30 +112,49 @@ BOOL CAJinAXL::Initialize()
 		}
 	}
 
-	Init_Trigger(FALSE);		// Ω√¿€Ω√ All On
+	Init_Trigger(FALSE);		// ÏãúÏûëÏãú All On
 
-	AxlInterruptEnable();
-	AxdiInterruptSetModuleEnable(0, ENABLE);
+	DWORD r;
 
-	// --- ¿Œ≈Õ∑¥∆Æ øß¡ˆ º≥¡§ ∫Ø∞Ê ---
-// X000 (byte 0, bit 0): ªÛΩ¬øß¡ˆ∏∏
-	AxdiInterruptEdgeSetByte(0, 0, UP_EDGE, 0x01);
-	AxdiInterruptEdgeSetByte(0, 0, DOWN_EDGE, 0x00);
+	r = AxlInterruptDisable();                              ASSERT(r == AXT_RT_SUCCESS);
+	Sleep(500);
 
-	// X008~X015 (byte 1): πÃªÁøÎ
-	AxdiInterruptEdgeSetByte(0, 1, UP_EDGE, 0x00);
-	AxdiInterruptEdgeSetByte(0, 1, DOWN_EDGE, 0x00);
+	r = AxlInterruptEnable();                              ASSERT(r == AXT_RT_SUCCESS);
 
-	// X016 (byte 2, bit 0): ªÛΩ¬øß¡ˆ∏∏
-	AxdiInterruptEdgeSetByte(0, 2, UP_EDGE, 0x01);
-	AxdiInterruptEdgeSetByte(0, 2, DOWN_EDGE, 0x00);
+	// 1) ÏΩúÎ∞±(ÎòêÎäî Ïù¥Î≤§Ìä∏) Îì±Î°ù Î®ºÏ†Ä
+	r = AxdiInterruptSetModule(m_lModuleNo, NULL, NULL,	(AXT_INTERRUPT_PROC)OnDIOInterruptCallback, NULL); ASSERT(r == AXT_RT_SUCCESS);
 
-	// X024~X031 (byte 3): πÃªÁøÎ
-	AxdiInterruptEdgeSetByte(0, 3, UP_EDGE, 0x00);
-	AxdiInterruptEdgeSetByte(0, 3, DOWN_EDGE, 0x00);
+	// 2) Ïó£ÏßÄ + ÎπÑÌä∏ ÌôúÏÑ±Ìôî ÏÑ§Ï†ï (Î™®Îìà enable Ï†ÑÏóê)
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 0, UP_EDGE, 0x01); ASSERT(r == AXT_RT_SUCCESS); // X000
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 0, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 1, UP_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 1, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 2, UP_EDGE, 0x01); ASSERT(r == AXT_RT_SUCCESS); // X016
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 2, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 3, UP_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 3, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
 
-	AxdiInterruptSetModule(0, NULL, NULL, NULL, NULL);	// √ ±‚»≠
-	AxdiInterruptSetModule(0, NULL, NULL, (AXT_INTERRUPT_PROC)OnDIOInterruptCallback, NULL);
+	r = AxdiInterruptSetModuleEnable(m_lModuleNo, ENABLE); ASSERT(r == AXT_RT_SUCCESS);
+
+	// === [DIAG] Ï¥àÍ∏∞Ìôî ÏãúÏ†êÏùò Ïù∏Ïä§ÌÑ¥Ïä§ Ï£ºÏÜåÏôÄ Ïù¥Î≤§Ìä∏ Ìï∏Îì§ ÌôïÏù∏ ===
+	{
+		CString strDiag;
+		strDiag.Format("[AJin DIAG] Init done, this: %p, h0: %p, h1: %p",
+			(void*)this,
+			(void*)m_hEventTrigger[0],
+			(void*)m_hEventTrigger[1]);
+		THEAPP.m_log_inspection->info("{}", LOG_CSTR(strDiag));
+	}
+
+	CString strLog;
+	DWORD uUse = 0;
+	AxdiInterruptGetModuleEnable(m_lModuleNo, &uUse);
+	strLog.Format("[AJin DIAG] ModuleEnable readback: %lu (1=ENABLE)", uUse);
+	THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
+
+	DWORD uVal = 0;
+	AxdiInterruptEdgeGetByte(m_lModuleNo, 0, UP_EDGE, &uVal);
+	// uValÏóê 0x01Ïù¥ Îì§Ïñ¥ÏûàÏñ¥Ïïº Ï†ïÏÉÅ
 
 #endif
 
@@ -151,7 +164,7 @@ BOOL CAJinAXL::Initialize()
 
 void CAJinAXL::Init_AssyTrigger()
 {
-	m_dwAssyOutput = 0xFFFFFFFF;   // Active-Low: ¿¸ ∫Ò∆Æ idle(High)
+	m_dwAssyOutput = 0xFFFFFFFF;   // Active-Low: Ï†Ñ ÎπÑÌä∏ idle(High)
 #ifdef AJIN_BOARD_USE
 	AxdoWriteOutportDword(ASSY_OUTPUT_MODULE, 0, m_dwAssyOutput);
 #endif
@@ -170,12 +183,21 @@ void CAJinAXL::Terminate()
 #else
 void CAJinAXL::Terminate()
 {
-	Init_Trigger(FALSE);	// ¡æ∑·Ω√ All Off
+	// === [DIAG] Terminate Ìò∏Ï∂ú Ï∂îÏ†Å (Ïù¥Î≤§Ìä∏ Ìï∏Îì§Ïù¥ Ïó¨Í∏∞ÏÑú Îã´Ìûò) ===
+	{
+		CString strDiag;
+		strDiag.Format("[AJin DIAG] Terminate called, this: %p, h0: %p, h1: %p",
+			(void*)this,
+			(void*)m_hEventTrigger[0],
+			(void*)m_hEventTrigger[1]);
+		THEAPP.m_log_inspection->info("{}", LOG_CSTR(strDiag));
+	}
+
+	Init_Trigger(FALSE);	// Ï¢ÖÎ£åÏãú All Off
 
 #ifdef AJIN_BOARD_USE
 	if (AxlIsOpened())
 		AxlClose();
-#endif
 
 	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
 	{
@@ -185,6 +207,8 @@ void CAJinAXL::Terminate()
 			m_hEventTrigger[i] = NULL;
 		}
 	}
+#endif
+
 }
 #endif
 
@@ -192,16 +216,16 @@ void CAJinAXL::Terminate()
 // Interrupt Callback
 void __stdcall OnDIOInterruptCallback(long lActiveNo, DWORD uFlag)
 {
-	if (uFlag & (1 << 0))       // X000 °Ê TOP Camera
+	if (uFlag & (1 << 0))       // X000 ‚Üí TOP Camera
 	{
 		::SetEvent(g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_1));
 	}
-	if (uFlag & (1 << 16))      // X016 °Ê BTM Camera
+	if (uFlag & (1 << 16))      // X016 ‚Üí BTM Camera
 	{
 		::SetEvent(g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_2));
 	}
 
-	//g_objAJinAXL.Read_Input();
+	g_objAJinAXL.ClearInterruptPending();
 }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -221,10 +245,17 @@ void CAJinAXL::Init_Trigger(BOOL bOn)
 
 void CAJinAXL::Read_Input()
 {
-	// 32bit ¿¸√º∏¶ «— π¯ø° ¿–¿Ω (X000 ~ X031)
+	// 32bit Ï†ÑÏ≤¥Î•º Ìïú Î≤àÏóê ÏùΩÏùå (X000 ~ X031)
 	m_csInput.Lock();
-	AxdiReadInportDword(0, 0, &m_DX.nValue);
+	AxdiReadInportDword(m_lModuleNo, 0, &m_DX.nValue);
 	m_csInput.Unlock();
+}
+
+// ÏΩúÎ∞± Ï†ÑÏö©, ÎùΩ ÏóÜÏùå ‚Äî Ï†ïÏÉÅ ÏΩîÎìúÏùò Read_Input() Ïó≠Ìï†
+void CAJinAXL::ClearInterruptPending()
+{
+	DWORD dwDummy = 0;
+	AxdiReadInportDword(m_lModuleNo, 0, &dwDummy);
 }
 
 HANDLE CAJinAXL::GetTriggerEvent(int iVisionCamType)
@@ -292,9 +323,9 @@ void CAJinAXL::Set_AssyTrigger(int iCam, int iPageIndex, int nS, int iCamSelect 
 
 	DWORD dwMask = 0;
 
-	// ƒ´∏ﬁ∂Û ∆Æ∏Æ∞≈ ∫Ò∆Æ
-	//  ACAM_SEL_ALL  : ∏≈«Œµ» ƒ´∏ﬁ∂Û ∫Ò∆Æ ¿¸√º µøΩ√ (Btm Align = Y024+Y025)
-	//  ACAM_SEL_1/_2 : «ÿ¥Á ¿Œµ¶Ω∫ ƒ´∏ﬁ∂Û ∫Ò∆Æ 1∞≥∏∏ (Btm Align ∞≥∫∞ √‘ªÛøÎ)
+	// Ïπ¥Î©îÎùº Ìä∏Î¶¨Í±∞ ÎπÑÌä∏
+	//  ACAM_SEL_ALL  : Îß§ÌïëÎêú Ïπ¥Î©îÎùº ÎπÑÌä∏ Ï†ÑÏ≤¥ ÎèôÏãú (Btm Align = Y024+Y025)
+	//  ACAM_SEL_1/_2 : Ìï¥Îãπ Ïù∏Îç±Ïä§ Ïπ¥Î©îÎùº ÎπÑÌä∏ 1Í∞úÎßå (Btm Align Í∞úÎ≥Ñ Ï¥¨ÏÉÅÏö©)
 	if (iCamSelect == ACAM_SEL_ALL)
 	{
 		for (int i = 0; i < map.iCamBitCount; i++)
@@ -306,16 +337,16 @@ void CAJinAXL::Set_AssyTrigger(int iCam, int iPageIndex, int nS, int iCamSelect 
 		if (iSelIdx >= 0 && iSelIdx < map.iCamBitCount)
 			dwMask |= (1u << (map.iCamBitStart + iSelIdx));
 		else
-			dwMask |= (1u << map.iCamBitStart);  // π¸¿ß π€¿Ã∏È √π ∫Ò∆Æ∑Œ ∆˙πÈ
+			dwMask |= (1u << map.iCamBitStart);  // Î≤îÏúÑ Î∞ñÏù¥Î©¥ Ï≤´ ÎπÑÌä∏Î°ú Ìè¥Î∞±
 	}
 
-	// º±≈√ ¡∂∏Ì Page ∫Ò∆Æ (Page Index¥¬ ƒ´∏ﬁ∂Û ±‚¡ÿ 0-base)
+	// ÏÑ†ÌÉù Ï°∞Î™Ö Page ÎπÑÌä∏ (Page IndexÎäî Ïπ¥Î©îÎùº Í∏∞Ï§Ä 0-base)
 	if (iPageIndex >= 0 && iPageIndex < map.iLightBitCount)
 		dwMask |= (1u << (map.iLightBitStart + iPageIndex));
 
 	TriggerCS.Lock();
 
-	// Active-Low ∆ﬁΩ∫: º±≈√ ∫Ò∆Æ∏∏ 0, ≥™∏”¡ˆ¥¬ idle(1) ¿Ø¡ˆ, 32∫Ò∆Æ µøΩ√ √‚∑¬
+	// Active-Low ÌéÑÏä§: ÏÑ†ÌÉù ÎπÑÌä∏Îßå 0, ÎÇòÎ®∏ÏßÄÎäî idle(1) Ïú†ÏßÄ, 32ÎπÑÌä∏ ÎèôÏãú Ï∂úÎ†•
 	m_dwAssyOutput &= ~dwMask;
 #ifdef AJIN_BOARD_USE
 	AxdoWriteOutportDword(ASSY_OUTPUT_MODULE, 0, m_dwAssyOutput);
@@ -323,7 +354,7 @@ void CAJinAXL::Set_AssyTrigger(int iCam, int iPageIndex, int nS, int iCamSelect 
 
 	Delay(nS);
 
-	m_dwAssyOutput |= dwMask;   // «ÿ¡¶
+	m_dwAssyOutput |= dwMask;   // Ìï¥Ï†ú
 #ifdef AJIN_BOARD_USE
 	AxdoWriteOutportDword(ASSY_OUTPUT_MODULE, 0, m_dwAssyOutput);
 #endif

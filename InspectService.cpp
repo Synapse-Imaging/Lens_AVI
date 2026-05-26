@@ -5479,6 +5479,8 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 	CString sVisionCamType_Comm;
 	sVisionCamType_Comm = THEAPP.m_ModelDefineInfo.m_strVisionName_Comm[iPcVisionNo][iStageNo];
 	
+	int iTotalGrabRetry = 0;
+
 	try
 	{
 		if (THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_sModelName == ".")
@@ -5511,18 +5513,27 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 
 		int iGrabCount = 0;
 		int iNoGrabing = 0;
+		int iEndGrabIndex = 0;
+
 		int iTriggerVisionGrabNumber = 4;
 		int iTriggerPeriodMsec = 25;
-		const DWORD TRIGGER_TIMEOUT_MS = 500;
+		DWORD TRIGGER_TIMEOUT_MS = 10000;
 
 		iTriggerVisionGrabNumber = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iTriggerImageNumber;
 		iTriggerPeriodMsec = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iTriggerPeriod;
+		TRIGGER_TIMEOUT_MS = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iTriggerTimeout;
 		iNoGrabing = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_iNoUsedImageGrab;
 		THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Start(iGrabCount, iNoGrabing);
 
+#ifdef USE_INTERRUPT
 		g_objAJinAXL.ResetTriggerEvent(iVisionCamType);
+#endif
 
 		THEAPP.m_pHandlerService->Set_TriggerRequest(sVisionCamType_Comm, sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo);
+
+#ifndef USE_INTERRUPT
+		Sleep(TRIGGER_TIMEOUT_MS);
+#endif
 
 		while (TRUE)
 		{
@@ -5531,34 +5542,99 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 
 			if (iGrabCount >= g_iVisionMaxGrabBuffer[iVisionCamType])
 				break;
-			
-			bGrabSuccess = FALSE;
-					   
-			log_time_start = std::chrono::high_resolution_clock::now();
-
+				
+#ifdef USE_INTERRUPT
 			HANDLE hTrigger = g_objAJinAXL.GetTriggerEvent(iVisionCamType);
+			 핸들 자체가 무효면 Wait 호출 전에 분기 (NULL이면 WAIT_FAILED로 떨어지지만 의도를 명확히)
+			if (hTrigger == NULL)
+			{
+				// === [DIAG] 에러 시점의 인스턴스 주소와 이벤트 핸들 확인 ===
+				strLog.Format("[AJin DIAG] handle NULL, CamType: %d, idx: %d, this: %p, h0: %p, h1: %p, MAX: %d",
+					iVisionCamType,
+					iVisionCamType - VISION_NUMBER_1,
+					(void*)&g_objAJinAXL,
+					(void*)g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_1),
+					(void*)g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_2),
+					MAX_INTERRUPT_NUMBER);
+				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
+
+				strLog.Format("%s/ Trigger handle is NULL, CamType: %d", sVisionCamType_Comm, iVisionCamType);
+				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
+				bGrabFail = TRUE;
+				break;
+			}
+
 			DWORD dwWait = ::WaitForSingleObject(hTrigger, TRIGGER_TIMEOUT_MS);
 
-			if (dwWait == WAIT_TIMEOUT)
+			switch (dwWait)
 			{
+			case WAIT_OBJECT_0:
+				// 정상: 트리거 수신. 이벤트 신호 OK
+				break;
+
+			case WAIT_TIMEOUT:
 				strLog.Format("%s/ Trigger TIMEOUT (%d ms), LotID: %s, Port: %d, Tray: %d, Module: %d, Image: %d",
 					sVisionCamType_Comm, TRIGGER_TIMEOUT_MS,
 					sLotID, iMzNo, iTrayNo, iModuleNo, iNoCurImageGrab + 1);
 				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
-
 				bGrabFail = TRUE;
 				break;
-			}
-			else if (dwWait != WAIT_OBJECT_0)
+
+			case WAIT_FAILED:
 			{
-				strLog.Format("%s/ Trigger WAIT ERROR (%lu), GetLastError: %lu", sVisionCamType_Comm, dwWait, ::GetLastError());
+				DWORD dwErr = ::GetLastError();   // 여기서만 GetLastError가 유효
+				CString strErrMsg = THEAPP.GetErrorMessageStr(dwErr);
+				strLog.Format("%s/ Trigger WAIT_FAILED, GetLastError: %lu (%s)", sVisionCamType_Comm, dwErr, strErrMsg);
 				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
-
 				bGrabFail = TRUE;
 				break;
 			}
 
-			bGrabSuccess = THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_SingleLens(iGrabCount, iTriggerVisionGrabNumber, iTriggerPeriodMsec, iDualModelData, iPcVisionNo);
+			case WAIT_ABANDONED:
+				// 이벤트 객체에는 정상적으로 발생하지 않음 (뮤텍스 전용). 방어적으로 처리
+				strLog.Format("%s/ Trigger WAIT_ABANDONED (unexpected for event)", sVisionCamType_Comm);
+				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
+				bGrabFail = TRUE;
+				break;
+
+			default:
+				// 문서화되지 않은 반환값 방어
+				strLog.Format("%s/ Trigger WAIT unknown return: %lu", sVisionCamType_Comm, dwWait);
+				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
+				bGrabFail = TRUE;
+				break;
+			}
+#endif
+
+			log_time_start = std::chrono::high_resolution_clock::now();
+
+			iRetryCnt = 0;
+			int K = 0;
+
+			bGrabSuccess = FALSE;
+
+			for (K = 0; K < THEAPP.Struct_PreferenceStruct.m_iGrabErrRetryNo; K++)		// Grab Retry
+			{
+				++iRetryCnt;
+
+				if (K > 0)
+					++iTotalGrabRetry;
+
+				bGrabSuccess = THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_SingleLens(iGrabCount, iTriggerVisionGrabNumber, iTriggerPeriodMsec, iDualModelData, iPcVisionNo);
+
+				if (bGrabSuccess)
+					break;
+				else
+				{
+					if (K < (THEAPP.Struct_PreferenceStruct.m_iGrabErrRetryNo - 1))
+					{
+						THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Stop(iEndGrabIndex, iNoGrabing);
+						iNoGrabing = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->GetGrabingNumber(iStageNo, iNoCurImageGrab);
+						THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Start(iGrabCount, iNoGrabing);
+						iEndGrabIndex = iGrabCount;
+					}
+				}
+			}	// Grab Retry
 
 			if (bGrabSuccess == FALSE)
 				bGrabFail = TRUE;		// 그랩이 한번이라도 성공하지 못하면 bGrabFail 활성화 시킨다
@@ -5572,13 +5648,26 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 			iNoCurImageGrab += iTriggerVisionGrabNumber;
 			iGrabCount += iTriggerVisionGrabNumber;
 
-			if (bGrabSuccess == FALSE)
+			/////////////////////////////////////////////////////////////////////
+			// Universal AVI에서는 다시 재시도 --> Single Lens에서는 GF로 처리
+
+			//if (bGrabSuccess == FALSE)
+			//{
+			//	THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Stop(iEndGrabIndex, iNoGrabing);
+			//	iNoGrabing = THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->GetGrabingNumber(iStageNo, iNoCurImageGrab);
+			//	THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Start(iGrabCount, iNoGrabing);
+			//	iEndGrabIndex = iGrabCount;
+			//}
+
+			if (bGrabFail)
 			{
 				break;
 			}
+
+			/////////////////////////////////////////////////////////////////////
 		}
 
-		THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Stop(0, iNoGrabing);
+		THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Stop(iEndGrabIndex, iNoGrabing);
 		THEAPP.m_pDualCameraManager[iPcVisionNo]->m_bGrabIndexMismatchDetected = FALSE;
 		THEAPP.m_pDualCameraManager[iPcVisionNo]->m_iGrabIndexMismatchOffset = 0;
 

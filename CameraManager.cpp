@@ -834,6 +834,10 @@ BOOL CCameraManager::CameraStartGrab(int iGrabStartBufferIdx, int iSeqAddressInd
 
 BOOL CCameraManager::CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPageIdx)
 {
+	auto log_time_start = std::chrono::high_resolution_clock::now();
+	auto log_time_end = std::chrono::high_resolution_clock::now();
+	auto log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
 	CString sVisionCamType_Short;
 
 #ifdef ASSY_LENS
@@ -891,6 +895,14 @@ BOOL CCameraManager::CameraStartGrab_NoSeq(int iGrabStartBufferIdx, int iLightPa
 		THEAPP.m_log_scan->warn("{}", LOG_CSTR(strLog));
 
 		return FALSE;
+	}
+	else
+	{
+		log_time_end = std::chrono::high_resolution_clock::now();
+		log_time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(log_time_end - log_time_start).count();
+
+		strLog.Format("%s/ SEQ grabdone Success GrabTime(ms): %d", sVisionCamType_Short, log_time_ms);
+		THEAPP.m_log_scan->info("{}", LOG_CSTR(strLog));
 	}
 
 	return TRUE;

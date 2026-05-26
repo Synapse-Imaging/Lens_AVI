@@ -732,10 +732,10 @@ extern "C" {
     // lEndMode : 0 - 마지막 노드 구동 종료 후 즉시 OutputBit Off/On
     //			: 1 - 마지막 노드 구동 시작 후 입력한 EndTime 이후 OutputBit Off/On
     //			: 2 - 구동 시작 시 OutputBit On/Off 및 입력한 EndTime 이후 OutputBit Off/On
-	DWORD __stdcall AxmContiSetWriteOutputBit(long lCoordinate, double dStartTime, double dEndTime, long lBitNo, long uOnoff, long lEndMode);
+	DWORD __stdcall AxmContiSetWriteOutputBit(long lCoordinate, long lAxisNo, double dStartTime, double dEndTime, long lBitNo, long uOnoff, long lEndMode);
 
 	// AxmContiSetWriteOutputBit로 설정한 값들을 반환한다.
-	DWORD __stdcall	AxmContiGetWriteOutputBit(long lCoordinate, double* dpStartTime, double* dpEndTime, long* lpBitNo, long* lpOnoff, long* lpEndMode);
+	DWORD __stdcall	AxmContiGetWriteOutputBit(long lCoordinate, long* lpAxisNo, double* dpStartTime, double* dpEndTime, long* lpBitNo, long* lpOnoff, long* lpEndMode);
 
 	// AxmContiSetWriteOutputBit로 설정한 값들을 리셋한다.
 	DWORD __stdcall	AxmContiResetWriteOutputBit(long lCoordinate);
@@ -852,6 +852,12 @@ extern "C" {
 	BOOL	__stdcall AxlIsUsing();
 	DWORD	__stdcall AxlRescanExternalDevice();
 	DWORD	__stdcall AxlGetExternalDeviceInfo(long lBoardNo, void* devInfo);  //void* -> ExternalDeviceInfo*
+
+	// EzConfig가 제공하는 확장 기능 사용을 위한 함수
+	// (PCIe-Rxx05-MLIII, dwFunction: 0) ==
+	//		[0]: ActOffset 저장 기능 활성화 여부(dwValue: [0] Disable, [1] Enable)
+	DWORD	__stdcall AxlSetExFunction(DWORD dwFunction, DWORD dwValue);
+	DWORD	__stdcall AxlGetExFunction(DWORD dwFunction, DWORD *dwpValue);
 
 #ifdef __cplusplus
 }

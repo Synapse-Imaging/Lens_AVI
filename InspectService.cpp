@@ -5546,7 +5546,7 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 				
 #ifdef USE_INTERRUPT
 			HANDLE hTrigger = g_objAJinAXL.GetTriggerEvent(iVisionCamType);
-			// 핸들 자체가 무효면 Wait 호출 전에 분기 (NULL이면 WAIT_FAILED로 떨어지지만 의도를 명확히)
+			// //핸들 자체가 무효면 Wait 호출 전에 분기 (NULL이면 WAIT_FAILED로 떨어지지만 의도를 명확히)
 			if (hTrigger == NULL)
 			{
 				// === [DIAG] 에러 시점의 인스턴스 주소와 이벤트 핸들 확인 ===

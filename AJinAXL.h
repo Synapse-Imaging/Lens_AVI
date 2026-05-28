@@ -192,6 +192,8 @@ private:
 
 	DX_DATA	m_DX;	// Input  (X00 - X07)
 
+	long m_lModuleNo;
+
 	void Init_Trigger(BOOL bOn);
 
 	HANDLE m_hEventTrigger[MAX_INTERRUPT_NUMBER];
@@ -213,6 +215,8 @@ public:
 
 	void Read_Input();		// DI Read
 	DX_DATA *Get_pDX() { return &m_DX; }
+
+	void ClearInterruptPending();
 
 	// uSleep
  	LONGLONG	m_nFreq;	// Frequence

@@ -156,7 +156,11 @@
 #define MAX_LASER_SCAN_NUMBER			5
 
 #ifdef INLINE_MODE
+#ifdef SINGLE_LENS
+#define INSPECTION_BUFFER_COUNT_MAX		60
+#else
 #define INSPECTION_BUFFER_COUNT_MAX		20
+#endif
 #else
 	#ifdef ONE_THREAD_INSPECTION
 		#define INSPECTION_BUFFER_COUNT_MAX	1
@@ -165,7 +169,11 @@
 	#endif
 #endif
 
+#ifdef SINGLE_LENS
+#define GRAB_CIRCULAR_MAX			6
+#else
 #define GRAB_CIRCULAR_MAX			3
+#endif
 
 #define LC_OPERATION_RESET	0
 #define LC_OPERATION_ADD	1
@@ -347,7 +355,7 @@ static int g_iVisionMaxGrabBuffer[] =
 	#else
 		// TODO : Split by Model, dont use conditional compilation
 		//		: dangling with FAI definition
-		#define MAX_MAGAZINE_NO			5
+		#define MAX_MAGAZINE_NO			3
 		#ifdef UAVI_AKC
 			#define MAX_TRAY_LOT			50
 			#define MAX_MODULE_TRAY			12
@@ -390,7 +398,7 @@ static int g_iVisionMaxGrabBuffer[] =
 		#endif
 		#ifdef SINGLE_LENS
 			#define MAX_TRAY_LOT			10
-			#define MAX_MODULE_TRAY			40
+			#define MAX_MODULE_TRAY			144
 		#endif
 		#ifdef ASSY_LENS
 			#define MAX_TRAY_LOT			10
@@ -960,7 +968,8 @@ static const std::array<std::string, 7> g_channel_type = {
 #define MAX_BUF_SIZE  SUA_IMG_SIZE * SUA_IMG_SIZE * 3
 #define MAX_RCV_BUF_SIZE   SUA_IMG_SIZE*SUA_IMG_SIZE + SUA_IMG_SIZE
 #define MAX_MODEL_NUM DEEP_MODEL_NUM*MAX_ADJ_CONNECT_NUM	//연산시 괄호 필수
-#define MAX_MODULE_NUM 60
+//#define MAX_MODULE_NUM 60
+#define MAX_MODULE_NUM MAX_MODULE_TRAY
 #define MAX_IMAGE_COUNT 6
 //DeepLearningKIT end
 //////////////////////////////////////////////////////////////////////////
@@ -1146,3 +1155,6 @@ static const std::array<std::string, 7> g_channel_type = {
 
 #define WM_AF_ZIG_ROT_CENTER_RESULT   (WM_APP + 101)
 #define LOG_CSTR(cstr) CT2A(cstr).m_psz
+
+//Single Lens AutoRun Grab Type
+#define USE_INTERRUPT

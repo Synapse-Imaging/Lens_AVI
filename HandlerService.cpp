@@ -112,6 +112,8 @@ BOOL CHandlerService::Initialize_TcpHandler(BOOL bRetryCheck)
 {
 #ifdef HANDLER_USE
 	CString sVisionCamType;
+
+
 	for (int i = 0; i < LIGHT_CONTROLLER_NUMBER_MAX; i++)
 	{
 		sVisionCamType = THEAPP.m_ModelDefineInfo.m_strVisionName[i];
@@ -1192,7 +1194,7 @@ LRESULT CHandlerService::OnClientReceive(WPARAM wLocalPort, LPARAM lParam)
 			AfxExtractSubString(sTemp1, strRecv, 2, chSep);			// Vision Type (B1, B2, T1, T2)
 			if (strOp == "COMPLETE")
 			{
-
+				Get_MoveComplete(sTemp1);
 			}
 		}
 #else

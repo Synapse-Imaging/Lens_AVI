@@ -553,6 +553,11 @@ extern "C" {
 	// dpTopData1 : 2D H/W 트리거 데이타 FIFO의 현재 데이타 중 두번째(Y) 위치 데이타를 확인 함 
 	DWORD  __stdcall AxcTableReadFifoData(long lModuleNo, long lTablePos, double* dpTopData1, double* dpTopData2);
 
+	// 카운터 모듈에 지정한 체널의 레벨과 출력시간 만큼 트리거를 1회 출력합니다.
+	// 트리거 시간 및 레벨은 AxcTriggerSetLevel / AxcTriggerSetTime함수의 설정값을 따릅니다.
+	// 해당기능은 HW가 아닌 상위 라이브러리에서 구현한 기능으로 사용자의 PC 환경에 따라 정확한 시간동안 트리거가 출력되지 않을 수 있습니다. 
+	// 해당 기능은 TEST용도로 사용 권장드리며 위 문제에 대하여 추가적인 수정 및 사후지원은 진행하지 않습니다.
+	DWORD  __stdcall AxcTriggerOneShot(long lChannelNo);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

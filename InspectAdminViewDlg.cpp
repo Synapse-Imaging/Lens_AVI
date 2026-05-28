@@ -6314,7 +6314,7 @@ UINT SingleLiveGrabThread(LPVOID lp)
 				CopyImage(THEAPP.m_pCameraManager->m_hoCallBackImage[iGrabCircularIdx][iImageIndex][0], &(THEAPP.m_pInspectAdminViewDlg->m_pHLiveImage[CHANNEL_TYPE_I]));
 			}
 
-			THEAPP.m_pInspectAdminViewDlg->UpdateView();
+			THEAPP.m_pInspectAdminViewDlg->UpdateView(FALSE);
 		}
 	}
 

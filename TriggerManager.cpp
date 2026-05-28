@@ -18,6 +18,8 @@ void CTriggerManager::DeleteInstance()
 }
 
 CTriggerManager::CTriggerManager(void)
+	: m_AJinAXL(g_objAJinAXL)   // ?ÑÏó≠ ?∏Ïä§?¥Ïä§??Î∞îÏù∏??
+	, m_iSleepTime(1)
 {
 
 }
@@ -277,12 +279,12 @@ void CTriggerManager::FireTrigger(int iCamIdx, int iTriggerPageIndex)
 
 	bPageOnOff[iTriggerPageIndex] = TRUE;
 
-	int iVisionOrder = 2;
+	int iVisionOrder = 0;
 
 	if (iCamIdx == VISION_NUMBER_1)
-		iVisionOrder = 2;
+		iVisionOrder = 0;
 	else if (iCamIdx == VISION_NUMBER_2)
-		iVisionOrder = 3;
+		iVisionOrder = 1;
 
 	m_AJinAXL.Set_Trigger(iVisionOrder, bPageOnOff, m_iSleepTime);	// FALSE: No Usage
 }

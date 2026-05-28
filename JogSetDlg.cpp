@@ -52,6 +52,7 @@ CJogSetDlg::CJogSetDlg(CWnd* pParent /*=NULL*/)
 
 		m_iEditTriggerImageNumber = 4;
 		m_iEditTriggerPeriod = 25;
+		m_iEditTriggerTimeout = 10000;
 
 		m_iEditBa1ImageNumber = 3;
 		m_iEditBa2ImageNumber = 6;
@@ -90,6 +91,7 @@ void CJogSetDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_EDIT_TRIGGER_IMAGE_NUMBER, m_iEditTriggerImageNumber);
 	DDX_Text(pDX, IDC_EDIT_TRIGGER_PERIOD, m_iEditTriggerPeriod);
+	DDX_Text(pDX, IDC_EDIT_TRIGGER_TIMEOUT, m_iEditTriggerTimeout);
 
 	DDX_Text(pDX, IDC_EDIT_BA1_IMAGE_NUMBER, m_iEditBa1ImageNumber);
 	DDX_Text(pDX, IDC_EDIT_BA2_IMAGE_NUMBER, m_iEditBa2ImageNumber);
@@ -1101,6 +1103,9 @@ void CJogSetDlg::LoadViewParam()
 	m_iEditTriggerImageNumber = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 4);
 	strKey.Format("Trigger-Period");
 	m_iEditTriggerPeriod = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 25);
+	strKey.Format("Trigger-Timeout");
+	m_iEditTriggerTimeout = INI_MotionMovingPosition.Get_Integer(strSection, strKey, 10000);
+
 #elif defined (ASSY_LENS)
 	strSection.Format("Assy Lens Align End Image Number");
 	strKey.Format("Bottom-Align-1");
@@ -1267,6 +1272,8 @@ void CJogSetDlg::SetDlgStatus()
 	GetDlgItem(IDC_EDIT_TRIGGER_IMAGE_NUMBER)->ShowWindow(FALSE);
 	GetDlgItem(IDC_STATIC_TRIGGER_PERIOD)->ShowWindow(FALSE);
 	GetDlgItem(IDC_EDIT_TRIGGER_PERIOD)->ShowWindow(FALSE);
+	GetDlgItem(IDC_STATIC_TRIGGER_TIMEOUT)->ShowWindow(FALSE);
+	GetDlgItem(IDC_EDIT_TRIGGER_TIMEOUT)->ShowWindow(FALSE);
 
 	GetDlgItem(IDC_STATIC_GROUPBOX_IMAGE_NUMBER)->ShowWindow(FALSE);
 	GetDlgItem(IDC_STATIC_BA1_IMAGE_NUMBER)->ShowWindow(FALSE);
@@ -1282,6 +1289,8 @@ void CJogSetDlg::SetDlgStatus()
 	GetDlgItem(IDC_EDIT_TRIGGER_IMAGE_NUMBER)->ShowWindow(TRUE);
 	GetDlgItem(IDC_STATIC_TRIGGER_PERIOD)->ShowWindow(TRUE);
 	GetDlgItem(IDC_EDIT_TRIGGER_PERIOD)->ShowWindow(TRUE);
+	GetDlgItem(IDC_STATIC_TRIGGER_TIMEOUT)->ShowWindow(TRUE);
+	GetDlgItem(IDC_EDIT_TRIGGER_TIMEOUT)->ShowWindow(TRUE);
 #endif
 
 #if defined (SINGLE_LENS) || defined (ASSY_LENS)
@@ -1802,11 +1811,17 @@ void CJogSetDlg::OnBnClickedButtonSavePositionSetting()
 	if (GetFileAttributes(strOpticModelFolder) == -1)
 		return;
 
+	CString strInspectLightInfo;
+	strInspectLightInfo.Format("%s\\HW\\Vision_N%d\\InspectLightInfo.ini", strOpticModelFolder, THEAPP.m_pModelDataManager->GetModelIdx() + 1);
+
+	THEAPP.m_pModelDataManager->SaveImagePageInfo(strInspectLightInfo);
+	   
 	THEAPP.m_pModelDataManager->m_iNoUsedImageGrab = m_iRadioLastInspectionImageIndex + 1;
 
 #ifdef SINGLE_LENS
 	THEAPP.m_pModelDataManager->m_iTriggerImageNumber = m_iEditTriggerImageNumber;
 	THEAPP.m_pModelDataManager->m_iTriggerPeriod = m_iEditTriggerPeriod;
+	THEAPP.m_pModelDataManager->m_iTriggerTimeout = m_iEditTriggerTimeout;
 #elif defined (ASSY_LENS)
 	THEAPP.m_pModelDataManager->m_iBottomAlign1EndImageNumber = m_iEditBa1ImageNumber;
 	THEAPP.m_pModelDataManager->m_iBottomAlign2EndImageNumber = m_iEditBa2ImageNumber;

@@ -187,6 +187,9 @@ extern "C" {
     // 38=[SOFT_LIMIT_STOP_MODE]: 0 = EMERGENCY_STOP, 1 = SLOWDOWN_STOP
     // 39=[SOFT_LIMIT_ENABLE   ]: 0 = DISABLE, 1 = ENABLE
     
+	// AxmMotLoadParaAll 함수로 Load한 mot 파일명을 반환한다.
+	DWORD    __stdcall AxmMotGetFileName(char *szFileName);
+
     // AxmMotSaveParaAll로 저장 되어진 .mot파일을 불러온다. 해당 파일은 사용자가 Edit 하여 사용 가능하다.
     DWORD    __stdcall AxmMotLoadParaAll(char *szFilePath);
     // 모든축에 대한 모든 파라메타를 축별로 저장한다. .mot파일로 저장한다.
@@ -263,6 +266,9 @@ extern "C" {
     // 주의사항 : 입력 최대 속도 값이 PPS가 아니라 UNIT 이다.
     // ex) 최대 출력 주파수(PCI-N804/404 : 10 MPPS)
     // ex) 최대 출력 Unit/Sec(PCI-N804/404 : 10MPPS * Unit/Pulse)
+    // 주의사항 : A5Nx, A6Nx의 경우 최대 50 MPPS로 제한된다.
+    // ex) 최대 출력 주파수(A5Nx, A6Nx : 50 MPPS)
+    // ex) 최대 출력 Unit/Sec(A5Nx, A6Nx : 50 MPPS * Unit/Pulse)
     DWORD    __stdcall AxmMotSetMaxVel(long lAxisNo, double dVel);
     // 지정 축에 대한 모든 구동 함수의 최고 속도 제한 설정 값을 UNIT 기준으로 반환한다.
     DWORD    __stdcall AxmMotGetMaxVel(long lAxisNo, double *dpVel);
@@ -402,8 +408,14 @@ extern "C" {
     // 범용 출력값을 반환한다.
     DWORD    __stdcall AxmSignalReadOutput(long lAxisNo, DWORD *upValue);
 
-	// ML3 전용 함수
-	// 지정축의 Brake sensor의 상태를 반환한다.
+	// PCIe-Rxx05-MLIII 전용 함수
+	// 지정 축에 Brake 신호 On/Off를 설정한다.(uOnOff: [01h]Brake On, [00h]Brake Off)
+	// 주의1) 반드시 AxmSignalReadBrakeOn 함수를 통해 상태가 변경되었음을 확인한 후 다음 동작을 수행하시기 바랍니다.
+	// 주의2) Servo On 상태에서 Brake Off 명령을 전송해도 작업 상태는 변경되지 않습니다.
+	// 주의3) AxmSignalWriteBrakeOn 함수로 Brake On 시, 반드시 AxmSignalWriteBrakeOn 함수로 Brake Off 후 사용해야 합니다.
+	DWORD	 __stdcall AxmSignalWriteBrakeOn(long lAxisNo, DWORD uOnOff);
+	// PCI-Rxx00-MLIII, PCIe-Rxx05-MLIII 전용 함수
+	// 지정 축의 Brake sensor 상태를 반환한다.(*upOnOff: [01h]Off(High), [00h]On(Low))
 	DWORD    __stdcall AxmSignalReadBrakeOn(long lAxisNo, DWORD *upOnOff);
 
     // lBitNo : Bit Number(0 - 4)
@@ -794,6 +806,13 @@ extern "C" {
 	// : 오버라이드 할 위치를 넣을 때는 구동 시점의 위치를 기준으로 한 Relative 형태의 위치값으로 넣어준다.
     //   구동 시작 후 같은 방향의 경우 오버라이드를 계속할 수 있지만 반대 방향으로 오버라이드 할 경우에는 오버라이드를 계속할 수 없다.
     DWORD    __stdcall AxmOverridePos(long lAxisNo, double dOverridePos);
+
+	// 절대 위치 오버라이드
+	// POS_ABS_MODE일 때 사용 가능
+	// ex) 1000 위치에서 negative 방향으로 구동 중 dOverridePos = 400으로 위치 오버라이드 할 경우
+	// 	AxmOverridePos		: 600의 위치에서 정지
+	//	AxmOverridePosAbs	: 400의 위치에서 정지
+	DWORD	 __stdcall AxmOverridePosAbs(long lAxisNo, double dOverridePos);
 
     // 지정 축의 속도오버라이드 하기전에 오버라이드할 최고속도를 설정한다.
     // 주의점 : 속도오버라이드를 5번한다면 그중에 최고 속도를 설정해야된다. 
@@ -1276,7 +1295,8 @@ extern "C" {
     //          [2] : Warning(setting flag) + Emergency stop
     //          [3] : Warning(setting flag) + Emergency stop + Servo-Off
     // ※ 주의: 5개의 SelMon 정보에 대해 각각 예외처리 설정이 가능하며, 사용중 예외처리를 원하지않을 경우
-    //          반드시 해당 SelMon 정보의 ActionValue값을 0으로 설정해 감시기능을 Disable 해됨.
+    //          반드시 해당 SelMon 정보의 ActionValue값을 0으로 설정해 감시기능을 Disable 해야함.
+	// ※ 주의: [0] : Torque 사용 시 AxmStatusSetReadServoLoadRatio([2] : Reference torque load ratio) 세팅 필요
     DWORD __stdcall AxmStatusSetServoMonitor(long lAxisNo, DWORD dwSelMon, double dActionValue, DWORD dwAction);
     // 지정 축의 예외 처리 기능에 대한 설정 상태를 반환한다.(MLII : Sigma-5 전용)
     DWORD __stdcall AxmStatusGetServoMonitor(long lAxisNo, DWORD dwSelMon, double *dpActionValue, DWORD *dwpAction);
@@ -1970,6 +1990,17 @@ extern "C" {
 	// 지정된 축의 Profile Queue에 여유 Count를 확인한다.
 	DWORD	 __stdcall AxmStatusReadRemainQueueCount(long lAxisNo, DWORD* pdwRemainQueueCount);
 
+	
+	//====Move 함수 파라미터 Get 함수 추가==== 231031 lsg
+	// 각 구동 함수에 입력된 파라미터값을 반환하는 함수
+	// 구동 성공시에만 해당 값을 저장해 반환하며, 구동이 실패한 파라미터는 저장하지 않음
+	DWORD	 __stdcall 	AxmMoveGetStartPosParam(long* lpAxisNo, double* dpPos, double* dpVel, double* dpAccel, double* dpDecel);
+	DWORD	 __stdcall 	AxmMoveGetPosParam(long* lpAxisNo, double* dpPos, double* dpVel, double* dpAccel, double* dpDecel);
+	DWORD	 __stdcall 	AxmMoveGetVelParam(long* lpAxisNo, double* dpVel, double* dpAccel, double* dpDecel);
+	DWORD	 __stdcall 	AxmMoveGetStartMultiPosParam(long* lpArraySize, long *lpAxesNoArrGet, double *dpPosArrGet, double *dpVelArrGet, double *dpAccelArrGet, double *dpDecelArrGet);
+	// lsg 231114
+	DWORD	 __stdcall 	AxmMoveGetToAbsPosParam(long* lpAxisNo, double* dpPos, double* dpVel, double* dpAccel, double* dpDecel);
+	DWORD	 __stdcall	AxmMoveGetLastParam(long lAxisNo, double* dpPos, double* dpVel, double* dpAccel, double* dpDecel);
 #ifdef __cplusplus
 }
 #endif    //__cplusplus

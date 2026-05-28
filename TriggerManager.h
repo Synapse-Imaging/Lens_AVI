@@ -37,10 +37,8 @@ public:
 
 	void FireAssyTrigger(int iAssyCamIdx, int iTriggerPageIndex, BOOL bSimulGrabBottomAlign=TRUE);
 
-	void InitAssyTrigger() { m_AJinAXL.Init_AssyTrigger(); }
-
 protected:
-	CAJinAXL m_AJinAXL;
+	CAJinAXL& m_AJinAXL;   // 전역 인스턴스(g_objAJinAXL)를 가리키는 참조
 	int		m_iSleepTime;
 };
 

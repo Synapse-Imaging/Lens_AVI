@@ -50,20 +50,26 @@ inline UINT SaveImageThread(LPVOID lp)
 	{
 		//Local image copy...
 
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+		int iImageChType = CHANNEL_TYPE_I;
+#else
+		int iImageChType = CHANNEL_TYPE_COLOR;
+#endif
+
 		for (i = 0; i < iNoInspectImage; i++)
 		{
 			GenEmptyObj(&(HSaveImage[i]));
-			if (THEAPP.m_pGFunction->ValidHImage(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][CHANNEL_TYPE_COLOR][i]))
+			if (THEAPP.m_pGFunction->ValidHImage(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][iImageChType][i]))
 			{
 				if (THEAPP.Struct_PreferenceStruct.m_bReduceRawImage)
 				{
 					if (THEAPP.Struct_PreferenceStruct.m_dRawImageZoomRatio < 1)
-						ZoomImageFactor(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][CHANNEL_TYPE_COLOR][i], HSaveImage + i, THEAPP.Struct_PreferenceStruct.m_dRawImageZoomRatio, THEAPP.Struct_PreferenceStruct.m_dRawImageZoomRatio, "none");
+						ZoomImageFactor(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][iImageChType][i], HSaveImage + i, THEAPP.Struct_PreferenceStruct.m_dRawImageZoomRatio, THEAPP.Struct_PreferenceStruct.m_dRawImageZoomRatio, "none");
 					else
-						CopyImage(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][CHANNEL_TYPE_COLOR][i], HSaveImage + i);
+						CopyImage(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][iImageChType][i], HSaveImage + i);
 				}
 				else
-					CopyImage(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][CHANNEL_TYPE_COLOR][i], HSaveImage + i);
+					CopyImage(pAlgorithm->m_HInspectCImage[iInspectionBufferIdx][iImageChType][i], HSaveImage + i);
 			}
 		}
 

@@ -229,7 +229,6 @@ void __stdcall OnDIOInterruptCallback(long lActiveNo, DWORD uFlag)
 	{
 		::SetEvent(g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_2));
 	}
-
 }
 /////////////////////////////////////////////////////////////////////////////
 

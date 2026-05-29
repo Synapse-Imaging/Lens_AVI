@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "uScan.h"
 #include "AJinAXL.h"
+#include <process.h>
 
 #include "AXL.h"
 #include "AXD.h"
@@ -39,6 +40,9 @@ CAJinAXL::CAJinAXL(void)
 	   
 	for (int i = 0; i < MAX_INTERRUPT_NUMBER; i++)
 		m_hEventTrigger[i] = NULL;
+
+	m_hPollingThread = NULL;
+	m_bPollingRun = 0;
 }
 
 CAJinAXL::~CAJinAXL(void)
@@ -114,50 +118,40 @@ BOOL CAJinAXL::Initialize()
 
 	Init_Trigger(FALSE);		// 시작시 All On
 
-	DWORD r;
+	//DWORD r;
 
-	r = AxlInterruptDisable();                              ASSERT(r == AXT_RT_SUCCESS);
-	Sleep(500);
-	r = AxlInterruptEnable();                              ASSERT(r == AXT_RT_SUCCESS);
-	Sleep(500);
-	r = AxlInterruptDisable();                              ASSERT(r == AXT_RT_SUCCESS);
-	Sleep(500);
-	r = AxlInterruptEnable();                              ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxlInterruptDisable();                              ASSERT(r == AXT_RT_SUCCESS);
+	//Sleep(500);
+	//r = AxlInterruptEnable();                              ASSERT(r == AXT_RT_SUCCESS);
+	//Sleep(500);
+	//r = AxlInterruptDisable();                              ASSERT(r == AXT_RT_SUCCESS);
+	//Sleep(500);
+	//r = AxlInterruptEnable();                              ASSERT(r == AXT_RT_SUCCESS);
 
-	// 1) 콜백(또는 이벤트) 등록 먼저
-	r = AxdiInterruptSetModule(m_lModuleNo, NULL, NULL,	(AXT_INTERRUPT_PROC)OnDIOInterruptCallback, NULL); ASSERT(r == AXT_RT_SUCCESS);
+	//// 1) 콜백(또는 이벤트) 등록 먼저
+	//r = AxdiInterruptSetModule(m_lModuleNo, NULL, NULL,	(AXT_INTERRUPT_PROC)OnDIOInterruptCallback, NULL); ASSERT(r == AXT_RT_SUCCESS);
 
-	// 2) 엣지 + 비트 활성화 설정 (모듈 enable 전에)
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 0, UP_EDGE, 0x01); ASSERT(r == AXT_RT_SUCCESS); // X000
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 0, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 1, UP_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 1, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 2, UP_EDGE, 0x01); ASSERT(r == AXT_RT_SUCCESS); // X016
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 2, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 3, UP_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
-	r = AxdiInterruptEdgeSetByte(m_lModuleNo, 3, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	//// 2) 엣지 + 비트 활성화 설정 (모듈 enable 전에)
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 0, UP_EDGE, 0x01); ASSERT(r == AXT_RT_SUCCESS); // X000
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 0, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 1, UP_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 1, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 2, UP_EDGE, 0x01); ASSERT(r == AXT_RT_SUCCESS); // X016
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 2, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 3, UP_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxdiInterruptEdgeSetByte(m_lModuleNo, 3, DOWN_EDGE, 0x00); ASSERT(r == AXT_RT_SUCCESS);
 
-	r = AxdiInterruptSetModuleEnable(m_lModuleNo, ENABLE); ASSERT(r == AXT_RT_SUCCESS);
+	//r = AxdiInterruptSetModuleEnable(m_lModuleNo, ENABLE); ASSERT(r == AXT_RT_SUCCESS);
 
-	// === [DIAG] 초기화 시점의 인스턴스 주소와 이벤트 핸들 확인 ===
+	// [DIAG] 시작 확인
 	{
 		CString strDiag;
-		strDiag.Format("[AJin DIAG] Init done, this: %p, h0: %p, h1: %p",
+		strDiag.Format("[AJin DIAG] Polling started, this: %p, h0: %p, h1: %p",
 			(void*)this,
 			(void*)m_hEventTrigger[0],
 			(void*)m_hEventTrigger[1]);
 		THEAPP.m_log_inspection->info("{}", LOG_CSTR(strDiag));
 	}
-
-	CString strLog;
-	DWORD uUse = 0;
-	AxdiInterruptGetModuleEnable(m_lModuleNo, &uUse);
-	strLog.Format("[AJin DIAG] ModuleEnable readback: %lu (1=ENABLE)", uUse);
-	THEAPP.m_log_inspection->info("{}", LOG_CSTR(strLog));
-
-	DWORD uVal = 0;
-	AxdiInterruptEdgeGetByte(m_lModuleNo, 0, UP_EDGE, &uVal);
-	// uVal에 0x01이 들어있어야 정상
 
 #endif
 
@@ -186,19 +180,12 @@ void CAJinAXL::Terminate()
 #else
 void CAJinAXL::Terminate()
 {
-	// === [DIAG] Terminate 호출 추적 (이벤트 핸들이 여기서 닫힘) ===
-	{
-		CString strDiag;
-		strDiag.Format("[AJin DIAG] Terminate called, this: %p, h0: %p, h1: %p",
-			(void*)this,
-			(void*)m_hEventTrigger[0],
-			(void*)m_hEventTrigger[1]);
-		THEAPP.m_log_inspection->info("{}", LOG_CSTR(strDiag));
-	}
-
 	Init_Trigger(FALSE);	// 종료시 All Off
 
 #ifdef AJIN_BOARD_USE
+
+	StopInputPolling();
+
 	if (AxlIsOpened())
 		AxlClose();
 
@@ -220,6 +207,13 @@ void CAJinAXL::Terminate()
 void __stdcall OnDIOInterruptCallback(long lActiveNo, DWORD uFlag)
 {
 	g_objAJinAXL.ClearInterruptPending();
+
+	// [DIAG] 콜백이 실제로 몇 번, 어떤 uFlag로 호출되는지
+	{
+		CString s;
+		s.Format("[CB] uFlag=0x%08X", uFlag);
+		THEAPP.m_log_scan->info("{}", LOG_CSTR(s));
+	}
 
 	if (uFlag & (1 << 0))       // X000 → TOP Camera
 	{
@@ -480,3 +474,69 @@ void CAJinAXL::Delay(int msec)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void CAJinAXL::StartInputPolling()
+{
+	if (m_hPollingThread) 
+		return;
+
+	::InterlockedExchange(&m_bPollingRun, 1);
+
+	m_hPollingThread = (HANDLE)_beginthreadex(NULL, 0, InputPollingThreadProc, this, 0, NULL);
+}
+
+void CAJinAXL::StopInputPolling()
+{
+	::InterlockedExchange(&m_bPollingRun, 0);
+
+	if (m_hPollingThread)
+	{
+		::WaitForSingleObject(m_hPollingThread, 2000);
+
+		::CloseHandle(m_hPollingThread);
+		m_hPollingThread = NULL;
+	}
+}
+
+unsigned __stdcall CAJinAXL::InputPollingThreadProc(void* p)
+{
+	((CAJinAXL*)p)->InputPollingLoop();
+	return 0;
+}
+
+void CAJinAXL::InputPollingLoop()
+{
+	::SetThreadPriority(::GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+
+	const DWORD MASK_TOP = (1u << 0);    // X000 → Camera TC
+	const DWORD MASK_BTM = (1u << 16);   // X016 → Camera BC
+
+	DWORD dwPrev = 0;
+	AxdiReadInportDword(m_lModuleNo, 0, &dwPrev);   // 시작값으로 초기화
+
+	LARGE_INTEGER tLast; QueryPerformanceCounter(&tLast);
+	const LONGLONG llPeriodUs = 200;     // 0.2ms 주기 (10ms 펄스당 약 50회 샘플링)
+
+	while (::InterlockedCompareExchange(&m_bPollingRun, 1, 1) == 1)
+	{
+		DWORD dwCur = dwPrev;
+		AxdiReadInportDword(m_lModuleNo, 0, &dwCur);
+
+		DWORD dwRising = (dwCur ^ dwPrev) & dwCur;   // 0→1 엣지만
+
+		if (dwRising & MASK_TOP)
+			::SetEvent(GetTriggerEvent(VISION_NUMBER_1));
+		if (dwRising & MASK_BTM)
+			::SetEvent(GetTriggerEvent(VISION_NUMBER_2));
+
+		dwPrev = dwCur;
+
+		// QPC 기반 주기 유지
+		LARGE_INTEGER tNow;
+		do {
+			QueryPerformanceCounter(&tNow);
+		} while (((tNow.QuadPart - tLast.QuadPart) * 1000000 / m_nFreq) < llPeriodUs
+			&& ::InterlockedCompareExchange(&m_bPollingRun, 1, 1) == 1);
+		tLast = tNow;
+	}
+}

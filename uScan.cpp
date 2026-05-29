@@ -4169,6 +4169,63 @@ CString CuScanApp::FormatLotResultString()
 
 CString CuScanApp::FormatLotResultString(const LogHeaderInfoStruct& headerInfo)
 {
+#ifdef SINGLE_LENS
+	CString sDelimiter = _T("\t");
+	CString sLog = _T("");
+
+	// 1. InspDate
+	sLog.AppendFormat("%s%s", headerInfo.sInspDate, sDelimiter);
+
+	// 2. InspTime
+	sLog.AppendFormat("%s%s", headerInfo.sInspTime, sDelimiter);
+
+	// 3. Station
+	sLog.AppendFormat("%s%s", headerInfo.sPCID, sDelimiter);
+
+	// 4. EquipNo
+	sLog.AppendFormat("%s%s", headerInfo.sEquipNo, sDelimiter);
+
+	// 5. LotID
+	sLog.AppendFormat("%s%s", headerInfo.sLotID, sDelimiter);
+
+	// 6. Config
+	sLog.AppendFormat("%s%s", headerInfo.sSaveConfig, sDelimiter);
+
+	// 7. TrayID
+	sLog.AppendFormat("%s%s", headerInfo.sTrayID, sDelimiter);
+
+	// 8. TrayNo
+	sLog.AppendFormat("%d%s", headerInfo.iTrayNo, sDelimiter);
+
+	// 9. ModuleNo
+	sLog.AppendFormat("%d%s", headerInfo.iModuleNo, sDelimiter);
+
+	// 12 ~ 12 + n. 비전 결과
+	for (auto& result : headerInfo.vecResultList)
+	{
+		sLog.AppendFormat("%s%s", result, sDelimiter);
+	}
+
+	// 13 + n + m. AI Result List
+	for (auto& aiResult : headerInfo.vecAIResultList)
+	{
+		sLog.AppendFormat("%s%s", aiResult, sDelimiter);
+	}
+
+	//  14 + n + m. FAI NG Item	
+	sLog.AppendFormat("%s%s", headerInfo.sFAINGItem, sDelimiter);
+
+	// FAIItems
+	const vector<double>& vecFAIItems = headerInfo.vecFAIItems;
+	size_t iFAILength = vecFAIItems.size();
+	for (size_t i = 0; i < iFAILength; i++)
+	{
+		sLog.AppendFormat("%.4lf", vecFAIItems[i]);
+
+		if (i < iFAILength - 1)
+			sLog += sDelimiter;
+	}
+#else
 	CString sDelimiter = _T("\t");
 	CString sLog = _T("");
 
@@ -4230,6 +4287,8 @@ CString CuScanApp::FormatLotResultString(const LogHeaderInfoStruct& headerInfo)
 		if (i < iFAILength - 1)
 			sLog += sDelimiter;
 	}
+#endif
+
 	return sLog;
 }
 
@@ -4240,6 +4299,17 @@ CString CuScanApp::FormatContactPointString()
 	CString sHeader = _T("");
 
 	// 2. m_lotResultHeaders (모델 불문 공통 헤더 1-9)
+#ifdef SINGLE_LENS
+	sHeader.AppendFormat(_T("Date") + sDelimiter);            // 1
+	sHeader.AppendFormat(_T("Time") + sDelimiter);            // 2
+	sHeader.AppendFormat(_T("Station") + sDelimiter);		  // 3
+	sHeader.AppendFormat(_T("Machine_Code") + sDelimiter);	  // 4
+	sHeader.AppendFormat(_T("LotNum") + sDelimiter);          // 5
+	sHeader.AppendFormat(_T("Config") + sDelimiter);          // 6
+	sHeader.AppendFormat(_T("TrayID") + sDelimiter);          // 7
+	sHeader.AppendFormat(_T("TrayNo") + sDelimiter);          // 8
+	sHeader.AppendFormat(_T("ModuleNo") + sDelimiter);        // 9
+#else
 	sHeader.AppendFormat(_T("Date") + sDelimiter);            // 1
 	sHeader.AppendFormat(_T("Time") + sDelimiter);            // 2
 	sHeader.AppendFormat(_T("Station") + sDelimiter);		  // 3
@@ -4251,6 +4321,7 @@ CString CuScanApp::FormatContactPointString()
 	sHeader.AppendFormat(_T("Barcode") + sDelimiter);         // 9
 	sHeader.AppendFormat(_T("StageNo") + sDelimiter);         // 10
 	sHeader.AppendFormat(_T("JigNo") + sDelimiter);           // 11
+#endif
 
 	for (int i = 0; i < VISION_NUMBER_MAX; i++)
 	{
@@ -4296,6 +4367,82 @@ CString CuScanApp::FormatContactPointString()
 
 CString CuScanApp::FormatContactPointString(const LogHeaderInfoStruct& headerInfo)
 {
+#ifdef SINGLE_LENS
+	CString sDelimiter = _T("\t");
+	CString sLog = _T("");
+
+	// 1. InspDate
+	sLog.AppendFormat("%s%s", headerInfo.sInspDate, sDelimiter);
+
+	// 2. InspTime
+	sLog.AppendFormat("%s%s", headerInfo.sInspTime, sDelimiter);
+
+	// 3. Station
+	sLog.AppendFormat("%s%s", headerInfo.sPCID, sDelimiter);
+
+	// 4. EquipNo
+	sLog.AppendFormat("%s%s", headerInfo.sEquipNo, sDelimiter);
+
+	// 5. LotID
+	sLog.AppendFormat("%s%s", headerInfo.sLotID, sDelimiter);
+
+	// 6. Config
+	sLog.AppendFormat("%s%s", headerInfo.sSaveConfig, sDelimiter);
+
+	// 7. TrayID
+	sLog.AppendFormat("%s%s", headerInfo.sTrayID, sDelimiter);
+
+	// 8. TrayNo
+	sLog.AppendFormat("%d%s", headerInfo.iTrayNo, sDelimiter);
+
+	// 9. ModuleNo
+	sLog.AppendFormat("%d%s", headerInfo.iModuleNo, sDelimiter);
+
+	// 11. 비전 결과
+	for (auto& result : headerInfo.vecResultList)
+	{
+		sLog.AppendFormat("%s%s", result, sDelimiter);
+	}
+
+	// 12. AI Result List
+	int groupSize = 3;
+	for (size_t i = 0; i < headerInfo.vecAIResultList.size(); i += groupSize)
+	{
+		bool hasGood = false;
+		bool hasNg = false;
+
+		for (size_t j = i; j < i + groupSize && j < headerInfo.vecAIResultList.size(); ++j)
+		{
+			const CString& result = headerInfo.vecAIResultList[j];
+
+			if (result == _T("G"))
+			{
+				hasGood = true;
+				break;
+			}
+
+			if (result == _T("N"))
+				hasNg = true;
+		}
+
+		if (hasGood)
+			sLog.AppendFormat(_T("%s%s"), _T("G"), sDelimiter);
+		else if (hasNg)
+			sLog.AppendFormat(_T("%s%s"), _T("N"), sDelimiter);
+		else
+			sLog.AppendFormat(_T("%s%s"), _T("nan"), sDelimiter);
+	}
+
+	// 13. Defect Blob Info
+	for (auto& result : headerInfo.vecDefectBlobInfoList)
+	{
+		sLog.AppendFormat("%s%s", result.sInspectType, sDelimiter);
+		sLog.AppendFormat("%d%s", result.iResultImageNo, sDelimiter);
+		sLog.AppendFormat("%d%s", result.iDefectCenterX, sDelimiter);
+		sLog.AppendFormat("%d%s", result.iDefectCenterY, sDelimiter);
+	}
+
+#else
 	CString sDelimiter = _T("\t");
 	CString sLog = _T("");
 
@@ -4359,7 +4506,7 @@ CString CuScanApp::FormatContactPointString(const LogHeaderInfoStruct& headerInf
 				hasNg = true;
 		}
 
-		if(hasGood)
+		if (hasGood)
 			sLog.AppendFormat(_T("%s%s"), _T("G"), sDelimiter);
 		else if (hasNg)
 			sLog.AppendFormat(_T("%s%s"), _T("N"), sDelimiter);
@@ -4375,6 +4522,8 @@ CString CuScanApp::FormatContactPointString(const LogHeaderInfoStruct& headerInf
 		sLog.AppendFormat("%d%s", result.iDefectCenterX, sDelimiter);
 		sLog.AppendFormat("%d%s", result.iDefectCenterY, sDelimiter);
 	}
+
+#endif
 
 	return sLog;
 }

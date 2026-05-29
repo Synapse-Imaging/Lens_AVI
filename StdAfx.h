@@ -34,7 +34,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 ////////////////////////////////////////// If Machine is Connected ->
-#define INLINE_MODE
+//#define INLINE_MODE
 ////////////////////////////////////////// <- If Machine is Connected
 
 // #define POC_TEST

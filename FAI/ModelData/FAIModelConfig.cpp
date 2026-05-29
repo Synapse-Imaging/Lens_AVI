@@ -274,7 +274,7 @@ FAIModelConfig CreateBOSModelConfig()
 FAIModelConfig CreateRENOModelConfig()
 {
 	/**
-	 * @brief RENO Model FAI Model Config 생성
+	 * @brief RENO Model FAI Model Config ?�성
 	 */
 	FAIModelConfig config;
 
@@ -283,9 +283,9 @@ FAIModelConfig CreateRENOModelConfig()
 
 	// ===== RENO FAI Items =====
 	config.faiItems = {
-		{{RENO_FAI::LENS_INNER_DIAMETER},        // FAI 상수 (번호)
-		 {_T("FAI-1")},                         // FAI 로그 헤더
-		 enMeasurePos::MEASURE_TOP_LENS_INNER}, // 측정 위치
+		{{RENO_FAI::LENS_INNER_DIAMETER},        // FAI ?�수 (번호)
+		 {_T("FAI-1")},                         // FAI 로그 ?�더
+		 enMeasurePos::MEASURE_TOP_LENS_INNER}, // 측정 ?�치
 	};
 
 	return config;
@@ -297,7 +297,7 @@ FAIModelConfig CreateRENOModelConfig()
 FAIModelConfig CreateKRIOSModelConfig()
 {
     /**
-     * @brief KRIOS Model FAI Model Config 생성
+     * @brief KRIOS Model FAI Model Config ?�성
      */
     FAIModelConfig config;
 
@@ -306,9 +306,9 @@ FAIModelConfig CreateKRIOSModelConfig()
 
     // ===== KRIOS FAI Items =====
     config.faiItems = {
-        {{KRIOS_FAI::LENS_INNER_DIAMETER},        // FAI 상수 (번호)
-         {_T("FAI-1")},                         // FAI 로그 헤더
-         enMeasurePos::MEASURE_TOP_LENS_INNER}, // 측정 위치
+        {{KRIOS_FAI::LENS_INNER_DIAMETER},        // FAI ?�수 (번호)
+         {_T("FAI-1")},                         // FAI 로그 ?�더
+         enMeasurePos::MEASURE_TOP_LENS_INNER}, // 측정 ?�치
     };
 
     return config;

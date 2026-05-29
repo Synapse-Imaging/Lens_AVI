@@ -176,6 +176,7 @@ public:
 		CString sEquipNo;
 		CString sLotID;
 		CString sSaveConfig;
+		CString sTrayID;
 		int iTrayNo;
 		int iModuleNo;
 		int iStageNo;

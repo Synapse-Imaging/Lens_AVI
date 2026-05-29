@@ -231,6 +231,17 @@ public:
 
 	void Init_AssyTrigger();                                  // Assy Lens idle 초기화
 	void Set_AssyTrigger(int iCam, int iPageIndex, int nS, int iCamSelect = ACAM_SEL_ALL);
+
+private:
+	HANDLE        m_hPollingThread;
+	volatile LONG m_bPollingRun;          // 0/1 플래그
+
+	static unsigned __stdcall InputPollingThreadProc(void* p);
+	void InputPollingLoop();
+
+public:
+	void StartInputPolling();
+	void StopInputPolling();
 };
 
 extern CAJinAXL g_objAJinAXL;

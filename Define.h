@@ -355,7 +355,7 @@ static int g_iVisionMaxGrabBuffer[] =
 	#else
 		// TODO : Split by Model, dont use conditional compilation
 		//		: dangling with FAI definition
-		#define MAX_MAGAZINE_NO			3
+		#define MAX_MAGAZINE_NO			5
 		#ifdef UAVI_AKC
 			#define MAX_TRAY_LOT			50
 			#define MAX_MODULE_TRAY			12
@@ -397,18 +397,25 @@ static int g_iVisionMaxGrabBuffer[] =
 			#define MAX_MODULE_TRAY			30
 		#endif
 		#ifdef SINGLE_LENS
+			#define MAX_MAGAZINE_NO			3
 			#define MAX_TRAY_LOT			10
 			#define MAX_MODULE_TRAY			144
 		#endif
 		#ifdef ASSY_LENS
+			#define MAX_MAGAZINE_NO			1
 			#define MAX_TRAY_LOT			10
 			#define MAX_MODULE_TRAY			40
 		#endif
 	#endif
 #else
 	#define MAX_MAGAZINE_NO			TEACHING_MZ_NO
+#ifdef SINGLE_LENS
+	#define MAX_TRAY_LOT			10
+	#define MAX_MODULE_TRAY			144
+#else
 	#define MAX_TRAY_LOT			50
 	#define MAX_MODULE_TRAY			40
+#endif
 #endif
 
 #ifdef INLINE_MODE
@@ -1157,4 +1164,4 @@ static const std::array<std::string, 7> g_channel_type = {
 #define LOG_CSTR(cstr) CT2A(cstr).m_psz
 
 //Single Lens AutoRun Grab Type
-#define USE_INTERRUPT
+#define USE_TRIGGER_EVENT

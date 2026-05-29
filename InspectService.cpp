@@ -5526,13 +5526,13 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 
 		THEAPP.m_pDualCameraManager[iPcVisionNo]->AutoRunCameraGrab_OneGrabFunction_Start(iGrabCount, iNoGrabing);
 
-#ifdef USE_INTERRUPT
+#ifdef USE_TRIGGER_EVENT
 		g_objAJinAXL.ResetTriggerEvent(iVisionCamType);
 #endif
 
 		THEAPP.m_pHandlerService->Set_TriggerRequest(sVisionCamType_Comm, sLotID, iMzNo, sTrayID, iTrayNo, iModuleNo);
 
-#ifndef USE_INTERRUPT
+#ifndef USE_TRIGGER_EVENT
 		Sleep(TRIGGER_TIMEOUT_MS);
 #endif
 
@@ -5544,21 +5544,11 @@ UINT InspectionThread_SingleLens(LPVOID lp)
 			if (iGrabCount >= g_iVisionMaxGrabBuffer[iVisionCamType])
 				break;
 				
-#ifdef USE_INTERRUPT
+#ifdef USE_TRIGGER_EVENT
 			HANDLE hTrigger = g_objAJinAXL.GetTriggerEvent(iVisionCamType);
 			// 핸들 자체가 무효면 Wait 호출 전에 분기 (NULL이면 WAIT_FAILED로 떨어지지만 의도를 명확히)
 			if (hTrigger == NULL)
 			{
-				// === [DIAG] 에러 시점의 인스턴스 주소와 이벤트 핸들 확인 ===
-				strLog.Format("[AJin DIAG] handle NULL, CamType: %d, idx: %d, this: %p, h0: %p, h1: %p, MAX: %d",
-					iVisionCamType,
-					iVisionCamType - VISION_NUMBER_1,
-					(void*)&g_objAJinAXL,
-					(void*)g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_1),
-					(void*)g_objAJinAXL.GetTriggerEvent(VISION_NUMBER_2),
-					MAX_INTERRUPT_NUMBER);
-				THEAPP.m_log_inspection->error("{}", LOG_CSTR(strLog));
-
 				strLog.Format("%s/ Trigger handle is NULL, CamType: %d", sVisionCamType_Comm, iVisionCamType);
 				THEAPP.m_log_scan->error("{}", LOG_CSTR(strLog));
 				bGrabFail = TRUE;
@@ -7314,6 +7304,10 @@ void CInspectService::OfflineInspection_Folder(CString sCurrentLotID)
 				m_bOfflineModuleInspectDone[iPcVisionNo] = TRUE;
 				continue;
 			}
+
+#ifdef SINGLE_LENS
+			THEAPP.m_pInspectService->m_sTrayID_H[iPcVisionNo] = _T("Offline");
+#endif
 
 			THEAPP.m_pInspectService->m_iTrayNo_H[iPcVisionNo] = iTrayNo;
 			THEAPP.m_pInspectService->m_iModuleNo_H[iPcVisionNo] = iModuleNo;

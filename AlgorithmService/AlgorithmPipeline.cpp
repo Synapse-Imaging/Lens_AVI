@@ -318,41 +318,59 @@ BOOL AlgorithmPipeline::ProcessGlobalAlign(AlgorithmContext& algCtx, BOOL bInitH
 
 void AlgorithmPipeline::ProcessHsiTrans(const AlgorithmContext& algCtx)
 {
-	int iBufferIdx = algCtx.iCurInspectionBufferIdx;
-	int iDualModelData = algCtx.iDualModelData;
-	int iPcVisionNo = algCtx.iPcVisionNo;
+#if defined(SINGLE_LENS) || defined(ASSY_LENS)
+	return;
+#endif
 
-	for (int i = algCtx.iStartImageIdx; i < algCtx.iEndImageIdx; i++)
+	try
 	{
-		Decompose3(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_COLOR][i],
-				   &(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_R][i]),
-				   &(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_G][i]),
-				   &(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_B][i]));
+		int iBufferIdx = algCtx.iCurInspectionBufferIdx;
+		int iDualModelData = algCtx.iDualModelData;
+		int iPcVisionNo = algCtx.iPcVisionNo;
 
-		if (THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_bUseColorSpace[i])
+		for (int i = algCtx.iStartImageIdx; i < algCtx.iEndImageIdx; i++)
 		{
-			TransFromRgb(
-				m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_R][i],
-				m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_G][i],
-				m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_B][i],
-				&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_H][i]),
-				&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_S][i]),
-				&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_I][i]),
-				"hsi");
+			Decompose3(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_COLOR][i],
+				&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_R][i]),
+				&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_G][i]),
+				&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_B][i]));
 
-			if (!THEAPP.m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
-				Rgb1ToGray(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_COLOR][i],
-						   &(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_I][i]));
-		}
-		else
-		{
-			if (!THEAPP.m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
-				Rgb1ToGray(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_COLOR][i],
-						   &(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_I][i]));
+			if (THEAPP.m_pDualModelDataManager[iDualModelData][iPcVisionNo]->m_bUseColorSpace[i])
+			{
+				TransFromRgb(
+					m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_R][i],
+					m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_G][i],
+					m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_B][i],
+					&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_H][i]),
+					&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_S][i]),
+					&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_I][i]),
+					"hsi");
 
-			GenEmptyObj(&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_H][i]));
-			GenEmptyObj(&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_S][i]));
+				if (!THEAPP.m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
+					Rgb1ToGray(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_COLOR][i],
+						&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_I][i]));
+			}
+			else
+			{
+				if (!THEAPP.m_ModelDefineInfo.m_bVisionPWM[iPcVisionNo])
+					Rgb1ToGray(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_COLOR][i],
+						&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_I][i]));
+
+				GenEmptyObj(&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_H][i]));
+				GenEmptyObj(&(m_pAlgorithm->m_HInspectCImage[iBufferIdx][CHANNEL_TYPE_S][i]));
+			}
 		}
+	}
+	catch (HException& except)
+	{
+		HTuple HExp, HOperatorName, HErrMsg;
+		except.ToHTuple(&HExp);
+		except.GetExceptionData(HExp, "operator", &HOperatorName);
+		except.GetExceptionData(HExp, "error_message", &HErrMsg);
+		CString strLog;
+		strLog.Format("Halcon Exception [ProcessHsiTrans] : <%s>%s",
+			CString(HOperatorName.S()), CString(HErrMsg.S()));
+		THEAPP.m_log_halcon->warn("{}", LOG_CSTR(strLog));
 	}
 }
 

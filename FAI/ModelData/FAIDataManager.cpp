@@ -105,11 +105,19 @@ void CFAIDataManager::ApplyModelConfig(const FAIModelConfig& m_ModelConfig)
 	m_lotResultHeaders.push_back(_T("Machine_Code"));	 // 4
     m_lotResultHeaders.push_back(_T("LotNum"));          // 5
     m_lotResultHeaders.push_back(_T("Config"));          // 6
+#ifdef SINGLE_LENS
+	m_lotResultHeaders.push_back(_T("TrayID"));            // 7
+	m_lotResultHeaders.push_back(_T("TrayNo"));            // 7
+#else
     m_lotResultHeaders.push_back(_T("Tray"));            // 7
+#endif
     m_lotResultHeaders.push_back(_T("ModuleNo"));        // 8
-    m_lotResultHeaders.push_back(_T("Barcode"));         // 9
-    m_lotResultHeaders.push_back(_T("StageNo"));         // 10
+
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
+	m_lotResultHeaders.push_back(_T("Barcode"));         // 9
+	m_lotResultHeaders.push_back(_T("StageNo"));         // 10
     m_lotResultHeaders.push_back(_T("JigNo"));           // 11
+#endif
     for (int i = 0; i < VISION_NUMBER_MAX; i++)
     {
         // Vision 헤더 추가
@@ -135,9 +143,11 @@ void CFAIDataManager::ApplyModelConfig(const FAIModelConfig& m_ModelConfig)
             m_lotResultHeaders.push_back(THEAPP.m_ModelDefineInfo.m_strVisionName[i] + _T(" AI Step 3"));
         }
     }
+
+#if !defined(SINGLE_LENS) && !defined(ASSY_LENS)
     m_lotResultHeaders.push_back(_T("FAI_NG_Item"));     // 18
 
-    // FAI headers
+														 // FAI headers
     // 모델 별 FAI 항목 LOG 헤더 추가
     for (const auto& fi : m_ModelConfig.faiItems)
     {
@@ -170,6 +180,7 @@ void CFAIDataManager::ApplyModelConfig(const FAIModelConfig& m_ModelConfig)
             m_faiNumbersAtPos[posIdx].push_back(fi.faiNumber);
         }
     }
+#endif
 }
 
 // position ID (int) -> FAI number vector 반환
